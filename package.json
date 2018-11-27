@@ -1,0 +1,26 @@
+{
+  "name": "ranger",
+  "version": "1.0.0",
+  "description": "my blog",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "keydone",
+  "license": "MIT",
+  "devDependencies": {
+    "highlight.js": "^9.13.1",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-logger": "^3.2.0",
+    "koa-pug": "^3.0.0-2",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "markdown-it": "^8.4.2",
+    "mongoose": "^5.3.13",
+    "monk": "^6.0.6"
+  }
+}

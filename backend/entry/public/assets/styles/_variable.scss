@@ -1,0 +1,70 @@
+/* base color
+-------------------------- */
+$color-white                       : #FFF;
+$color-black                       : #000;
+$color-yellow                      : #FFDA00;
+$color-ddd                         : #DDD;
+
+$color-primary                     : #AFA37E;
+$color-primary-light               : #EAE5D4;
+$color-primary-darken              : #978755;
+
+$color-success                     : #5BBA69;
+$color-warning                     : #FFB403;
+$color-danger                      : #FF5757;
+$color-error                       : #FF001F;
+
+/* layout navigate
+-------------------------- */
+$nav-background                    : #3C3C3C;
+$nav-background-hover              : #585858;
+
+/* link
+-------------------------- */
+$color-link-base                   : #2774FF;
+
+/* checkbox radio
+-------------------------- */
+$checkbox-color                    : #61A5FF;
+
+/* text color
+-------------------------- */
+$color-text-base                   : #000;
+$color-text-second                 : #333;
+$color-text-third                  : #666;
+$color-text-light                  : #999;
+$color-text-placeholder            : #999;
+$color-text-disabled               : #D8D8D8;
+$color-text-selected               : #FF8A00;
+
+/* background-color
+-------------------------- */
+$background-color-base             : #F2F2F2;
+$background-color-selected         : #F2F2F2;
+$background-color-hover            : #F7F7F7;
+$background-color-light            : #FBFBFB;
+$background-color-lighter          : #FAFAFA;
+
+/* border
+-------------------------- */
+$border-radius                     : 4px;
+$border-color-base                 : #DDD;
+$border-color-light                : #D8D8D8;
+$border-color-lighter              : #EEE;
+$border-base-style                 : 1px solid $border-color-base;
+
+/* Font
+-------------------------- */
+$font-size-base                    : 14px;
+$font-size-small                   : 12px;
+$font-size-large                   : 14px;
+$font-size-larger                  : 16px;
+$font-size-largest                 : 18px;
+$font-weight-medium                : 500;
+$font-family                       : OpenSans,Arial,Helvetica,PingFang SC,Microsoft YaHei,SimSun,sans-serif;
+$font-line-height                  : 1;
+
+/* Animation
+-------------------------- */
+$animation-transition-time          : 300ms;
+$animation-transition-timing        : ease-in-out;

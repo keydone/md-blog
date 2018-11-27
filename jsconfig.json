@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@": ["./"],
+        "@src": ["frontend/src"],
+        "@comp": ["frontend/src/components"],
+        "@assets": ["frontend/src/assets"],
+        "@js": ["frontend/src/assets/js"],
+        "@styles": ["frontend/src/assets/styles"],
+        "@modules": ["frontend/src/modules"],
+        "@views": ["frontend/src/views"],
+        "@bsrc": ["backend/entry/public"],
+        "@bcomp": ["backend/entry/public/components"],
+        "@bassets": ["backend/entry/public/assets"],
+        "@bjs": ["backend/entry/public/assets/js"],
+        "@bstyles": ["backend/entry/public/assets/styles"],
+        "@bmodules": ["backend/entry/public/modules"],
+        "@bviews": ["backend/entry/public/views"],
+      },
+      "target": "es6",
+      "module": "es6",
+      "allowSyntheticDefaultImports": true
+    },
+    // "include": ["src/**/*"],
+    "exclude": ["node_modules", "dist", ".git"]
+}

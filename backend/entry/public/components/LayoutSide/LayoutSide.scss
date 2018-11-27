@@ -1,0 +1,31 @@
+.nav-aside{
+    display: flex;
+    background: url('../../assets/images/bg.jpg') repeat-y;
+}
+
+/* 系统导航 */
+.main-aside{
+    .el-menu-item{
+        height: auto;
+        text-align: center;
+        padding: 10px 20px;
+        line-height: 20px;
+        border-bottom: $border-base-style;
+    }
+    [class^=el-icon-]{
+        display: block;
+        margin: 0 auto 10px;
+    }
+    h4{
+        margin: 0;
+        height: 20px;
+    }
+}
+
+/* 系统菜单 */
+.second-menus{
+    background: #d7dce2;
+    .el-menu{
+        background: none;
+    }
+}

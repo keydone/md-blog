@@ -1,0 +1,58 @@
+/* 所有 scss 文件都不用手动引入变量, webpack 中已自动处理
+@import "./variable.scss"; */
+@import "./reset.scss";
+
+.fl{float: left;}
+.fr{float: right;}
+
+.clearfix {
+    *zoom:1;
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+.hidden{display: none;}
+.shown{display: block;}
+
+.btn-normal{
+    height: 36px;
+    line-height: 1;
+    cursor: pointer;
+    background: #FFF;
+    border: 1px solid #DCDFE6;
+    display: inline-block;
+    color: #606266;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-weight: 500;
+    transition:width .1s, color .1s, background-color .1s;
+    &:hover{
+        color: #409EFF;
+        border-color: #c6e2ff;
+        background-color: #ecf5ff;
+    }
+}
+
+.btn-primary{
+    color: #FFF;
+    background-color: #409EFF;
+    border-color: #409EFF;
+    &:hover{
+        background: #66b1ff;
+        border-color: #66b1ff;
+        color: #FFF;
+    }
+}
+
+.full-screen{
+    height: 100vh;
+}
+
+.main-container{
+    display: flex;
+}

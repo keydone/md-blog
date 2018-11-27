@@ -1,0 +1,8 @@
+/* 所有 scss 文件都不用手动引入变量, webpack 中已自动处理
+@import "./variable.scss"; */
+@import "./reset.scss";
+
+#app{
+    width: 100vw;
+    height: 100vh;
+}

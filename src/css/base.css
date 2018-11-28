@@ -1,0 +1,132 @@
+@import './reset.css';
+
+.link {
+    font-size: inherit;
+    text-decoration: none;
+    transition: color $transition;
+
+    &:hover {
+        color: $main-color--hover;
+    }
+}
+
+.main-color{
+    color: $main-color;
+}
+
+@keyframes overturn{
+    0%{
+        transform:
+            rotateX(0deg)
+            rotateY(-30deg)
+            rotateZ(0deg);
+    }
+    100%{
+        transform:
+            rotateX(0deg)
+            rotateY(-50deg)
+            rotateZ(0deg);
+    }
+}
+
+.letter{
+    width: 14px;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 2em;
+    position: relative;
+    color: #00B4F1;
+    transform-style: preserve-3d;
+    perspective: 400;
+    -webkit-perspective: 400;
+    z-index: 1;
+}
+.letter:nth-child(1):before {
+    animation: overturn .3s .3s linear;
+}
+.letter:nth-child(2):before {
+    animation: overturn .3s .6s linear;
+}
+.letter:nth-child(3):before {
+    animation: overturn .3s .9s linear;
+}
+.letter:nth-child(4):before {
+    animation: overturn .3s 1.2s linear;
+}
+.letter:nth-child(5):before {
+    animation: overturn .3s 1.5s linear;
+}
+.letter:nth-child(6):before {
+    animation: overturn .3s 1.8s linear;
+}
+.letter:nth-child(7):before {
+    animation: overturn .3s 2.1s linear;
+}
+
+.letter:before, .letter:after{
+    position:absolute;
+    content: attr(data-letter);
+    transform-origin: top left;
+    top:0;
+    left:0;
+}
+.letter, .letter:before, .letter:after{
+    transition: all 0.2s ease-in-out;
+}
+.letter:before{
+    color: #fff;
+    text-shadow:
+        -1px 0px 3px rgba(255,255,255,1),
+        1px 0px 3px rgba(0,0,0,1);
+    z-index: 3;
+    transform:
+        rotateX(0deg)
+        rotateY(-30deg)
+        rotateZ(0deg);
+}
+.letter:after{
+    color: rgba(0,0,0,.11);
+    z-index:2;
+    transform:
+        scale(1.1,1)
+        rotateX(0deg)
+        rotateY(0deg)
+        rotateZ(0deg)
+        skew(0deg,1deg);
+}
+
+#page__logo{
+    text-decoration:none;
+    &:hover{
+        .letter:before {
+            transform:
+                rotateX(0deg)
+                rotateY(-50deg)
+                rotateZ(0deg);
+        }
+    }
+}
+
+.post__content {
+    .vshow{
+        color: #fff;
+        position: relative;
+        border-radius: 4px;
+        border: 1px dashed #e0e0e0;
+        cursor: pointer;
+        padding: 10px;
+    }
+}
+
+.vshow{
+    &.on{color:#666;}
+    &:before {
+        content: '点击查看隐藏内容';
+        position: absolute;
+        top:10px; left:5px;
+        font-size: 10px;
+        display: block;
+        color: #a2a2a2;
+        text-decoration:underline;
+    }
+}

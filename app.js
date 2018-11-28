@@ -1,12 +1,16 @@
 const Koa = require('koa');
 const Pug = require('koa-pug');
 const Router = require('koa-router');
-const md = require('markdown-it')();
-const Monk = require('monk');
-const router=new Router();
+const BodyParser = require('koa-bodyparser');
+const mongoose = require('mongoose');
+const router = new Router();
 const app = new Koa();
 
-const db = new Monk('localhost/ranger');
+// 加载路由配置模块
+require('./server/routes.js')(router);
+
+// 连接数据库
+mongoose.connect('mongodb://localhost:27017/ranger', { useNewUrlParser: true });
 
 new Pug({
     viewPath: './views',
@@ -16,16 +20,19 @@ new Pug({
     app,
 });
 
-app.use(function* () {
-    this.render('index', {
-        path: md.render('# markdown-it rulezz!'),
-    }, true);
-});
+app.use(BodyParser({
+    enableTypes: ['json'],
+    jsonLimit: '5mb',
+    strict: true,
+    onerror: (err, ctx) => {
+        ctx.throw('body parse error', 422);
+    }
+}))
+    .use(router.routes())
+    .use(router.allowedMethods())
+    .on('error', err => {
+        console.error('server error', err)
+    })
+    .listen(8080);
 
-app.use(router.routes());
-
-app.on('error', err => {
-    console.error('server error', err)
-});
-
-app.listen(8080);
+module.exports = app;

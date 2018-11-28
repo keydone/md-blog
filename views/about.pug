@@ -1,0 +1,15 @@
+extends layout/_layout
+
+append pageCss
+    link(rel="stylesheet", href="css/about.css")
+
+append content
+    main.page__container.page__main
+        .page__content
+            .content__container #{page}
+
+        //- comments
+        #comment-container
+
+append pagejs
+    script(type="text/javascript", src="/src/js/about.js")

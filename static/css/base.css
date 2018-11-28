@@ -1,22 +1,7 @@
-@import '_consts.css';
-@import '_font.css';
-@import '_reset.css';
-@import '_js-toggle.css';
-@import '_mixins.css';
-@import '_prettify.css';
 
 .link {
     font-size: inherit;
     text-decoration: none;
-    transition: color var(--$transition);
-
-    &:hover {
-        color: var(--$main-color--hover);
-    }
-}
-
-.main-color{
-    color: var(--$main-color);
 }
 
 @keyframes overturn{
@@ -102,33 +87,4 @@
 
 #page__logo{
     text-decoration:none;
-    &:hover{
-        .letter:before {
-            transform: rotateX(0deg) rotateY(-50deg) rotateZ(0deg);
-        }
-    }
-}
-
-.post__content {
-    .vshow{
-        color: #fff;
-        position: relative;
-        border-radius: 4px;
-        border: 1px dashed #e0e0e0;
-        cursor: pointer;
-        padding: 10px;
-    }
-}
-
-.vshow{
-    &.on{color:#666;}
-    &:before {
-        content: '点击查看隐藏内容';
-        position: absolute;
-        top:10px; left:5px;
-        font-size: 10px;
-        display: block;
-        color: #a2a2a2;
-        text-decoration:underline;
-    }
 }

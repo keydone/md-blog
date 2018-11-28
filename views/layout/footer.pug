@@ -1,0 +1,50 @@
+footer.page__footer
+    section.footer__top
+        .page__container.footer__container
+            if 'about'
+                .footer-top__item.footer-top__item--2
+                    h3.item__title about
+                    .item__content
+                        p.item__text info
+                        ul.footer__contact-info
+                            li.contact-info__item
+                                i.icon.icon-address
+                                span about.address
+                            li.contact-info__item
+                                i.icon.icon-email2
+                                span about.email
+
+            if 'QRcode'
+                .footer-top__item.footer__image
+                    img(src="#{img}" alt="logo" title="{title}")
+
+            if 'links'
+                each item, index in ['links']
+                    .footer-top__item
+                        h3.item__title {key}
+                        .item__content
+                            ul.footer-top__list
+                                if 'items.length'
+                                    each link in 'items'
+                                        li.list-item
+                                            a(target="_blank", href="{link.link}") {link.desc}
+                                else
+                                    li.list-item
+                                        a(target="_blank", href="{link.link}") {link.desc}
+
+    section.footer__bottom
+        .page__container.footer__container
+            p.footer__copyright 主题 ©
+                a(href="https://github.com/Mrminfive/hexo-theme-skapp" target="_blank") Skapp
+                | 2017, 由
+                a(class="main-color" href="http://hexo.io/" target="_blank") Hexo
+                | 强力驱动 | Hosted by
+                a(href="https://pages.coding.me" target="_blank" style="font-weight: bold") Coding Pages
+                | .
+
+            ul.footer__social-network.clearfix
+                if 'contact'
+                    each item in 'contact'
+                        li.social-network__item
+                            a(target="_blank", href="{item.link}", title="{item.title}")
+                                i.icon(class="{item.icon}")

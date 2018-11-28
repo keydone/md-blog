@@ -1,0 +1,25 @@
+header#page-header.page__header(style="background: url('{ 'header_cover' }') 50% 50%;")
+    nav.page__navbar
+        .page__container.navbar-container
+            a#page__logo.page__logo(href="/", title="{title}", alt="title")
+                span.letter(data-letter="k") k
+                span.letter(data-letter="e") e
+                span.letter(data-letter="y") y
+                span.letter(data-letter="d") d
+                span.letter(data-letter="o") o
+                span.letter(data-letter="n") n
+                span.letter(data-letter="e") e
+
+            nav#page__nav
+                ul.nav__list.clearfix
+                    each val in ['menu']
+                        li.nav__item
+                            a(href="{val}", title="{name}")
+
+            button.page__menu-btn(type="button")
+                i.icon.icon-menu
+
+    section.page__info
+        h1.info__title {subtitle}
+        hr.info__hr
+        p.info__desc {subtitle_desc}

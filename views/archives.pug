@@ -1,0 +1,18 @@
+extends layout/_layout
+
+append pageCss
+    link(rel="stylesheet", href="css/archives.css")
+
+append content
+    main.page__container.page__main
+        .page__content {{ blog_archive_menu(page) }}
+            .page__posts.clearfix
+
+                each post in 'blog_archive_post(page)'
+                    .page__post
+                        include _partial/mini
+
+        //- 分页 s_paginator
+
+append pagejs
+    script(src="/src/js/archives.js")

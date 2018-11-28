@@ -1,0 +1,15 @@
+
+aside.page__sidebar
+    form#page-search-from.page__search-from(action='/search/')
+        label.search-form__item
+            input.input(type='text', name='search', placeholder="{{ __('aside.search') }}")
+            i#page-search-btn.icon.icon-search
+    .sidebar__block
+        h3.block__title {aside.introduction}
+        p.block__text {description}
+    .sidebar__block
+        h3.block__title {aside.categories}
+    .sidebar__block
+        h3.block__title {aside.latest_post}
+    .sidebar__block
+        h3.block__title {aside.tag}

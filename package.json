@@ -12,15 +12,29 @@
   "author": "keydone",
   "license": "MIT",
   "devDependencies": {
+    "css-loader": "^1.0.1",
     "cssnano": "^4.1.7",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-plugin-html": "^5.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-pug": "^1.1.1",
+    "eslint-plugin-standard": "^4.0.0",
     "highlight.js": "^9.13.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
+    "koa-favicon": "^2.0.1",
     "koa-logger": "^3.2.0",
     "koa-pug": "^3.0.0-2",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
+    "koa-webpack": "^5.1.1",
     "markdown-it": "^8.4.2",
+    "mini-css-extract-plugin": "^0.4.5",
     "mongoose": "^5.3.13",
     "postcss-assets": "^5.0.0",
     "postcss-extend": "^1.0.5",
@@ -28,9 +42,19 @@
     "postcss-loader": "^3.0.0",
     "postcss-mixins": "^6.2.0",
     "postcss-preset-env": "^6.4.0",
-    "postcss-units": "^1.2.1"
+    "postcss-units": "^1.2.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.26.1"
   },
   "nodemonConfig": {
-    "ignore": ["src/*", "docs/*"]
+    "ignore": [
+      "src/*",
+      "node_modules/*",
+      "docs/*"
+    ]
+  },
+  "dependencies": {
+    "koa-helmet": "^4.0.0",
+    "log4js": "^3.0.6"
   }
 }

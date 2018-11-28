@@ -1,0 +1,25 @@
+html(lang="en")
+    head
+        include head.pug
+
+        block pageCss
+        link(rel="stylesheet", href="/css/base.css")
+
+    body
+        //- loading 页面
+        #page-loading.page.page-loading(style="background-image: url('/img/logo.png')")
+
+        #page.page.js-hidden
+            include header.pug
+
+            //- content
+            block content
+
+            include footer
+            //- 返回顶部
+            #back-top.back-top.back-top--hidden.js-hidden
+                i.icon.icon-top
+
+            script(type="text/javascript", src="/js/common.js")
+
+            block pagejs

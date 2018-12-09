@@ -3,7 +3,7 @@ const Router = require('koa-router');
 const router = new Router();
 
 router
-    .get(['/', '/:id'], ctx => {
+    .get(['/', '/:id'], (ctx) => {
         ctx.render('archives', {
             page: 'page-archives',
         });

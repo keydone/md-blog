@@ -1,15 +1,41 @@
+- var aside = setting.aside
 
 aside.page__sidebar
     form#page-search-from.page__search-from(action='/search/')
         label.search-form__item
-            input.input(type='text', name='search', placeholder="{{ __('aside.search') }}")
+            input.input(type='text', name='search', placeholder=aside.title)
             i#page-search-btn.icon.icon-search
     .sidebar__block
-        h3.block__title {aside.introduction}
-        p.block__text {description}
-    .sidebar__block
-        h3.block__title {aside.categories}
-    .sidebar__block
-        h3.block__title {aside.latest_post}
-    .sidebar__block
-        h3.block__title {aside.tag}
+        h3.block__title #{aside.intro}
+        p.block__text !{aside.desc}
+
+    if data.categories
+        .sidebar__block
+            h3.block__title #{aside.categories}
+            ul.block-list.cates-list
+                each cate in data.categories
+                    li
+                        a.block-list-link(href=cate.url, target="_blank") #{cate.name}
+                        span.block-list-count #{cate.num}
+
+    if data.last_post
+        .sidebar__block
+            h3.block__title #{aside.last_post}
+            ul.block-list.latest-post-list
+                each post, index in data.last_post
+                    if index < 10
+                        li
+                            a(href=post.path, title=post.title)
+                                .item__cover
+                                    img(src=setting.default_cover || post.img, alt=post.title)
+                                .item__info
+                                    h3.item__title #{post.title}
+                                    span.item__text #{post.date}
+
+    if data.tags
+        .sidebar__block
+            h3.block__title #{aside.tag}
+            ul.block-list.tag-list
+                each tag in data.tags
+                    li
+                        a.tag-link(href=tag.path) #{tag.name}

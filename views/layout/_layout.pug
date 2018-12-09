@@ -2,14 +2,19 @@ html(lang="en")
     head
         include head.pug
 
-        block pageCss
         link(rel="stylesheet", href="/css/base.css")
+        block pageCss
 
     body
         //- loading 页面
-        #page-loading.page.page-loading(style="background-image: url('/img/logo.png')")
+        - var pageheader = locals.pageheader
+        - var setting = locals.setting
+        - var data = locals.data
+
+        #page-loading.page.page-loading(style=`background-image: url(${setting.loader_img})`)
 
         #page.page.js-hidden
+
             include header.pug
 
             //- content
@@ -21,5 +26,6 @@ html(lang="en")
                 i.icon.icon-top
 
             script(type="text/javascript", src="/js/common.js")
+            script(type="text/javascript", src="/js/lib.js")
 
             block pagejs

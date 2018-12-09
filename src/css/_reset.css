@@ -1,7 +1,6 @@
 /**
  * 标签基本样式设定
  */
-@import '_consts';
 
 @font-face {font-family: "FiraCode";
     src: url('../fonts/FiraCode-Regular.ttf?t=1503327386217') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/

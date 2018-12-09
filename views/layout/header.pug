@@ -1,7 +1,8 @@
-header#page-header.page__header(style="background: url('{ 'header_cover' }') 50% 50%;")
+header(id=`${pageheader !== false? 'page-header' : ''}`, class=`page__header${pageheader === false? '--small' : ''}`, style=`background: url(${setting.header_cover}) 50% 50%;`)
+
     nav.page__navbar
         .page__container.navbar-container
-            a#page__logo.page__logo(href="/", title="{title}", alt="title")
+            a#page__logo.page__logo(href=setting.menu.home.link, title=setting.title, alt=setting.title)
                 span.letter(data-letter="k") k
                 span.letter(data-letter="e") e
                 span.letter(data-letter="y") y
@@ -12,14 +13,15 @@ header#page-header.page__header(style="background: url('{ 'header_cover' }') 50%
 
             nav#page__nav
                 ul.nav__list.clearfix
-                    each val in ['menu']
+                    each val in setting.menu
                         li.nav__item
-                            a(href="{val}", title="{name}")
+                            a(href=val.link, title=val.title) #{val.title}
 
             button.page__menu-btn(type="button")
                 i.icon.icon-menu
 
-    section.page__info
-        h1.info__title {subtitle}
-        hr.info__hr
-        p.info__desc {subtitle_desc}
+    if pageheader !== false
+        section.page__info
+            h1.info__title !{setting.subtitle}
+            hr.info__hr
+            p.info__desc !{setting.subtitle_desc}

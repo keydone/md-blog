@@ -3,15 +3,16 @@ const path = require('path');
 const Pug = require('koa-pug');
 const Router = require('koa-router');
 const BodyParser = require('koa-bodyparser');
-const koaWebpack = require('koa-webpack');
+const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
-const static = require('koa-static');
-const helmet = require("koa-helmet"); // 安全防护
+const helmet = require('koa-helmet'); // 安全防护
 const mongoose = require('mongoose');
+const shelljs = require('shelljs');
 
 const log4js = require('./server/utils/logs');
 const routes = require('./server/routes.js');
-const webpackConf = require('./webpack.config');
+const $config = require('./server/site_config');
+
 const router = new Router();
 const app = new Koa();
 
@@ -21,31 +22,21 @@ routes(router);
 // 连接数据库
 mongoose.connect('mongodb://localhost:27017/ranger', { useNewUrlParser: true });
 
-koaWebpack({
-    config: webpackConf,
-    devMiddleware: {
-        publicPath: '/',
-        logLevel: 'silent',
-    },
-    hotClient: {
-        logLevel: 'silent',
-    },
-}).then((middleware) => {
-    // console.log('webpack middleware----', middleware);
-    app.use(middleware);
-});
+// 编译 js, css
+// shelljs.exec('webpack webpack.config.v3.js');
 
 new Pug({
     viewPath: './views',
-    debug: false,
-    pretty: false,
-    compileDebug: false,
+    locals: {
+        setting: $config,
+    },
+    noCache: process.env.NODE_ENV === 'development',
     app,
 });
 
 app.use(helmet())
-    .use(static(path.join(__dirname, 'static')))
-    .use(favicon(__dirname + 'src/img/logo.png'))
+    .use(staticPath(path.join(__dirname, 'static')))
+    .use(favicon(`${__dirname}src/img/logo.png`))
     // 挂载日志模块
     .use(async (ctx, next) => {
         ctx.util = {
@@ -66,7 +57,7 @@ app.use(helmet())
             await ctx.render('404.pug');
         }
     })
-    .on('error', err => {
-        console.error('server error', err)
+    .on('error', (err) => {
+        console.error('server error', err);
     })
     .listen(8080);

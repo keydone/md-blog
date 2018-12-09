@@ -1,4 +1,5 @@
-const router = (router) => {
+
+module.exports = (router) => {
     // 前台页面
     router.use('/', require('./routes/index.js'));
     router.use('/about', require('./routes/about.js'));
@@ -6,14 +7,13 @@ const router = (router) => {
     router.use('/category', require('./routes/category.js'));
     router.use('/precious', require('./routes/precious.js'));
     router.use('/search', require('./routes/search.js'));
+    router.use('/detail', require('./routes/detail.js'));
     router.use('/tags', require('./routes/tags.js'));
 
     // 前台 post / get 接口
     router.use('/api', require('./api'));
 
     // 后台管理 / 发布文章, 管理文章
-    router.use(['backdoor', '/admin'], require('./routes/backdoor.js'));
+    router.use('/admin', require('./routes/admin.js'));
 
 };
-
-module.exports = router;

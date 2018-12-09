@@ -1,9 +1,9 @@
-const index = require('../models/index.js');
+const articles = require('../models/articles.js');
 const md = require('markdown-it')();
 
 const list = async (ctx, next) => {
-    await index.BlogList.find()
-        .then(res => {
+    await articles.getArticles.find()
+        .then((res) => {
             console.log('res:', res);
 
             ctx.body = {
@@ -13,16 +13,16 @@ const list = async (ctx, next) => {
             };
             next(ctx, res);
         })
-        .catch(err => {
+        .catch((err) => {
             ctx.body = {
                 list: {},
                 code: 1,
                 message: err.message || ''
             };
-            next(ctx, res);
-        })
-}
+            next(ctx);
+        });
+};
 
 module.exports = {
     list,
-}
+};

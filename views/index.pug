@@ -1,20 +1,14 @@
 extends layout/_layout
 
-append pageCss
-    link(rel="stylesheet", href="/css/index.css")
-
 append content
     main.page__container.page__main
         .page__content
             .page__posts.clearfix
 
-                each post in ['page.posts']
+                each post in data.posts
                     .page__post
                         include _partial/mini
 
         //- 分页 paginator
 
         include _partial/sidebar
-
-append pagejs
-    script(type="text/javascript", src="/js/index.js")

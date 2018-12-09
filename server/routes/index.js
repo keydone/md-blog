@@ -1,17 +1,15 @@
 const Router = require('koa-router');
 
 const router = new Router();
-const index = require('../controllers/index.js');
+const index = require('../controllers/articles');
+// const data = require('../mock/index');
 
 router
-    .get('/', index.list, ctx => {
-        console.log('--- get index ---');
-        console.log(ctx.body);
+    .get('/', index.findAll, (ctx) => {
         ctx.render('index', {
-            locals: {
-                title: 'title',
+            data: {
+                posts: ctx.response.body,
             },
-            page: 'index'
         });
     });
 

@@ -1,31 +1,25 @@
 article.page__mini-article
-    .mini-article__cover(style="background: url({ post.cover || get_setting('default_cover') }) 50% 50% no-repeat;")
+    .mini-article__cover(style=`background: url(${ post.cover || setting.default_cover }) 50% 50% no-repeat;`)
         .mini-article__date
-            span.date__day { date(post.date || post.update, 'D') }
-            span.date__month { date(post.date || post.update, 'MMMM') }
+            - var date = new Date(post.date || post.updatedAt)
+            span.date__day #{date.getDate()}
+            span.date__month #{date.getMonth() + 1}月
 
-        a.icon.icon-enter(target="_blank", href="{ url_for(post.path) }")
+        a.icon.icon-enter(target="_blank", href=`/detail/${post.path}`)
+
     .mini-article__info
         h3.mini-article__title
-            a(href="{ url_for(post.path) }", title="{ post.title }") { post.title }
-        p.mini-article__author by
-            if 'post.author.length'
-                for user in 'post.author'
-                    span.author__item
-                        a(href="{ user.link }", target="_blank")
-                            span { titlecase(user.name || user.nick) }
-            else
-                span
-                    a(target="_blank", href="{ post.author.link || get_setting('author').link }")
-                        span { post.author.name || post.author.nick || get_setting('author').name }
+            a(href=post.path, title=post.title) #{ post.title }
+        p.mini-article__author by&nbsp;
+            a.author__item(href=setting.author.link, target="_blank") #{ setting.author.name || setting.author.nick }
 
-        if 'post.subtitle'
-            .min-article__desc { post.subtitle }
+        if post.subtitle
+            .min-article__desc #{ post.subtitle }
 
-        if 'post.tags.length'
+        if post.tags.length && post.tags[0].length
             .min-article__tags
                 i.icon.icon-tab
                 ul.tags__list.clearfix
-                    for tag in 'post.tags'
+                    each tag in post.tags
                         li.tags__item
-                            a(href="{ url_for(tag.path) }") { tag.name }
+                            a(href=tag.path) #{ tag.name }

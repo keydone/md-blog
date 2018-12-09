@@ -1,0 +1,80 @@
+/**
+ * 标签基本样式设定
+ */
+
+@font-face {font-family: "FiraCode";
+    src: url('../fonts/FiraCode-Regular.ttf?t=1503327386217') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+}
+
+html, body, article, hgroup, figure, main, section, header, footer, aside, nav, video, audio, canvas, details, h1, h2, h3, h4, h5, h6, div, p, dl, dd, ul, li, ol, label, form, input, img, textarea, th, tr, td, button, select, a, span, em, i, sub, sup, pre, code {
+    box-sizing:border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family;
+    font-size: $main-fs;
+    color: $main-fc;
+    line-height: 1.7;
+    background-color: $bgc--main;
+}
+
+h1, h2, h3, h4, h5, h6,
+ul, li, dl, dt, dd,
+figure, p {
+    padding: 0;
+    margin: 0;
+    font-weight: normal;
+    word-wrap: break-word;
+}
+
+sub, sup {
+    position: static;
+    top: auto;
+    font-size: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+    font-family: $font-family;
+    outline: none;
+}
+
+pre, code {
+    font-family: $font-family;
+    overflow: auto;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+ul {list-style: none;}
+
+a {
+    text-decoration: none;
+    font-size: inherit;
+    outline: none;
+    color: inherit;
+    cursor: pointer; /* 勿删，解决IOS10.3点不动问题 */
+}
+
+table {
+    width: 100%;
+}
+
+table,
+tr,
+th,
+td {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: normal;
+    font-style: normal;
+    box-sizing: border-box;
+}

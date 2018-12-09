@@ -1,0 +1,85 @@
+extends ../layout/_layout
+
+append content
+    main.page__container.page__main
+        .page__content
+            .content__container
+                #form-list
+                    .form-label
+                        .label-desc 文章 id
+                        .label-content
+                            input.label-input(type="text", data-post="path")
+
+                        .label-desc 标题
+                        .label-content
+                            input.label-input(type="text", data-post="title")
+
+                        .label-desc 副标题
+                        .label-content
+                            input.label-input(type="text", data-post="subtitle")
+
+                        .label-desc 封面图片
+                        .label-content
+                            input.label-input(type="text", data-post="cover")
+
+                        .label-desc 作者
+                        .label-content
+                            input.label-input(type="text", value="keydone", data-post="author")
+
+                        .label-desc 文章分类
+                        .label-content
+                            input.label-input(type="text", data-post="category")
+
+                        .label-desc 文章标签
+                        .label-content
+                            input.label-input(type="text", placeholder="多个标签之间用 , 分开" data-post="tags")
+
+                        .label-desc 发布时间
+                        .label-content
+                            input.label-input(type="text", data-post="date")
+
+                        .label-desc 内容
+                        .label-content
+                            textarea.label-input(type="text", data-post="content")
+
+                a#post(href="javascript:;") 发布
+                a#draft(href="javascript:;") 存为草稿
+
+append pagejs
+    script.
+        var post = $('#post'),
+            draft = $('#draft'),
+            fields = $('[data-post]'),
+            data = {};
+
+        function publish(type) {
+
+            for(var i=0, length=fields.length; i<length; i++) {
+                const item = $(fields[i]);
+                var key = item.attr('data-post');
+                var val = item.val();
+                data[key] = val;
+            }
+
+            data.isDraft = type;
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/post-save',
+                dataType: 'json',
+                data: data,
+                success: function(res) {
+                    if(res.status === 0) {
+                        console.log('success');
+                    }
+                },
+            });
+        }
+
+        post.on('click', function() {
+            publish(0);
+        });
+
+        draft.on('click', function() {
+            publish(1);
+        });

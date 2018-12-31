@@ -1,3 +1,4 @@
+doctype html
 html(lang="en")
     head
         include head.pug
@@ -25,7 +26,40 @@ html(lang="en")
             #back-top.back-top.back-top--hidden.js-hidden
                 i.icon.icon-top
 
-            script(type="text/javascript", src="/js/common.js")
-            script(type="text/javascript", src="/js/lib.js")
+            .js-hidden(style="font-size: 26px; position:fixed; bottom:0;")
+                i.icon.icon-enter
+                i.icon.icon-menu
+                i.icon.icon-eye
+                i.icon.icon-tab
+                i.icon.icon-twitter
+                i.icon.icon-search
+                i.icon.icon-weibo
+                i.icon.icon-comment
+                i.icon.icon-time
+                i.icon.icon-douban
+                i.icon.icon-zhihu
+                i.icon.icon-write
+                i.icon.icon-loader
+                i.icon.icon-address
+                i.icon.icon-share
+                i.icon.icon-like
+                i.icon.icon-github
+                i.icon.icon-rss
+                i.icon.icon-email
+                i.icon.icon-email2
+                i.icon.icon-next
+                i.icon.icon-prev
+                i.icon.icon-prev
+                i.icon.icon-thanks
+                i.icon.icon-telegram
+                i.icon.icon-top
+                i.icon.icon-category
+                i.icon.icon-quotes
+                i.icon.icon-facebook
+                i.icon.icon-in
 
-            block pagejs
+        script(type="text/javascript", src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js")
+        script(type="text/javascript", src="/js/common.js")
+        script(type="text/javascript", src="/js/lib.js")
+
+        block pagejs

@@ -3,6 +3,7 @@
 @import './particles/font';
 @import './particles/js-toggle';
 @import './particles/prettify';
+@import './particles/checkbox';
 @import './particles/mixins';
 @import './particles/index';
 @import './layout/index';

@@ -22,4 +22,4 @@ article.page__mini-article
                 ul.tags__list.clearfix
                     each tag in post.tags
                         li.tags__item
-                            a(href=tag.path) #{ tag.name }
+                            a(href=`/tags?tag=${tag}`) #{tag}

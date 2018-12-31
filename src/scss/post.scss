@@ -1,14 +1,7 @@
 @import './particles/consts';
 @import './particles/mixins';
+@import './particles/filepond';
 @import './layout/mini-post';
-
-body {
-    @media screen and (min-width: $mq-desktop) {
-        .page__content {
-            margin-right: $pad * 2;
-        }
-    }
-}
 
 .page__post{
     float: none !important;
@@ -18,6 +11,23 @@ body {
 
 .page__content {
     overflow: hidden;
+    .closeForm{
+        display: block;
+        text-align: center;
+        width: 100px;
+        height: 40px;
+        line-height: 40px;
+        position: relative;
+        font-size: 30px;
+        margin: 0 auto;
+        &.open .icon-top{
+            transform: rotate(0);
+        }
+        .icon-top{
+            display: block;
+            transform: rotate(180deg);
+        }
+    }
 }
 
 .post__cover {
@@ -156,4 +166,76 @@ body {
             text-align: right;
         }
     }
+}
+
+#form-list{
+    &.closed{
+        max-height: 70px;
+        overflow: hidden;
+    }
+}
+
+.form-label{
+    width: 50%;
+    display: inline-block;
+    vertical-align: top;
+    padding:0 30px;
+    .label-content{
+        border:1px solid #d5d5d5;
+        border-radius: 4px;
+    }
+    .filepond--panel{border-radius: 4px;}
+    .label-desc{
+        font-size: 12px;
+        margin: 5px 0;
+        border-left: 4px solid #19abd6;
+        padding-left: 5px;
+        background: #f7fafd;
+    }
+    .label-input{
+        width: 100%;
+        padding: 5px 10px;
+        border-radius: 4px;
+        line-height: 20px;
+        height: 30px;
+        border: 0;
+    }
+}
+
+.post-content{
+    .form-label{
+        padding: 5px;
+    }
+    .label-textarea{
+        resize: vertical;
+        width: 100%;
+        padding: 5px 10px;
+        border-radius: 4px;
+        line-height: 20px;
+        border: 0;
+    }
+}
+
+.post-btns{
+    text-align: right;
+    padding-top: 10px;
+    a{display: inline-block;
+        vertical-align: top;
+        padding-left: 5px;
+        margin-left: 5px;
+    }
+}
+
+#preview{
+    max-height: 1010px;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: $mq-mobile) {
+    .page__main{padding: 20px 15px;}
+    .form-label {
+        width: 100%;
+        padding: 0;
+    }
+    .preview-view{display: none;}
 }

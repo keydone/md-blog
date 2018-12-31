@@ -3,6 +3,7 @@ const path = require('path');
 const Pug = require('koa-pug');
 const Router = require('koa-router');
 const BodyParser = require('koa-bodyparser');
+const compression = require('koa-compress');
 const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
 const helmet = require('koa-helmet'); // 安全防护
@@ -35,6 +36,7 @@ new Pug({
 });
 
 app.use(helmet())
+    .use(compression())
     .use(staticPath(path.join(__dirname, 'static')))
     .use(favicon(`${__dirname}src/img/logo.png`))
     // 挂载日志模块

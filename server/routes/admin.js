@@ -12,7 +12,27 @@ router
             pageheader: false,
         });
     })
+    .get('/note', (ctx) => {
+        ctx.render('admin/note', {
+            pageheader: false,
+        });
+    })
     .post('/post-save', async (ctx, next) => {
+        const { success, msg } = await articles.save(ctx, next);
+
+        if (success) {
+            ctx.body = {
+                status: 0,
+                msg: 'ok',
+            };
+        } else {
+            ctx.body = {
+                status: 1,
+                msg,
+            };
+        }
+    })
+    .post('/note-save', async (ctx, next) => {
         const { success, msg } = await articles.save(ctx, next);
 
         if (success) {

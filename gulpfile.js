@@ -32,4 +32,13 @@ gulp.task('post', () => gulp.src('./src/js/page/post.js')
     .pipe(uglify())
     .pipe(gulp.dest('./static/js')));
 
-gulp.task('default', ['clean', 'css', 'postcss', 'commonjs', 'lib', 'post']);
+gulp.task('filepond', () => gulp.src('./src/js/page/filepond.min.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('./static/js')));
+
+gulp.task('md', () => gulp.src('./src/js/markdown/*.js')
+    .pipe(concat('md-plugins.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./static/js')));
+
+gulp.task('default', gulp.series('clean', 'css', 'postcss', 'commonjs', 'lib', 'post', 'filepond', 'md'));

@@ -3,7 +3,7 @@ const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
 const mdDivs = require('markdown-it-div');
 const md = require('markdown-it')({ html: true });
-const ArticlesModel = require('../models/articles');
+const NotesModel = require('../models/note');
 
 md.use(emoji)
     .use(mdCheckbox, {
@@ -15,29 +15,17 @@ md.use(emoji)
     .use(mdDivs);
 
 const findAll = async (ctx, next) => {
-    const { query: { draft } } = ctx.request;
-    const drafts = draft === undefined ? 0 : +draft;
-    const filter = {};
-
-    if (drafts === 0) {
-        filter.isDraft = 0;
-    } else if (drafts === 2) {
-        filter.isDraft = 1;
-    }
-
     try {
-        await ArticlesModel.find(filter).sort({ updatedAt: -1 })
+        await NotesModel.find()
             .then((res) => {
-                if (res.length) {
-                    res.forEach((article) => {
-                        const { content } = article;
-                        if (content) {
-                            article.content = md.render(content);
-                        } else {
-                            article.content = '';
-                        }
-                    });
-                }
+                res.forEach((article) => {
+                    const { content } = article;
+                    if (content) {
+                        article.content = md.render(content);
+                    } else {
+                        article.content = '';
+                    }
+                });
                 ctx.response.body = res;
                 next(ctx, next);
             });
@@ -51,7 +39,7 @@ const findAll = async (ctx, next) => {
 const findOne = async (ctx, next) => {
     const id = ctx.request.url.split('/detail/');
     try {
-        await ArticlesModel.findOne({ path: id[1] })
+        await NotesModel.findOne({ path: id[1] })
             .then((article) => {
                 const { content } = article;
                 if (content) {
@@ -70,7 +58,7 @@ const findOne = async (ctx, next) => {
 };
 
 const save = async (ctx, next) => {
-    const article = new ArticlesModel(ctx.request.body);
+    const article = new NotesModel(ctx.request.body);
     try {
         await article.save();
         return { success: true };
@@ -84,7 +72,7 @@ const save = async (ctx, next) => {
 };
 
 const update = async (ctx, next) => {
-    const article = new ArticlesModel(ctx.request.body);
+    const article = new NotesModel(ctx.request.body);
     try {
         await article.update()
             .then((res) => {
@@ -97,7 +85,7 @@ const update = async (ctx, next) => {
 };
 
 const remove = async (ctx, next) => {
-    await ArticlesModel.remove((err, res) => {
+    await NotesModel.remove((err, res) => {
 
     });
 };

@@ -1,16 +1,17 @@
 doctype html
 html(lang="en")
+    //- loading 页面
+    - var pageheader = locals.pageheader
+    - var setting = locals.setting
+    - var data = locals.data
+
     head
         include head.pug
 
-        link(rel="stylesheet", href="/css/base.css")
+        link(rel="stylesheet", href=`${setting.cdn}static/css/base.css?t=${setting.tstamp}`)
         block pageCss
 
     body
-        //- loading 页面
-        - var pageheader = locals.pageheader
-        - var setting = locals.setting
-        - var data = locals.data
 
         #page-loading.page.page-loading(style=`background-image: url(${setting.loader_img})`)
 
@@ -58,8 +59,8 @@ html(lang="en")
                 i.icon.icon-facebook
                 i.icon.icon-in
 
-        script(type="text/javascript", src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js")
-        script(type="text/javascript", src="/js/common.js")
-        script(type="text/javascript", src="/js/lib.js")
+        script(type="text/javascript", src=`${setting.cdn}static/js/jQuery.v3.3.1.min.js`)
+        script(type="text/javascript", src=`${setting.cdn}static/js/common.js?t=${setting.tstamp}`)
+        script(type="text/javascript", src=`${setting.cdn}static/js/lib.js?t=${setting.tstamp}`)
 
         block pagejs

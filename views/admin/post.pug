@@ -1,7 +1,7 @@
 extends ../layout/_layout
 
 append pageCss
-    link(rel="stylesheet", href="/css/post.css")
+    link(rel="stylesheet", href=`${setting.cdn}static/css/post.css?t=${setting.tstamp}`)
 
 append content
     main.page__container.page__main
@@ -71,13 +71,11 @@ append content
                         #preview
 
 append pagejs
-    script(type="text/javascript", src="https://unpkg.com/filepond/dist/filepond.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.2/markdown-it.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.6.0/highlightjs-line-numbers.min.js")
-    script(src="/js/md-plugins.js")
+    script(type="text/javascript", src=`${setting.cdn}static/js/filepond.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.cdn}static/js/markdown-it.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.cdn}static/js/md-plugins.js?t=${setting.tstamp}`)
     script.
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', function() {
             var postid = $('#postid');
             FilePond.create(document.querySelector('#file-cover'), {
                 labelIdle: '拖拽或 <span class="filepond--label-action"> 浏览文件 </span>',
@@ -100,7 +98,7 @@ append pagejs
                 labelButtonRetryItemProcessing: '重试',
                 labelButtonProcessItem: '上传',
                 name: 'filepond',
-                allowRevert: false,
+                allowRevert: true,
                 allowMultiple:true,
                 dropOnPage: true,
                 dropValidation: true,
@@ -131,7 +129,7 @@ append pagejs
             postid.on('blur', function() {
                 setOptions();
             });
-        }
+        }, false);
     script.
         var textarea = $('#textarea');
         var preview = $('#preview');
@@ -176,11 +174,7 @@ append pagejs
         }
 
         md.renderer.rules.paragraph_open = md.renderer.rules.heading_open = injectLineNumbers;
-        /* textarea.on('scroll', function() {
-            var percentage = this.scrollTop / (this.scrollHeight - this.offsetHeight);
-            var height = percentage * (preview[0].scrollHeight - preview[0].offsetHeight);
-            preview.scrollTop(height);
-        }); */
+
         var scrollMap;
         function buildScrollMap() {
             var i, offset, nonEmptyList, pos, a, b, lineHeightMap, linesCount, acc, sourceLikeDiv, _scrollMap;
@@ -295,8 +289,6 @@ append pagejs
         }, 50, { maxWait: 33 });
 
         // Setup listeners
-        // $('.source').on('keyup paste cut mouseup', _.debounce(updateResult, 300, { maxWait: 500 }));
-
         textarea.on('touchstart mouseover', function () {
             preview.off('scroll');
             textarea.on('scroll', syncResultScroll);

@@ -36,7 +36,7 @@ const upload = ctx => new Promise((resolve, reject) => {
         const saveTo = path.join(pathResolve, fullname);
 
         if (!fs.existsSync(saveTo)) {
-            await new Promise((writeEnd, refuse) => {
+            await new Promise((writeEnd) => {
                 const writeStream = file.pipe(fs.createWriteStream(saveTo));
                 writeStream.on('finish', () => {
                     console.log('文件写入完毕！');

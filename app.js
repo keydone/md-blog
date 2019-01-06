@@ -8,7 +8,7 @@ const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
 const helmet = require('koa-helmet'); // 安全防护
 const mongoose = require('mongoose');
-const shelljs = require('shelljs');
+// const shelljs = require('shelljs');
 
 const log4js = require('./server/utils/logs');
 const routes = require('./server/routes.js');
@@ -37,7 +37,7 @@ new Pug({
 
 app.use(helmet())
     .use(compression())
-    .use(staticPath(path.join(__dirname, 'static')))
+    .use(staticPath(path.join(__dirname, 'public')))
     .use(favicon(`${__dirname}src/img/logo.png`))
     // 挂载日志模块
     .use(async (ctx, next) => {
@@ -48,7 +48,7 @@ app.use(helmet())
     })
     // 记录日志
     .use(async (ctx, next) => {
-        ctx.util.log.info(`host: ${ctx.req.headers.host} - url: ${ctx.request.url}`);
+        ctx.util.log.info(`host: ${ctx.req.headers.host} - url: ${ctx.request.url} - status: ${ctx.request.status}`);
         await next();
     })
     .use(BodyParser())
@@ -62,4 +62,6 @@ app.use(helmet())
     .on('error', (err) => {
         console.error('server error', err);
     })
-    .listen(8080);
+    .listen(2333, () => {
+        console.log('server is running on port 2333');
+    });

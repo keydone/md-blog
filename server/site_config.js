@@ -1,18 +1,28 @@
 /* 站点信息 */
+const path = require('path');
+const { existsSync } = require('fs');
+
+const envFile = existsSync(path.resolve(__dirname, '../.env.js'));
+const env = Object.assign({
+    cdn: '/',
+    tstamp: +new Date(),
+}, envFile ? require('../.env.js') : {});
 
 module.exports = {
+    cdn: env.cdn,
+    tstamp: env.tstamp,
     title: 'keydone',
     subtitle: 'For everything beautiful!',
     // banner显示的简短介绍
     subtitle_desc: '我不希望年老的时候，含着泪对年轻的自己说：<br>对不起，我没有成为当初你想要成为的那个人！',
     keywords: '前端博客, 前端, 程序员, 前端开发, 全栈开发, node.js, javascript, react, vue',
     timezone: 'Asia/Shanghai',
-    logo: '/img/logo.png',
-    favicon_ico: '/img/favicon.ico',
-    avatar: '/img/avatar.png',
-    header_cover: '/img/dy.png',
-    loader_img: '/img/loader.gif',
-    default_cover: '/img/dy.png',
+    logo: `${env.cdn}static/img/logo.png`,
+    favicon_ico: `${env.cdn}static/img/favicon.ico`,
+    avatar: `${env.cdn}static/img/avatar.png`,
+    header_cover: `${env.cdn}static/img/dy.png`,
+    loader_img: `${env.cdn}static/img/loader.gif`,
+    default_cover: `${env.cdn}static/img/dy.png`,
     author: {
         name: 'keydone',
         link: 'https://github.com/keydone'
@@ -49,7 +59,7 @@ module.exports = {
             title: '关于'
         },
     },
-    QRcode: '/img/avatar.png',
+    QRcode: `${env.cdn}static/img/avatar.png`,
     footers: [{
         name: '友情链接',
         values: [{

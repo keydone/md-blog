@@ -6,9 +6,10 @@ const index = require('../controllers/articles');
 
 router
     .get('/', index.findAll, (ctx) => {
+        const { body } = ctx;
         ctx.render('index', {
             data: {
-                posts: ctx.response.body,
+                posts: body,
             },
         });
     });

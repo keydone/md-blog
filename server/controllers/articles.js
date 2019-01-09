@@ -15,9 +15,12 @@ md.use(emoji)
     .use(mdDivs);
 
 const findAll = async (ctx, next) => {
-    const { query: { draft } } = ctx.request;
+    const { draft } = ctx.request.query;
     const drafts = draft === undefined ? 0 : +draft;
+    let { page, pagesize } = ctx.request.query;
     const filter = {};
+    page = (page - 1) || 0;
+    pagesize = pagesize || 12;
 
     if (drafts === 0) {
         filter.isDraft = 0;
@@ -26,7 +29,11 @@ const findAll = async (ctx, next) => {
     }
 
     try {
-        await ArticlesModel.find(filter).sort({ updatedAt: -1 })
+        const total = await ArticlesModel.find(filter);
+        await ArticlesModel.find(filter)
+            .limit(pagesize)
+            .skip(page * pagesize)
+            .sort({ updatedAt: -1 })
             .then((res) => {
                 if (res.length) {
                     res.forEach((article) => {
@@ -38,11 +45,16 @@ const findAll = async (ctx, next) => {
                         }
                     });
                 }
-                ctx.response.body = res;
+                ctx.body = {
+                    total: total.length,
+                    pagesize,
+                    page,
+                    res
+                };
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
         next(ctx, next);
         console.log('err ---', err);
     }
@@ -59,11 +71,11 @@ const findOne = async (ctx, next) => {
                 } else {
                     article.content = '';
                 }
-                ctx.response.body = article;
+                ctx.body = article;
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
         next(ctx, next);
         console.log('err ---', err);
     }
@@ -88,11 +100,11 @@ const update = async (ctx, next) => {
     try {
         await article.update()
             .then((res) => {
-                ctx.response.body = res;
+                ctx.body = res;
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
     }
 };
 

@@ -26,11 +26,11 @@ const findAll = async (ctx, next) => {
                         article.content = '';
                     }
                 });
-                ctx.response.body = res;
+                ctx.body = res;
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
         next(ctx, next);
         console.log('err ---', err);
     }
@@ -47,11 +47,11 @@ const findOne = async (ctx, next) => {
                 } else {
                     article.content = '';
                 }
-                ctx.response.body = article;
+                ctx.body = article;
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
         next(ctx, next);
         console.log('err ---', err);
     }
@@ -76,11 +76,11 @@ const update = async (ctx, next) => {
     try {
         await article.update()
             .then((res) => {
-                ctx.response.body = res;
+                ctx.body = res;
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.response.body = err;
+        ctx.body = err;
     }
 };
 

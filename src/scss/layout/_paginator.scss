@@ -1,19 +1,21 @@
-$paginator-height: 32px !default;
+$paginator-width: 32px;
+$paginator-span: 20px;
 
-@mixin item($bgc) {
+@mixin item($bgc, $width) {
+    width: $width;
     display: block;
-    height: $paginator-height;
-    width: $paginator-height;
+    padding: 0 5px;
+    min-width: $width;
     text-align: center;
-    line-height: $paginator-height;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: $bgc;
+    height: $paginator-width;
+    line-height: $paginator-width;
+    border-radius: 16px;
+    background: $bgc;
     color: #40545a;
-    text-decoration: none;
 }
 
 .page__paginator {
+    width: 100%;
     margin-top: 3 * $pad;
     line-height: 1;
     text-align: center;
@@ -38,7 +40,7 @@ $paginator-height: 32px !default;
     }
 
     & > a {
-        @include item(#d8e5f3);
+        @include item(#d8e5f3, $paginator-width);
         transition: background $transition;
 
         &:hover {
@@ -47,6 +49,6 @@ $paginator-height: 32px !default;
     }
 
     & > span {
-        @include item(transparent);
+        @include item(transparent, $paginator-span);
     }
 }

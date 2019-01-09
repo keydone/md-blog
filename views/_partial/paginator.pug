@@ -1,0 +1,18 @@
+-var pages = Math.ceil(posts.total/posts.pagesize)
+if pages
+    .page__paginator
+        ul.paginator__list.clearfix
+            if posts.page > 0
+                li.paginator__item.paginator__nav
+                    a(href=`/?page=${posts.page}`)
+                        i.icon.icon-prev
+            -for (var index = 0; index < pages; index++)
+                li.paginator__item
+                    if index === posts.page
+                        span #{index + 1}
+                    else
+                        a(href=`/?page=${index + 1}`) #{index + 1}
+            if pages > 1 && posts.page < pages - 1
+                li.paginator__item.paginator__nav
+                    a(href=`/?page=${posts.page + 2}`)
+                        i.icon.icon-next

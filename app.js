@@ -22,6 +22,9 @@ routes(router);
 
 // 连接数据库
 mongoose.connect('mongodb://localhost:27017/ranger', { useNewUrlParser: true });
+mongoose.connection.on('error', (error) => {
+    console.log('[error]: ', error.name, error.errorLabels);
+});
 
 // 编译 js, css
 // shelljs.exec('webpack webpack.config.v3.js');

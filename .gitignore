@@ -1,0 +1,5 @@
+.gulp-scss-cache/
+.sass-cache/
+.env.js
+*.env.js
+node_modules/

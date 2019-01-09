@@ -13,9 +13,19 @@ html(lang="en")
 
     body
 
-        #page-loading.page.page-loading(style=`background-image: url(${setting.loader_img})`)
+        #page-loading.page
+            .page-loading
+                span
+                    each n in [0, 1, 2, 3]
+                        span
+                .cssload-base
+                    span
+                    .cssload-face
+            .cssload-longfazers
+                each n in [0, 1, 2, 3]
+                    span
 
-        #page.page.js-hidden
+        #page.page
 
             include header.pug
 

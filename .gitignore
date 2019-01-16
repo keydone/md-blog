@@ -3,3 +3,4 @@
 .env.js
 *.env.js
 node_modules/
+logs/*

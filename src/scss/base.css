@@ -6,6 +6,7 @@
 @import './particles/checkbox';
 @import './particles/mixins';
 @import './particles/index';
+@import './layout/paginator';
 @import './layout/index';
 
 .link {

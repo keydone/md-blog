@@ -9,7 +9,7 @@ router
         ctx.render('content', {
             pageheader: false,
             data: {
-                article: ctx.response.body,
+                article: ctx.body,
             },
         });
     });

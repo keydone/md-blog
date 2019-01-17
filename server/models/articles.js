@@ -3,6 +3,7 @@ const { requires } = require('../validator');
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
+mongoose.Promise = global.Promise;
 
 const Articles = new Schema({
     _id: {

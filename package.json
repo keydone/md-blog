@@ -91,6 +91,7 @@
     ]
   },
   "dependencies": {
+    "ali-oss": "^6.1.0",
     "gulp": "^4.0.0",
     "mongoose-validator": "^2.1.0"
   }

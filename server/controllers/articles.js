@@ -29,7 +29,7 @@ const findAll = async (ctx, next) => {
     }
 
     try {
-        const total = await ArticlesModel.find(filter);
+        const total = await ArticlesModel.countDocuments();
         await ArticlesModel.find(filter)
             .limit(pagesize)
             .skip(page * pagesize)
@@ -46,7 +46,7 @@ const findAll = async (ctx, next) => {
                     });
                 }
                 ctx.body = {
-                    total: total.length,
+                    total,
                     pagesize,
                     page,
                     res

@@ -10,9 +10,9 @@ window.addEventListener('load', function() {
 
         headerEle && document.addEventListener('scroll', toggleNavStyle);
     })();
-    
+
     (function() {
-        var 
+        var
             btn = document.querySelector('button.page__menu-btn'),
             menu = document.querySelector('nav.page__nav');
 
@@ -27,9 +27,9 @@ window.addEventListener('load', function() {
         }
     })();
 
-    (function() {
+    /* (function() {
         var header = document.getElementById('page-header');
-        
+
         if (!header) return;
 
         var
@@ -59,5 +59,5 @@ window.addEventListener('load', function() {
                 });
             })
             .toggle();
-    })();
+    })(); */
 });

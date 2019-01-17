@@ -4,12 +4,14 @@ const { existsSync } = require('fs');
 
 const envFile = existsSync(path.resolve(__dirname, '../.env.js'));
 const env = Object.assign({
-    cdn: '/',
+    cdn: 'https://static.kaiziye.cn/',
+    static: 'https://static.kaiziye.cn/',
     tstamp: +new Date(),
 }, envFile ? require('../.env.js') : {});
 
 module.exports = {
     cdn: env.cdn,
+    static: env.static,
     tstamp: env.tstamp,
     title: 'keydone',
     subtitle: 'For everything beautiful!',

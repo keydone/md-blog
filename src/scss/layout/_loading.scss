@@ -10,8 +10,8 @@
 }
 
 #page{
-    transition: opacity .2s;
-    opacity: 0;
+	opacity: 0;
+    transition: opacity .1s;
     &.showPage{
         opacity: 1;
     }

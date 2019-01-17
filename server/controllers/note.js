@@ -16,6 +16,7 @@ md.use(emoji)
 
 const findAll = async (ctx, next) => {
     try {
+        const total = await NotesModel.countDocuments();
         await NotesModel.find()
             .then((res) => {
                 res.forEach((article) => {
@@ -26,7 +27,10 @@ const findAll = async (ctx, next) => {
                         article.content = '';
                     }
                 });
-                ctx.body = res;
+                ctx.body = {
+                    res,
+                    total,
+                };
                 next(ctx, next);
             });
     } catch (err) {

@@ -1,19 +1,20 @@
 const gulp = require('gulp');
 const del = require('del');
-const scss = require('gulp-scss');
+const sass = require('gulp-sass');
 const concat = require('gulp-concat');
 const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
+sass.compiler = require('node-sass');
 
 gulp.task('clean', () => del(['public/static/css', 'public/static/js']));
 
 gulp.task('css', () => gulp.src('./src/scss/base.css')
-    .pipe(scss())
+    .pipe(sass())
     .pipe(cssnano())
     .pipe(gulp.dest('./public/static/css')));
 
 gulp.task('postcss', () => gulp.src('./src/scss/post.scss')
-    .pipe(scss())
+    .pipe(sass())
     .pipe(cssnano())
     .pipe(gulp.dest('./public/static/css')));
 

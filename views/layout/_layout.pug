@@ -8,7 +8,8 @@ html(lang="en")
     head
         include head.pug
 
-        link(rel="stylesheet", href=`${setting.cdn}static/css/base.css?t=${setting.tstamp}`)
+        link(rel="stylesheet", href=`https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css`)
+        link(rel="stylesheet", href=`${setting.static}static/css/base.css?t=${setting.tstamp}`)
         block pageCss
 
     body
@@ -25,7 +26,7 @@ html(lang="en")
                 each n in [0, 1, 2, 3]
                     span
 
-        #page.page
+        #page.page.js-hidden
 
             include header.pug
 
@@ -69,8 +70,8 @@ html(lang="en")
                 i.icon.icon-facebook
                 i.icon.icon-in
 
-        script(type="text/javascript", src=`${setting.cdn}static/js/jQuery.v3.3.1.min.js`)
-        script(type="text/javascript", src=`${setting.cdn}static/js/common.js?t=${setting.tstamp}`)
-        script(type="text/javascript", src=`${setting.cdn}static/js/lib.js?t=${setting.tstamp}`)
+        script(type="text/javascript", src=`${setting.static}static/js/jQuery.v3.3.1.min.js`)
+        script(type="text/javascript", src=`${setting.static}static/js/common.js?t=${setting.tstamp}`)
+        script(type="text/javascript", src=`${setting.static}static/js/lib.js?t=${setting.tstamp}`)
 
         block pagejs

@@ -1,7 +1,7 @@
 extends ../layout/_layout
 
 append pageCss
-    link(rel="stylesheet", href=`${setting.cdn}static/css/post.css?t=${setting.tstamp}`)
+    link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
 
 append content
     main.page__container.page__main
@@ -71,9 +71,9 @@ append content
                         #preview
 
 append pagejs
-    script(type="text/javascript", src=`${setting.cdn}static/js/filepond.min.js?t=${setting.tstamp}`)
-    script(src=`${setting.cdn}static/js/markdown-it.min.js?t=${setting.tstamp}`)
-    script(src=`${setting.cdn}static/js/md-plugins.js?t=${setting.tstamp}`)
+    script(type="text/javascript", src=`${setting.static}static/js/filepond.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/markdown-it.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/md-plugins.js?t=${setting.tstamp}`)
     script.
         window.addEventListener('DOMContentLoaded', function() {
             var postid = $('#postid');

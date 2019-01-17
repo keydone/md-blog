@@ -153,20 +153,28 @@ body {
     }
 }
 
+.showPage{
+    .page__info .info__title {
+        animation: animations .7s linear forwards;
+    }
+}
+
 .page__info {
     position: absolute;
     left: 0;
-    top: calc(50% + #{($nav-height + $pad * 2) / 2});
-    transform: translateY(-50%);
-    display: block;
-    width: 100%;
+    top: 50%;
     text-align: center;
+    width: 100%;
 
     .info__title {
         margin: 0;
+        opacity: 0;
         font-size: 30px;
         font-weight: 700;
         line-height: 1.1;
+        transform-origin: center bottom;
+        transform: translateY(-80px) scale(0);
+        transition: transform .3s, opacity .1s;
     }
 
     .info__hr {
@@ -186,10 +194,10 @@ body {
 }
 
 .page__menu-btn {
-    display: none;
     border: 0;
-    background: none;
+    display: none;
     outline: none;
+    background: none;
     appearance: none;
     cursor: pointer;
     padding: 10px;

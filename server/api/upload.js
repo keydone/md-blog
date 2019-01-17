@@ -1,7 +1,7 @@
 const Busboy = require('busboy');
 const path = require('path');
 const fs = require('fs');
-const niuUpload = require('./niuUpload');
+const aliUpload = require('./aliUpload');
 
 const today = () => {
     const now = new Date();
@@ -47,7 +47,7 @@ const upload = ctx => new Promise((resolve, reject) => {
 
         // 存储文件流
         try {
-            const { error, name } = await niuUpload(saveTo, fullname);
+            const { error, name } = await aliUpload(saveTo, fullname);
             resolve({ error, name });
         } catch (error) {
             reject(error);

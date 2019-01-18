@@ -2,6 +2,7 @@ doctype html
 html(lang="en")
     //- loading 页面
     - var pageheader = locals.pageheader
+    - var hideheader = locals.hideheader
     - var setting = locals.setting
     - var data = locals.data
 
@@ -28,12 +29,15 @@ html(lang="en")
 
         #page.page.js-hidden
 
-            include header.pug
+            if !hideheader
+                include header.pug
 
             //- content
             block content
 
-            include footer
+            if !hideheader
+                include footer
+
             //- 返回顶部
             #back-top.back-top.back-top--hidden.js-hidden
                 i.icon.icon-top

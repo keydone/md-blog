@@ -175,36 +175,83 @@
     }
 }
 
-.form-label{
+#preview{
+    max-height: 1010px;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: $mq-mobile) {
+    .page__main{padding: 20px 0;}
+    .post-preview{display: none;}
+}
+
+#article-title{
+    border:0;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    padding: 10px;
     width: 50%;
-    display: inline-block;
-    vertical-align: top;
-    padding:0 30px;
-    .label-content{
-        border:1px solid #d5d5d5;
-        border-radius: 4px;
+}
+
+#post-header{
+    position: relative;
+    .post-btns{
+        line-height: 32px;
+        position: absolute;
+        top:0; right:14px;
+        height: 60px;
+        overflow: hidden;
+        &:hover{overflow: visible;}
     }
-    .filepond--panel{border-radius: 4px;}
-    .label-desc{
-        font-size: 12px;
-        margin: 5px 0;
-        border-left: 4px solid #19abd6;
-        padding-left: 5px;
-        background: #f7fafd;
-    }
-    .label-input{
-        width: 100%;
-        padding: 5px 10px;
+    .post-btn{
+        height: 32px;
+        padding: 0 20px;
         border-radius: 4px;
-        line-height: 20px;
-        height: 30px;
-        border: 0;
+        background: #19abd6;
+        color: #fff;
+        display: block;
+        margin-top: 14px;
+    }
+    .drop-panel{
+        position: absolute;
+        top:0; right:100px;
     }
 }
 
-.post-content{
+.editor__container{
+    position: absolute;
+    top:60px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
     .form-label{
-        padding: 5px;
+        position: absolute;
+        bottom:0;
+        width: 50%;
+        overflow-y: auto;
+    }
+    .post-content{top:40px;}
+    .post-preview{
+        top:0; left:50%;
+        padding: 5px 10px;
+    }
+    .label-btns{
+        position: absolute;
+        top: 0; left: 0;
+        width: 50%;
+        z-index: 2;
+        padding: 10px;
+        line-height: 20px;
+        background: #f5f5f5;
+        i{margin-left: 10px;
+            background: #aaa;
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+        }
     }
     .label-textarea{
         resize: vertical;
@@ -214,28 +261,4 @@
         line-height: 20px;
         border: 0;
     }
-}
-
-.post-btns{
-    text-align: right;
-    padding-top: 10px;
-    a{display: inline-block;
-        vertical-align: top;
-        padding-left: 5px;
-        margin-left: 5px;
-    }
-}
-
-#preview{
-    max-height: 1010px;
-    overflow-y: auto;
-}
-
-@media screen and (max-width: $mq-mobile) {
-    .page__main{padding: 20px 15px;}
-    .form-label {
-        width: 100%;
-        padding: 0;
-    }
-    .preview-view{display: none;}
 }

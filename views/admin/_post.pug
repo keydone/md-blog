@@ -7,17 +7,71 @@ append content
 
     include ../layout/header-small
 
-    main.page__main.editor__container
-            .label-btns
-                i.icon-img
-                i.icon-img
-                i.icon-img
-            .form-label.post-content
-                textarea#textarea.label-textarea(type="text", rows="50", data-post="content")
+    main.page__container.page__main
+        .page__content
+            .content__container
+                #form-list
+                    .form-label
+                        .label-desc 文章 id
+                        .label-content
+                            input#postid.label-input(type="text", data-post="path")
 
-            .form-label.post-preview
-                //- .label-desc 预览
-                #preview
+                    .form-label
+                        .label-desc 标题
+                        .label-content
+                            input.label-input(type="text", data-post="title")
+
+                    .form-label
+                        .label-desc 副标题
+                        .label-content
+                            input.label-input(type="text", data-post="subtitle")
+
+                    .form-label
+                        .label-desc 作者
+                        .label-content
+                            input.label-input(type="text", value="keydone", data-post="author")
+
+                    .form-label
+                        .label-desc 文章分类
+                        .label-content
+                            input.label-input(type="text", data-post="category")
+
+                    .form-label
+                        .label-desc 文章标签
+                        .label-content
+                            input.label-input(type="text", placeholder="多个标签之间用 , 分开" data-post="tags")
+
+                    .form-label
+                        .label-desc 发布时间
+                        .label-content
+                            input#postdate.label-input(type="text", data-post="date")
+
+                        .label-desc 封面图片地址
+                        .label-content.cover-update
+                            input#postcover.label-input(type="text", data-post="cover")
+                    //- 上传封面
+                    .form-label
+                        .label-desc 上传封面图
+                        .label-content
+                             input#file-cover.filepond(type="file")
+
+                a#closeForm.closeForm.open(href="javascript:;")
+                    i.icon.icon-top
+
+                .post-content
+                    .form-label
+                        .label-desc 内容
+                        .label-content
+                            textarea#textarea.label-textarea(type="text", rows="50", data-post="content")
+
+                        .post-btns
+                            a#draft(href="javascript:;") 存为草稿
+                            a#update(href="javascript:;") 更新
+                            a#post(href="javascript:;") 发布
+
+                    .form-label.preview-view
+                        .label-desc 预览
+                        #preview
 
 append pagejs
     script(type="text/javascript", src=`${setting.static}static/js/filepond.min.js?t=${setting.tstamp}`)

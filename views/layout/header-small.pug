@@ -1,0 +1,48 @@
+header(id='post-header', class='page__header--small')
+    input(id="article-title", type="text", placeholder="标题")
+    .drop-panel.postset
+        .drop-icon 简约模式
+        .drop-icon 丰富模式
+        #form-list.drop-content
+            .form-label
+                .label-desc 文章 id
+                .label-content
+                    input#postid.label-input(type="text", data-post="path")
+
+            .form-label
+                .label-desc 标题
+                .label-content
+                    input.label-input(type="text", data-post="title")
+
+            .form-label
+                .label-desc 副标题
+                .label-content
+                    input.label-input(type="text", data-post="subtitle")
+
+            .form-label
+                .label-desc 作者
+                .label-content
+                    input.label-input(type="text", value="keydone", data-post="author")
+
+            .form-label
+                .label-desc 文章分类
+                .label-content
+                    input.label-input(type="text", data-post="category")
+
+            .form-label
+                .label-desc 文章标签
+                .label-content
+                    input.label-input(type="text", placeholder="多个标签之间用 , 分开" data-post="tags")
+
+            .form-label
+                .label-desc 发布时间
+                .label-content
+                    input#postdate.label-input(type="text", data-post="date")
+
+                .label-desc 封面图片地址
+                .label-content.cover-update
+                    input#postcover.label-input(type="text", data-post="cover")
+    span.post-btns
+        span.post-btn#post 发布
+        span.post-btn#draft 草稿
+        span.post-btn#update 更新

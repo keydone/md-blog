@@ -9,7 +9,8 @@ router
     })
     .get('/post', (ctx) => {
         ctx.render('admin/post', {
-            pageheader: false,
+            hideheader: true,
+            hidefooter: true,
         });
     })
     .get('/note', (ctx) => {

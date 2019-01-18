@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const log4js = require('./server/utils/logs');
 const routes = require('./server/routes.js');
 const $config = require('./server/site_config');
+const env = require('./.env.js');
 
 const router = new Router();
 const app = new Koa();
@@ -34,7 +35,7 @@ new Pug({
     locals: {
         setting: $config,
     },
-    noCache: process.env.NODE_ENV === 'development',
+    noCache: env.NODE_ENV === 'development',
     app,
 });
 

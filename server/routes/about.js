@@ -4,7 +4,7 @@ const router = new Router();
 
 router.get('/', (ctx) => {
     ctx.render('about', {
-        page: 'page-about',
+        data: 'page-about',
     });
 });
 

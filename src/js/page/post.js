@@ -1,18 +1,18 @@
-window.addEventListener('load', function() {
-    var postContent = document.querySelector('article.page__post');
+window.addEventListener('DOMContentLoaded', function() {
 
-    new Pack(postContent)
-        .base('js-ease-out-leave-active')
-        .base('js-ease-out-leave')
-        .transfrom('js-ease-out-enter-active')
-        .end(function() {
-            var arr = ['js-ease-out-enter', 'js-ease-out-enter-active', 'js-ease-out-leave', 'js-ease-out-leave-active'];
+    var dropToggle = $('.drop-toggle');
+    dropToggle.on('click', function () {
+        var parent = $(this).closest('.drop-panel');
+        parent.toggleClass('showDrop');
+    });
+    $('.drop-panel').on('click', function (e) {
+        var ev = e || window.event;
+        ev.stopPropagation();
+    })
+});
 
-            arr.forEach(function(item) {
-                postContent.classList.remove(item);
-            });
-        })
-        .toggle();
+window.addEventListener('click', function() {
+    $('.drop-panel').removeClass('showDrop');
 });
 
 if (window.Element) {

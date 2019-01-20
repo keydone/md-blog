@@ -5,7 +5,7 @@ const router = new Router();
 router
     .get('/', (ctx) => {
         ctx.render('search', {
-            page: 'page-search',
+            data: 'page-search',
         });
     });
 

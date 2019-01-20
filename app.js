@@ -8,10 +8,12 @@ const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
 const helmet = require('koa-helmet'); // 安全防护
 const mongoose = require('mongoose');
+const moment = require('moment');
 // const shelljs = require('shelljs');
 
+const routes = require('./server/routes');
+const Utils = require('./server/utils/utils');
 const log4js = require('./server/utils/logs');
-const routes = require('./server/routes.js');
 const $config = require('./server/site_config');
 const env = require('./.env.js');
 
@@ -30,10 +32,11 @@ mongoose.connection.on('error', (error) => {
 // 编译 js, css
 // shelljs.exec('webpack webpack.config.v3.js');
 
-new Pug({
+const pug = new Pug({
     viewPath: './views',
     locals: {
         setting: $config,
+        moment,
     },
     noCache: env.NODE_ENV === 'development',
     app,
@@ -45,6 +48,9 @@ app.use(helmet())
     .use(favicon(`${__dirname}src/img/logo.png`))
     // 挂载日志模块
     .use(async (ctx, next) => {
+        // 判断是否为手机访问
+        const isMobile = Utils.isMobile(ctx);
+        pug.locals.isMobile = isMobile;
         ctx.util = {
             log: log4js
         };
@@ -64,7 +70,7 @@ app.use(helmet())
         }
     })
     .on('error', (err) => {
-        console.error('server error', err);
+        console.error('!!! server error, msg:', err.message);
     })
     .listen(2333, () => {
         console.log('server is running on port 2333');

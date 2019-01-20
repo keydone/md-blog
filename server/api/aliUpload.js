@@ -10,13 +10,13 @@ const aliOssConfig = Object.assign({
 
 const client = new AliOss(aliOssConfig);
 
-const aliUpload = (buffer, fileName) => new Promise(async (resolved, reject) => {
+const aliUpload = (buffer, fileName) => new Promise(async (resolve, reject) => {
     try {
         const response = await client.put(`static/${fileName}`, buffer);
 
         if (response.res.statusCode === 200) {
-            resolved({
-                name: response.name,
+            resolve({
+                filename: response.name,
                 url: response.url,
             });
         }

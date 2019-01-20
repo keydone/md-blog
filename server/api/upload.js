@@ -1,57 +1,61 @@
+const { join } = require('path');
 const Busboy = require('busboy');
-const path = require('path');
-const fs = require('fs');
+const { randomBytes } = require('crypto');
+const { createWriteStream } = require('fs');
 const aliUpload = require('./aliUpload');
-
-const today = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    let month = now.getMonth() + 1;
-    if (month < 10) {
-        month = String(month).padStart(2, '0');
-    }
-    let date = now.getDate();
-    if (date < 10) {
-        date = String(date).padStart(2, '0');
-    }
-
-    return `${year}${month}${date}`;
-};
+const Utils = require('../utils/utils');
+const stuff = require('../controllers/stuff');
+const env = require('../../.env.js');
 
 const upload = ctx => new Promise((resolve, reject) => {
     const { header } = ctx.request;
-    const { store, postid } = ctx.request.query;
-    const $filename = postid || `d-${today()}`;
-    const pathResolve = path.resolve(__dirname, `../../_temp/${store}`);
+    const { store, id } = ctx.request.query;
+    const hash = randomBytes(5).toString('hex');
+    const postId = id || `${Utils.today()}`;
+    const filePath = `${store}/${postId}`;
+    const saveToLocal = join(__dirname, `../../_temp/${filePath}`);
     const busboy = new Busboy({
         headers: header
     });
-    if (!fs.existsSync(pathResolve)) {
-        fs.mkdirSync(pathResolve);
-    }
+
+    Utils.mkdirSync(saveToLocal);
+
     busboy.on('file', async (fieldname, file, fileName, encoding, mimetype) => {
         const suffixs = fileName.split('.');
         const suffix = suffixs[suffixs.length - 1];
-        const fullname = `${$filename}.${suffix}`;
-        const saveTo = path.join(pathResolve, fullname);
+        const fileLocalPath = `${saveToLocal}/${hash}.${suffix}`;
 
-        if (!fs.existsSync(saveTo)) {
-            await new Promise((writeEnd) => {
-                const writeStream = file.pipe(fs.createWriteStream(saveTo));
-                writeStream.on('finish', () => {
-                    console.log('文件写入完毕！');
-                    writeEnd();
-                });
+        await new Promise((writeEnd) => {
+            const writeStream = file.pipe(createWriteStream(fileLocalPath));
+            writeStream.on('finish', async () => {
+                console.log('文件写入完毕！');
+                writeEnd();
+                // 存储文件流
+                try {
+                    const response = await aliUpload(fileLocalPath, `${filePath}/${hash}.${suffix}`);
+                    const filepath = `${env.aliStatic}/${response.filename}`;
+                    delete response.url;
+
+                    // 同步资源表
+                    const stuffId = randomBytes(10).toString('hex');
+                    const { success, msg } = await stuff.save(postId, filepath, stuffId, store);
+                    if (success) {
+                        Object.assign(response, {
+                            articleId: postId,
+                            filepath,
+                            stuffId,
+                        });
+                    } else {
+                        response.error = msg;
+                    }
+
+                    resolve(response);
+                } catch (error) {
+                    reject(error);
+                }
             });
-        }
+        });
 
-        // 存储文件流
-        try {
-            const { error, name } = await aliUpload(saveTo, fullname);
-            resolve({ error, name });
-        } catch (error) {
-            reject(error);
-        }
     });
 
     ctx.req.pipe(busboy);

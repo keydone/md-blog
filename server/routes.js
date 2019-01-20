@@ -7,7 +7,7 @@ module.exports = (router) => {
     router.use('/category', require('./routes/category.js'));
     router.use('/precious', require('./routes/precious.js'));
     router.use('/search', require('./routes/search.js'));
-    router.use('/detail', require('./routes/detail.js'));
+    router.use('/articles', require('./routes/article.js'));
     router.use('/tags', require('./routes/tags.js'));
 
     // 前台 post / get 接口

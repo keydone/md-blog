@@ -1,0 +1,38 @@
+#sidenav{
+    position: absolute;
+    top:0; left:0;
+    bottom: 0;
+    width: 200px;
+    background: #242f35;
+    .dl{color: #fff;
+        line-height: 32px;
+        &.cur{
+            .dt{background: $main-color;
+                &:before{display: block;}
+            }
+        }
+    }
+    .dt{cursor: pointer;
+        position: relative;
+        padding:0 10px;
+        display: block;
+        height: 30px;
+        &:before{
+            content:'';
+            position: absolute;
+            left:0; top:0;
+            width: 2px;
+            height: 100%;
+            background: #fff;
+            display: none;
+        }
+    }
+    .dd{
+        background: #326d96;
+    }
+    li{height: 30px;
+        cursor: pointer;
+        position: relative;
+        padding:0 10px 0 20px;
+    }
+}

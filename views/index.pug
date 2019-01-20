@@ -2,16 +2,17 @@ extends layout/_layout
 
 append content
 
-    - var posts = data.posts
+    - const { list, total, pagesize, page } = data
     main.page__container.page__main
         .page__content
             .page__posts.clearfix
 
-                each post in posts.res
+                each post in list
                     .page__post
                         include _partial/mini
 
             //- 分页 paginator
             include _partial/paginator
+            +paginator('/')
 
         include _partial/sidebar

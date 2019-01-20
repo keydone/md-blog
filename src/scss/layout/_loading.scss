@@ -6,7 +6,10 @@
     left: 0;
     z-index: 102;
     overflow: hidden;
-    background: #fff;
+	background: #eee;
+	opacity: 1;
+	transition: opacity .2s;
+	&.hidden{opacity: 0;}
 }
 
 #page{

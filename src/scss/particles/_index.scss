@@ -9,16 +9,19 @@ body {
         .page__posts {
             margin-top: -2 * $pad;
             margin-right: -2 * $pad;
-        }
 
-        .page__post {
-            width: 300px;
+            .page__post {
+                width: 300px;
+            }
         }
     }
 
     @media screen and (min-width: $mq-desktop--wide) {
-        .page__post {
-            width: 290px;
+        .page__posts {
+
+            .page__post {
+                width: 290px;
+            }
         }
     }
 }
@@ -33,4 +36,8 @@ body {
     width: 100%;
     margin-top: 2 * $pad;
     margin-right: 2 * $pad;
+}
+
+.post__cover{
+    img{max-width: 100%;}
 }

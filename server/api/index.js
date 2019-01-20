@@ -3,30 +3,17 @@ const Router = require('koa-router');
 const router = new Router();
 const imgUpload = require('./upload');
 
-router.post('/img-upload', async (ctx, next) => {
-    const { name, error } = await imgUpload(ctx, next);
-    const path = `//img.kaiziye.cn/${name}`;
-    console.log('上传完毕:', name, error);
+router.post('/stuff-upload', async (ctx, next) => {
+    const { error, ...rest } = await imgUpload(ctx, next);
+    console.log('上传完毕:', rest.path);
 
-    if (error) {
-        ctx.body = {
-            status: 1,
-            msg: error,
-            data: {
-                name,
-                path,
-            },
-        };
-    } else {
-        ctx.body = {
-            status: 0,
-            msg: 'ok',
-            data: {
-                name,
-                path,
-            },
-        };
-    }
+    ctx.body = {
+        status: error ? 1 : 0,
+        msg: error || 'ok',
+        data: {
+            ...rest,
+        },
+    };
 });
 
 module.exports = router.routes();

@@ -5,7 +5,7 @@ const { existsSync } = require('fs');
 const envFile = existsSync(path.resolve(__dirname, '../.env.js'));
 const env = Object.assign({
     cdn: 'https://static.kaiziye.cn/',
-    static: 'https://static.kaiziye.cn/',
+    static: 'https://static.kaiziye.cn/static',
     tstamp: +new Date(),
 }, envFile ? require('../.env.js') : {});
 
@@ -93,5 +93,5 @@ module.exports = {
         last_post: '最新文章',
         tag: '文章标签',
     },
-    announce: '感谢您的阅读，本文由 <a href="http://kaiziye.cn">keydone</a> 原创提供。<br>如若转载，请注明出处：keydone'
+    announce: '感谢您的阅读，本文由 <a href="https://www.kaiziye.cn">keydone</a> 原创提供。<br>如若转载，请注明出处：keydone'
 };

@@ -85,7 +85,7 @@
 }
 
 .filepond--drop-label label {
-  cursor: default;
+  cursor: pointer;
   font-size: 0.875em;
   font-weight: normal;
   text-align: center;
@@ -143,6 +143,7 @@
 }
 
 .filepond--file-info {
+  text-align: left;
   position: static;
   display: -ms-flexbox;
   display: flex;
@@ -649,7 +650,7 @@
 
 .filepond--panel-root {
   border-radius: 4px;
-  background-color: #f1f0ef;
+  background-color: #f7f7f7;
 }
 
 .filepond--panel {

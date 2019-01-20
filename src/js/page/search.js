@@ -22,7 +22,7 @@
             ].join('');
             this.articleTpl = [
                 '<div class="page__post">',
-                    '<article itemscope itemtype="http://schema.org/Article" class="page__mini-article">',
+                    '<article class="page__mini-article">',
                         '<div class="mini-article__cover" style="background: url({{ cover }}) 50% 50% no-repeat;">',
                             '<div itemprop="datePublished" content="{{ date }}" class="mini-article__date">',
                                 '<span class="date__day">{{ day }}</span>',
@@ -45,7 +45,7 @@
                                 '{{ desc }}',
                             '</p>',
                             '<div class="min-article__tags">',
-                                '<i class="icon icon-tab"></i>',
+                                '<i class="icon icon-tag"></i>',
                                 '<ul class="tags__list clearfix">',
                                     '{{ tagsHtml }}',
                                 '</ul>',
@@ -152,7 +152,7 @@
         }
     }
 
-    window.addEventListener('load', function() {
+    window.addEventListener('DOMContentLoaded', function() {
         new SearchPage();
     });
 })();

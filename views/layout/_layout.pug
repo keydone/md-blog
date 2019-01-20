@@ -1,6 +1,7 @@
 doctype html
 html(lang="en")
     //- loading 页面
+    - var isMobile = locals.isMobile
     - var pageheader = locals.pageheader
     - var hideheader = locals.hideheader
     - var setting = locals.setting
@@ -9,7 +10,6 @@ html(lang="en")
     head
         include head.pug
 
-        link(rel="stylesheet", href=`https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css`)
         link(rel="stylesheet", href=`${setting.static}static/css/base.css?t=${setting.tstamp}`)
         block pageCss
 
@@ -42,40 +42,10 @@ html(lang="en")
             #back-top.back-top.back-top--hidden.js-hidden
                 i.icon.icon-top
 
-            .js-hidden(style="font-size: 26px; position:fixed; bottom:0;")
-                i.icon.icon-enter
-                i.icon.icon-menu
-                i.icon.icon-eye
-                i.icon.icon-tab
-                i.icon.icon-twitter
-                i.icon.icon-search
-                i.icon.icon-weibo
-                i.icon.icon-comment
-                i.icon.icon-time
-                i.icon.icon-douban
-                i.icon.icon-zhihu
-                i.icon.icon-write
-                i.icon.icon-loader
-                i.icon.icon-address
-                i.icon.icon-share
-                i.icon.icon-like
-                i.icon.icon-github
-                i.icon.icon-rss
-                i.icon.icon-email
-                i.icon.icon-email2
-                i.icon.icon-next
-                i.icon.icon-prev
-                i.icon.icon-prev
-                i.icon.icon-thanks
-                i.icon.icon-telegram
-                i.icon.icon-top
-                i.icon.icon-category
-                i.icon.icon-quotes
-                i.icon.icon-facebook
-                i.icon.icon-in
-
-        script(type="text/javascript", src=`${setting.static}static/js/jQuery.v3.3.1.min.js`)
-        script(type="text/javascript", src=`${setting.static}static/js/common.js?t=${setting.tstamp}`)
+        script.
+            var isMobile = #{isMobile};
+        script(type="text/javascript", src=`https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js`)
         script(type="text/javascript", src=`${setting.static}static/js/lib.js?t=${setting.tstamp}`)
+        script(type="text/javascript", src=`${setting.static}static/js/common.js?t=${setting.tstamp}`)
 
         block pagejs

@@ -1,0 +1,25 @@
+script#library(type="text/html")
+    ul#img-library.img-library.clearfix
+        li.imgwrap
+            p#filePondCover 上传图片
+
+        if article && article.stuffs
+            -const { articleId } = article.stuffs
+            if articleId
+                each stuff in article.stuffs.stuff
+                    li.imgwrap(data-src=stuff.url, data-articleid=articleId, data-stuffid=stuff.stuffId)
+                        i.icon.icon-cover(class=`${stuff.iscover ? '' : 'js-hidden'}`)
+                        img.img(src=stuff.url, alt="")
+                        .actions
+                            span.action.ic-cover
+                                i.icon.icon-setcover
+                                | 设为封面
+                            span.action.ic-view
+                                i.icon.icon-img
+                                | 查看大图
+                            span.action.ic-del
+                                i.icon.icon-delete
+                                | 删除资源
+                            span.action.ic-copy
+                                i.icon.icon-copy
+                                | 复制路径

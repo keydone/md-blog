@@ -10,7 +10,7 @@
 
         var next = now + (aims - now) * 60 / (time - spendTime);
 
-        return aims - now > 0 
+        return aims - now > 0
             ? next >= aims ? aims : next
             : next <= aims ? aims : next;
     }
@@ -24,7 +24,7 @@
             end: []
         };
         this.frames = 0;
-        
+
         this._init();
     }
 
@@ -47,7 +47,7 @@
         },
         // 获取当前周期已消耗的时间
         _getSpendTime: function() {
-            var 
+            var
                 otherPointSpendTime,
                 time = this.time,
                 nowIndex = this.nowIndex;
@@ -64,9 +64,9 @@
         },
         // 启动逐帧渲染器
         _request: function(fun) {
-            var requestAnimationFrame = window.requestAnimationFrame 
-                || window.mozRequestAnimationFrame 
-                || window.webkitRequestAnimationFrame 
+            var requestAnimationFrame = window.requestAnimationFrame
+                || window.mozRequestAnimationFrame
+                || window.webkitRequestAnimationFrame
                 || window.msRequestAnimationFrame;
 
             this.timer = requestAnimationFrame(fun);
@@ -74,9 +74,9 @@
         },
         // 关闭逐帧渲染器
         _cancel: function() {
-            var cancelAnimationFrame = window.cancelAnimationFrame 
-                || window.mozCancelAnimationFrame 
-                || window.webkitCancelAnimationFrame 
+            var cancelAnimationFrame = window.cancelAnimationFrame
+                || window.mozCancelAnimationFrame
+                || window.webkitCancelAnimationFrame
                 || window.msCancelAnimationFrame;
 
             cancelAnimationFrame(this.timer);
@@ -154,7 +154,7 @@
         },
         // 变换规律
         transition: function(option) {
-            var 
+            var
                 type,
                 time;
 
@@ -162,7 +162,7 @@
                 time = option;
             } else {
                 type = option.type || 'linear';
-                time = option.time || 1000;
+                time = option.time || 200;
             }
 
             var point = this.record[this.index] || {};
@@ -194,7 +194,7 @@
         },
         // 启动动画
         start: function() {
-            var 
+            var
                 record = this.record,
                 self = this;
 
@@ -202,7 +202,7 @@
                 .next()
                 ._emit('start')
                 ._request(function render() {
-                    var 
+                    var
                         point = record[self.nowIndex],
                         result = {};
 
@@ -218,7 +218,7 @@
 
                     if (self.time === point['_time']) {
                         var timeout = self.timeoutMap[self.nowIndex];
-                        
+
                         self.time = 0;
                         self.nowIndex++;
                         if (timeout) {
@@ -228,7 +228,7 @@
                             }, timeout);
                             return;
                         }
-                        
+
                         point = record[self.nowIndex];
                     }
 

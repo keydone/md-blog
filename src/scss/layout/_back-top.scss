@@ -23,9 +23,10 @@ $back-top-size: 50px !default;
         background-position: right center;
     }
 
-    & > i {
+    i {
         display: inline-block;
         line-height: $back-top-size;
+        font-size: 34px;
     }
 
     &--hidden {

@@ -7,7 +7,7 @@
     // chrome, firefox, opera, Safari, Android, iOS 4.2+
 } */
 
-html, body, article, hgroup, figure, main, section, header, footer, aside, nav, video, audio, canvas, details, h1, h2, h3, h4, h5, h6, div, p, dl, dd, ul, li, ol, label, form, input, img, textarea, th, tr, td, button, select, a, span, em, i, sub, sup, pre, code {
+html, body, article, hgroup, figure, main, section, header, footer, aside, nav, video, audio, canvas, details, h1, h2, h3, h4, h5, h6, div, p, dl, dd, ul, li, ol, label, form, input, img, textarea, th, tr, td, button, select, a, span, em, i, sub, sup, pre, code, table {
     box-sizing:border-box;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6,
-ul, li, dl, dt, dd,
+ul, li, ol, dl, dt, dd,
 figure, p {
     padding: 0;
     margin: 0;
@@ -32,8 +32,8 @@ figure, p {
 
 sub, sup {
     position: static;
-    top: auto;
     font-size: 100%;
+    top: auto;
 }
 
 input,
@@ -58,17 +58,19 @@ a {
     font-size: inherit;
     outline: none;
     color: inherit;
-    cursor: pointer; /* 勿删，解决IOS10.3点不动问题 */
+    cursor: pointer; /* 解决IOS10.3点不动问题 */
 }
 
 table {
     width: 100%;
 }
 
-table,
-tr,
-th,
-td {
+img{
+    width: 100%;
+    height: auto;
+}
+
+table, tr, th, td {
     border-collapse: collapse;
     border-spacing: 0;
     margin: 0;
@@ -77,5 +79,7 @@ td {
     outline: 0;
     font-weight: normal;
     font-style: normal;
-    box-sizing: border-box;
 }
+
+::-webkit-input-placeholder{color: #999;}
+::-moz-placeholder{color: #999;}

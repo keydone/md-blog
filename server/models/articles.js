@@ -16,38 +16,27 @@ const Articles = new Schema({
         validate: requires('文章标题'),
     },
     // 副标题
-    subtitle: {
-        type: String,
-    },
+    subtitle: String,
     // 文章封面
-    cover: {
-        type: String,
-    },
+    cover: String,
     // 文章链接
     path: {
         type: String,
         validate: requires('文章 id'),
     },
     // 作者
-    author: {
-        type: String,
-        validate: requires('作者'),
-    },
-    // 分类
-    category: {
+    author: String,
+    // 分类id
+    categoryId: String,
+    // 分类名称
+    categoryName: {
         type: String,
         default: '未分类',
     },
     // 标签
-    tags: {
-        type: Array,
-    },
-    date: {
-        type: String,
-    },
-    content: {
-        type: String,
-    },
+    tags: Array,
+    date: String,
+    content: String,
     // 是否为草稿
     isDraft: {
         type: Number,

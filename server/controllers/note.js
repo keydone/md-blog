@@ -3,7 +3,8 @@ const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
 const mdDivs = require('markdown-it-div');
 const md = require('markdown-it')({ html: true });
-const NotesModel = require('../models/note');
+const NotesModel = require('../models/notes');
+const Utils = require('../utils/utils');
 
 md.use(emoji)
     .use(mdCheckbox, {
@@ -34,14 +35,14 @@ const findAll = async (ctx, next) => {
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.body = err;
+        ctx.body = Utils.unexpected(err);
         next(ctx, next);
         console.log('err ---', err);
     }
 };
 
 const findOne = async (ctx, next) => {
-    const id = ctx.request.url.split('/detail/');
+    const { id } = ctx.request.query;
     try {
         await NotesModel.findOne({ path: id[1] })
             .then((article) => {
@@ -55,7 +56,7 @@ const findOne = async (ctx, next) => {
                 next(ctx, next);
             });
     } catch (err) {
-        ctx.body = err;
+        ctx.body = Utils.unexpected(err);
         next(ctx, next);
         console.log('err ---', err);
     }
@@ -64,27 +65,21 @@ const findOne = async (ctx, next) => {
 const save = async (ctx, next) => {
     const article = new NotesModel(ctx.request.body);
     try {
-        await article.save();
+        await article.create();
         return { success: true };
     } catch (err) {
-        const msgArr = [];
-        for (const errName in err.errors) {
-            msgArr.push(err.errors[errName].message);
-        }
-        return { success: false, msg: msgArr[0] };
+        return { success: false, msg: Utils.unexpected(err) };
     }
 };
 
 const update = async (ctx, next) => {
     const article = new NotesModel(ctx.request.body);
     try {
-        await article.update()
-            .then((res) => {
-                ctx.body = res;
-                next(ctx, next);
-            });
+        const res = await article.findOneAndUpdate();
+        ctx.body = res;
+        next(ctx, next);
     } catch (err) {
-        ctx.body = err;
+        ctx.body = Utils.unexpected(err);
     }
 };
 

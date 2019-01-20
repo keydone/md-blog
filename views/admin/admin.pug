@@ -1,0 +1,123 @@
+extends ../layout/_layout
+
+append pageCss
+    link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
+
+append content
+    - const { list, total, pagesize, page } = data
+
+    .col-layout
+        .col-4
+            include sidenav
+
+        .col-20
+            .col-list
+                a.new-article(href="/admin/write") <i class="icon"></i>新建文章
+                #articles-list.articles-list
+                    each article in list
+                        .dl
+                            .dt
+                                .post-title(data-title=article.title, data-content=article.content)
+                                    i.icon.icon-title
+                                    | #{article.title}
+                                if article.subtitle
+                                    p.subtitle
+                                        i.icon.icon-sub
+                                        | #{article.subtitle}
+                                p.author 作者: #{article.author} | 分类: #{article.categoryName} | 标签: #{article.tags.length ? article.tags : '暂无标签'}
+                            .dd.actions
+                                i.update.icon.icon-publish(data-id=article._id, data-isdraft=0, class=`${article.isDraft? '': 'hide'}`) 立即发布
+                                i.update.icon.icon-draft(data-id=article._id, data-isdraft=1, class=`${article.isDraft? 'hide': ''}`) 转为草稿
+                                i.icon.icon-delete(data-id=article._id) 删除
+
+                //- 分页 paginator
+                include ../_partial/paginator
+                +paginator('/admin')
+
+            .col-content.post__content
+                h1#post__title.post__title
+                #preview
+                    .temp-preview
+                        i.icon.icon-preview
+                        p 点击文章标题进行预览
+
+append pagejs
+    script.
+        var preview = $('#preview');
+        var article = $('.post-title');
+        var postTitle = $('#post__title');
+
+        // 更新预览
+        article.on('click', function() {
+            var $this = $(this);
+            var dl = $this.closest('.dl');
+            var title = $this.data('title');
+            var content = $this.data('content');
+            dl.addClass('on').siblings().removeClass('on');
+
+            postTitle.html(title);
+            preview.html(content);
+            var codes = preview[0].querySelectorAll('pre');
+            var i = 0;
+            for (var length = codes.length; i < length; i++) {
+                addClass(codes[i], 'prettyprint linenums');
+            }
+            prettyPrint();
+        });
+
+        var update = $('.update');
+        update.on('click', function() {
+            var $this = $(this);
+            var sibling = $this.siblings('.update').eq(0);
+            var id = $this.data('id');
+            var data = {
+                _id: id,
+                postType: 1,
+                article: {
+                    isDraft: $this.data('isdraft'),
+                }
+            };
+
+            if(!$this.hasClass('loading')) {
+                $this.addClass('loading');
+
+                apiPublish(data, function(res) {
+                    setTimeout(function() {
+                        $this.removeClass('loading');
+                    }, 500);
+                    if(res.status === 0) {
+                        $.growl.notice({ title: '更新成功!' });
+                        $this.toggleClass('hide');
+                        sibling.toggleClass('hide');
+                    } else {
+                        $.growl.error({ message: res.msg });
+                    }
+                });
+            }
+        });
+
+        var deleteArticle = $('.icon-delete');
+        deleteArticle.on('click', function() {
+            var $this = $(this);
+            var id = $this.data('id');
+            var dl = $this.closest('.dl');
+            var data = {
+                _id: id,
+            };
+
+            if(!$this.hasClass('loading')) {
+                $this.addClass('loading');
+
+                apiDelete(data, function(res) {
+                    setTimeout(function() {
+                        $this.removeClass('loading');
+                    }, 500);
+                    if(res.status === 0) {
+                        $.growl.notice({ title: ' 文章已删除!' });
+                        dl.remove();
+                    } else {
+                        $.growl.error({ message: res.msg });
+                    }
+                });
+            }
+        });

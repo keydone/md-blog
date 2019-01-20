@@ -56,8 +56,9 @@
         "no-new": "off",
         "no-debugger": "off",
         "class-methods-use-this": "off",
-        "no-param-reassign": "off",
         "prefer-destructuring": "off",
+        "no-underscore-dangle": "off",
+        "no-param-reassign": "off",
         "no-script-url": "off"
     },
     "globals": {

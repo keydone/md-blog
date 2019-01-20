@@ -152,15 +152,12 @@
         return new LazyLoad(images, options);
     };
 
-    if (root.jQuery) {
-        var $ = root.jQuery;
-        $.fn.lazyload = function (options) {
-            options = options || {};
-            options.attribute = options.attribute || "data-src";
-            new LazyLoad($.makeArray(this), options);
-            return this;
-        };
-    }
+    $.fn.lazyload = function (options) {
+        options = options || {};
+        options.attribute = options.attribute || "data-src";
+        new LazyLoad($.makeArray(this), options);
+        return this;
+    };
 
     return LazyLoad;
 });

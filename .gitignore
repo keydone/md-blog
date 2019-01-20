@@ -3,4 +3,5 @@
 .env.js
 *.env.js
 node_modules/
+_temp/*
 logs/*

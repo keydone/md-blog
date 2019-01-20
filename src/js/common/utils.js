@@ -112,7 +112,26 @@ function getCookie(name) {
         return unescape(arr[2]);
     }
     return null;
+}
 
+function apiPublish(data, callback) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/article-publish',
+        dataType: 'json',
+        data: data,
+        success: callback,
+    });
+}
+
+function apiDelete(data, callback) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/article-delete',
+        dataType: 'json',
+        data: data,
+        success: callback,
+    });
 }
 
 // 高亮代码块  可选语言: "bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml", "xsl".

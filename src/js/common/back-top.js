@@ -1,25 +1,25 @@
 window.addEventListener('DOMContentLoaded', function() {
     // 回到顶部
     (function() {
-        var backTopEle = document.getElementById('back-top'),
-            packBackTop = new Pack(backTopEle);
+        var backTopEle = $('#back-top');
 
         if (backTopEle) {
-            packBackTop.transfrom('back-top--hidden').base('js-hidden').lastStart();
 
             function toggleBackTop() {
                 var scrollTop = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop,
-                    isHidden = backTopEle.classList.contains('back-top--hidden') && backTopEle.classList.contains('js-hidden');
+                    isHidden = backTopEle[0].classList.contains('js-hidden');
 
-                if ((scrollTop > 350 && isHidden) || (scrollTop < 350 && !isHidden)) {
-                    packBackTop.toggle();
+                if (scrollTop > 350 && isHidden) {
+                    backTopEle[0].classList.remove('js-hidden');
+                } else if(scrollTop < 350 && !isHidden) {
+                    backTopEle[0].classList.add('js-hidden');
                 }
             }
 
             toggleBackTop();
             document.addEventListener('scroll', toggleBackTop);
 
-            backTopEle.addEventListener('click', function() {
+            backTopEle[0].addEventListener('click', function() {
                 var backTopAmt = new Amt();
 
                 backTopAmt

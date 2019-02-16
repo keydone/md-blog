@@ -12,7 +12,6 @@ const findOne = async (articleId) => {
 };
 
 const save = async (articleId, filepath, hash, type) => {
-    let error = '';
     try {
         let data = null;
         const result = await findOne(articleId);
@@ -24,6 +23,7 @@ const save = async (articleId, filepath, hash, type) => {
         } else {
             data = result;
         }
+
         data.stuff.push({
             type,
             iscover: false,
@@ -32,17 +32,21 @@ const save = async (articleId, filepath, hash, type) => {
             url: filepath,
         });
 
-        await StuffModel.findOneAndUpdate(articleId, data, {
+        await StuffModel.findOneAndUpdate(articleId, {
+            stuff: data.stuff,
+            articleId,
+        }, {
             new: true,
             upsert: true,
+            // overwrite: true,
             useFindAndModify: false,
         });
 
         return { success: true, msg: '资源保存成功', };
     } catch (err) {
-        error = Utils.unexpected(err);
+        console.log(err.errmsg);
+        return Utils.unexpected(err);
     }
-    return error;
 };
 
 const update = async (articleId, filename) => {

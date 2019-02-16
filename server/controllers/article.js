@@ -1,4 +1,3 @@
-const moment = require('moment');
 const emoji = require('markdown-it-emoji');
 const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
@@ -18,7 +17,6 @@ md.use(emoji)
     .use(mdDivs);
 
 /**
- *
  * @param {*page} page
  * @param {*pagesize} pagesize
  * @param {*drafts} drafts 1: 全部 0:非草稿 2:草稿
@@ -43,7 +41,7 @@ const findAll = async (ctx, next) => {
             .limit(pagesize)
             .skip(page * pagesize)
             .sort({ createdAt: -1 })
-            .then((list) => {
+            .then(async (list) => {
                 if (list.length) {
                     list.forEach((article) => {
                         const { content } = article;
@@ -55,19 +53,28 @@ const findAll = async (ctx, next) => {
                         }
                     });
                 }
-                ctx.body = {
+                Object.assign(ctx.body, {
                     total,
                     pagesize,
                     page,
                     list,
-                };
-                next(ctx, next);
+                });
+                if (next) next(ctx, next);
             });
     } catch (err) {
-        ctx.body = err;
-        next(ctx, next);
+        ctx.body.error = err;
+        if (next) next(ctx, next);
         console.log('err ---', err);
     }
+};
+
+// 最新几篇
+const findLastPost = async (ctx) => {
+    ctx.body.last_post = await ArticlesModel.find({
+        isDraft: 0,
+    })
+        .limit(5)
+        .sort({ createdAt: -1 });
 };
 
 const findOne = async (ctx, next) => {
@@ -79,13 +86,11 @@ const findOne = async (ctx, next) => {
             article.stuffs = attachment || {};
             const { _id } = article;
             let prevItem = await ArticlesModel.find({ _id: { $lt: _id } }).sort({ _id: -1 }).limit(1);
-            if (prevItem.length > 0) {
-                prevItem = prevItem[0];
-            }
+            prevItem = prevItem.length ? prevItem[0] : null;
+
             let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }).sort({ _id: 1 }).limit(1);
-            if (nextItem.length > 0) {
-                nextItem = nextItem[0];
-            }
+            nextItem = nextItem.length ? nextItem[0] : null;
+
             const { content } = article;
             if (content) {
                 article.origin = content || '';
@@ -116,8 +121,7 @@ const findOne = async (ctx, next) => {
 const save = async (ctx, next) => {
     const { body } = ctx.request;
     const articleData = body.article;
-    const { path, title, date } = articleData;
-    articleData.date = moment(+date).format('YYYY-MM-DD');
+    const { path, title } = articleData;
 
     if (!title) {
         ctx.body = { status: 1, msg: '文章标题 不能为空' };
@@ -182,6 +186,7 @@ const remove = async (ctx, next) => {
 
 module.exports = {
     findAll,
+    findLastPost,
     findOne,
     save,
     update,

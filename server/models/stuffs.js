@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { requires } = require('../validator');
+const { requires } = require('./validator');
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;

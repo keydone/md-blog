@@ -1,6 +1,6 @@
 @import './particles/consts';
 @import './particles/reset';
-@import './particles/font';
+@import './particles/icon';
 @import './particles/js-toggle';
 @import './particles/prettify';
 @import './particles/checkbox';
@@ -114,6 +114,55 @@
         rotateY(0deg)
         rotateZ(0deg)
         skew(0deg,1deg);
+}
+
+// 弹窗
+#growls-dialog{
+    .growl{
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        background: rgba(0,0,0,.6);
+        z-index: 110;
+        opacity: 1;
+    }
+    .growl-title{
+        padding: 10px;
+        border-bottom:1px solid #e0e0e0;
+    }
+    .growl-close{
+        width: 20px;
+        text-align: center;
+    }
+    .growl-body{
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        border-radius: 5px;
+        background: #fff;
+        min-width: 240px;
+        color:#7f8c8d;
+    }
+    .growl-message{
+        text-align: center;
+        padding:20px 10px;
+    }
+    .growl-footer{
+        line-height: 40px;
+        text-align: center;
+        border-top:1px solid #e0e0e0;
+        a{display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+    }
+    .growl-no{border-left:1px solid #e0e0e0;}
 }
 
 #page__logo{

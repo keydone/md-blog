@@ -1,5 +1,17 @@
-function getBaseType(target) {
-    return Object.prototype.toString.apply(target).slice(8, -1);
+
+function today() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    if (month < 10) {
+        month = month.toString().padStart(2, '0');
+    }
+    var date = now.getDate();
+    if (date < 10) {
+        date = date.toString().padStart(2, '0');
+    }
+
+    return year + '-' + month + '-' + date;
 }
 
 function eachObj(obj, fn) {
@@ -24,27 +36,6 @@ function extend(obj, target) {
     });
 
     return obj;
-}
-
-function getPosition(element) {
-    var x = 0;
-    var y = 0;
-    if (!element.tagName) {
-        console.warn('element must be a HTML element object');
-        return {
-            x: null,
-            y: null
-        };
-    }
-    while (element !== document.body) {
-        x += element.offsetLeft;
-        y += element.offsetTop;
-        element = element.offsetParent;
-    }
-    return {
-        x: x,
-        y: y
-    };
 }
 
 function addClass(obj, cls) {
@@ -76,19 +67,6 @@ function hasClass(obj, cls) {
         }
     }
     return false;
-}
-
-// 查找最近的父级
-function closest(el, selector) {
-    if (!el) return;
-    var matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
-    while (el) {
-        if (matchesSelector.call(el, selector)) {
-            break;
-        }
-        el = el.parentElement;
-    }
-    return el;
 }
 
 function getUrlParams(name) {

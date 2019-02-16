@@ -17,7 +17,6 @@ append content
                     input#postid.label-input(type="text", placeholder="文章 id...(不能包含空格等特殊字符)")
 
             .label-btns
-                //- a.icon.icon-upload(href="javascript:;", title="上传图片")
                 a#showlibrary.icon.icon-image(href="javascript:;", title="图库")
 
                 .fr
@@ -273,10 +272,10 @@ append pagejs
                 }
 
                 data.article.path = articlePath || postid.val();
-                data.article.date = +new Date(postdate.val()) || +new Date();
+                data.article.date = postdate.val() || today();
                 data.article.author = data.author || 'keydone';
                 data.article.isDraft = type === 1 ? 1 : 0;
-                data.postId = articleId;
+                data._id = articleId;
                 data.postType = type;
 
                 apiPublish(data, function(res) {
@@ -309,7 +308,7 @@ append pagejs
             update.on('click', function() {
                 if(!$(this).hasClass('loading')) {
                     $(this).addClass('loading');
-                    publish(1);
+                    publish(2);
                 }
             });
 
@@ -368,7 +367,7 @@ append pagejs
 
                     FilePond.setOptions({
                         server: {
-                            url: '/api/stuff-upload?store=images&postid=' + postid.val(),
+                            url: '/api/stuff-upload?store=images&id=' + postid.val(),
                             process: {
                                 onload: function(res) {
                                     var res = JSON.parse(res);
@@ -388,6 +387,8 @@ append pagejs
                                                 li.attr('data-naturalwidth', width);
                                             });
                                         }, 500);
+                                    } else {
+                                        $.growl.error({ message: res.msg });
                                     }
                                 },
                             },
@@ -419,7 +420,12 @@ append pagejs
             // 设为封面
             doc.on('click', '#img-library .ic-cover', function() {
                 var imgwrap = $(this).closest('.imgwrap');
+                var cover = imgwrap.find('.icon-cover');
                 var src = imgwrap.attr('data-src');
+                imgwrap.siblings().find('.icon-cover').addClass('js-hidden');
+                cover.removeClass('js-hidden');
+                $('#postcover').val(src);
+                publish(2);
             });
 
             // 查看大图
@@ -439,7 +445,19 @@ append pagejs
             // 删除图片
             doc.on('click', '#img-library .ic-del', function() {
                 var imgwrap = $(this).closest('.imgwrap');
-                imgwrap.remove();
+                $.growl({
+                    duration: false,
+                    clickToClose: false,
+                    layout: 'confirm',
+                    location: 'dialog',
+                    title: ' 确认删除',
+                    message: '你确定要删除吗?',
+                    yes: function() {
+                        $('#postcover').val('');
+                        publish(1);
+                        imgwrap.remove();
+                    }
+                });
             });
 
             // 复制图片地址

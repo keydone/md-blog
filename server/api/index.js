@@ -5,7 +5,7 @@ const imgUpload = require('./upload');
 
 router.post('/stuff-upload', async (ctx, next) => {
     const { error, ...rest } = await imgUpload(ctx, next);
-    console.log('上传完毕:', rest.path);
+    console.log('上传完毕:', rest.filepath);
 
     ctx.body = {
         status: error ? 1 : 0,

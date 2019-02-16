@@ -112,10 +112,9 @@ function _classCallCheck(instance, Constructor) {
         value: function initialize(location) {
           var id = 'growls-' + location;
           var box = $('#' + id);
-          if (!box) {
-            return box.append('<div id="' + id + '" />');
+          if (!box[0]) {
+            return $('body').append('<div id="' + id + '" />');
           }
-          // return $('body:not(:has(#' + id + '))').append('<div id="' + id + '" />');
         }
       }, {
         key: "render",
@@ -131,25 +130,45 @@ function _classCallCheck(instance, Constructor) {
       }, {
         key: "bind",
         value: function bind() {
+          var $this = this;
           var $growl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.$growl();
+          var sets = this.settings;
+          var layout = sets.layout;
 
-          this.settings.mounted && this.settings.mounted();
+          sets.mounted && sets.mounted();
           $growl.on("click", this.click);
-          if (this.settings.delayOnHover) {
+          if (sets.delayOnHover) {
             $growl.on("mouseenter", this.mouseEnter);
             $growl.on("mouseleave", this.mouseLeave);
           }
-          return $growl.on("contextmenu", this.close).find("." + this.settings.namespace + "-close").on("click", this.close);
+
+          if (layout === 'confirm') {
+              $growl.find("." + sets.namespace + "-yes").on("click", function(e) {
+                sets.yes && sets.yes();
+                $this.close(e);
+              });
+              $growl.find("." + sets.namespace + "-no").on("click", function(e) {
+                sets.no && sets.no();
+                $this.close(e);
+              });
+          }
+          return $growl.on("contextmenu", this.close).find("." + sets.namespace + "-close").on("click", this.close);
         }
       }, {
         key: "unbind",
         value: function unbind() {
           var $growl = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.$growl();
+          var sets = this.settings;
+          var layout = sets.layout;
 
           $growl.off("click", this.click);
           if (this.settings.delayOnHover) {
             $growl.off("mouseenter", this.mouseEnter);
             $growl.off("mouseleave", this.mouseLeave);
+          }
+          if (layout === 'confirm') {
+            $growl.find("." + sets.namespace + "-yes").off('click');
+            $growl.find("." + sets.namespace + "-no").off('click');
           }
           return $growl.off("contextmenu", this.close).find("." + this.settings.namespace + "-close").off("click", this.close);
         }
@@ -264,8 +283,10 @@ function _classCallCheck(instance, Constructor) {
       }, {
         key: "content",
           value: function content() {
-            var title = "<div class='" + this.settings.namespace + "-close'>" + this.settings.close + "</div><div class='" + this.settings.namespace + "-title'>" + this.settings.title + "</div>";
-            var message = this.settings.message ? ("<div class='" + this.settings.namespace + "-body'>" + title + "<div class='" + this.settings.namespace + "-message'>" + this.settings.message + "</div></div>") : title;
+            var sets = this.settings;
+            var layout = sets.layout;
+            var title = "<div class='" + this.settings.namespace + "-title'>" + this.settings.title + "<div class='" + this.settings.namespace + "-close'>" + this.settings.close + "</div></div>";
+            var message = this.settings.message ? ("<div class='" + this.settings.namespace + "-body'>" + title + "<div class='" + this.settings.namespace + "-message'>" + this.settings.message + "</div>" + (layout === 'confirm' ? '<div class="' + sets.namespace + '-footer"><a href="javascript:;" class="' + sets.namespace + '-yes">是</a><a href="javascript:;" class="' + sets.namespace + '-no">否</a></div>' : '') + "</div>") : title;
           return message;
         }
       }, {
@@ -293,8 +314,8 @@ function _classCallCheck(instance, Constructor) {
       fixed: false,
       mounted: null,
       destory: null,
-      confirm: null,
-      cancel: null,
+      yes: null,
+      no: null,
     };
 
     return Growl;

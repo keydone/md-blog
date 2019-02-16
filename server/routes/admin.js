@@ -1,10 +1,12 @@
 const Router = require('koa-router');
 const articles = require('../controllers/article');
+const stuff = require('../controllers/stuff');
 
 const router = new Router();
 
 router
     .get('/', async (ctx, next) => {
+        ctx.body = {};
         Object.assign(ctx.query, {
             draft: 1, // 显示全部类型
         });
@@ -18,12 +20,18 @@ router
         });
     })
     .get('/write', async (ctx) => {
+        ctx.body = {};
         const { id } = ctx.query;
         let article = '';
 
         if (id) {
             const { body } = await articles.findOne(ctx);
+            const articleId = body.article.path;
+            const stuffs = await stuff.findOne(articleId);
             article = body;
+            if (stuffs) {
+                article.stuffs = stuffs.stuff;
+            }
         }
 
         ctx.render('admin/write', {
@@ -35,6 +43,7 @@ router
         });
     })
     .get('/note', (ctx) => {
+        ctx.body = {};
         ctx.render('admin/note', {
             pageheader: false,
         });

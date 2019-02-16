@@ -15,9 +15,9 @@ append content
                 a.new-article(href="/admin/write") <i class="icon"></i>新建文章
                 #articles-list.articles-list
                     each article in list
-                        .dl
+                        .dl(data-title=article.title, data-content=article.content)
                             .dt
-                                .post-title(data-title=article.title, data-content=article.content)
+                                .post-title
                                     i.icon.icon-title
                                     | #{article.title}
                                 if article.subtitle
@@ -29,6 +29,7 @@ append content
                                 i.update.icon.icon-publish(data-id=article._id, data-isdraft=0, class=`${article.isDraft? '': 'hide'}`) 立即发布
                                 i.update.icon.icon-draft(data-id=article._id, data-isdraft=1, class=`${article.isDraft? 'hide': ''}`) 转为草稿
                                 i.icon.icon-delete(data-id=article._id) 删除
+                                a.icon.icon-edit(href=`/admin/write?id=${article.path}`) 编辑
 
                 //- 分页 paginator
                 include ../_partial/paginator
@@ -43,17 +44,16 @@ append content
 
 append pagejs
     script.
+        var article = $('.dl');
         var preview = $('#preview');
-        var article = $('.post-title');
         var postTitle = $('#post__title');
 
         // 更新预览
         article.on('click', function() {
             var $this = $(this);
-            var dl = $this.closest('.dl');
             var title = $this.data('title');
             var content = $this.data('content');
-            dl.addClass('on').siblings().removeClass('on');
+            $this.addClass('on').siblings().removeClass('on');
 
             postTitle.html(title);
             preview.html(content);
@@ -105,19 +105,22 @@ append pagejs
                 _id: id,
             };
 
-            if(!$this.hasClass('loading')) {
-                $this.addClass('loading');
-
-                apiDelete(data, function(res) {
-                    setTimeout(function() {
-                        $this.removeClass('loading');
-                    }, 500);
-                    if(res.status === 0) {
-                        $.growl.notice({ title: ' 文章已删除!' });
-                        dl.remove();
-                    } else {
-                        $.growl.error({ message: res.msg });
-                    }
-                });
-            }
+            var growl = $.growl({
+                duration: false,
+                clickToClose: false,
+                layout: 'confirm',
+                location: 'dialog',
+                title: ' 确认删除',
+                message: '你确定要删除吗?',
+                yes: function() {
+                    apiDelete(data, function(res) {
+                        if(res.status === 0) {
+                            $.growl.notice({ title: ' 文章已删除!' });
+                            dl.remove();
+                        } else {
+                            $.growl.error({ message: res.msg });
+                        }
+                    });
+                }
+            });
         });

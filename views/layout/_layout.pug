@@ -27,7 +27,7 @@ html(lang="en")
                 each n in [0, 1, 2, 3]
                     span
 
-        #page.page.js-hidden
+        #page.page
 
             if !hideheader
                 include header.pug
@@ -39,7 +39,7 @@ html(lang="en")
                 include footer
 
             //- 返回顶部
-            #back-top.back-top.back-top--hidden.js-hidden
+            #back-top.back-top.js-hidden
                 i.icon.icon-top
 
         script.

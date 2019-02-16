@@ -1,4 +1,4 @@
-$header-height: 350px   !default;
+$header-height: 270px   !default;
 $nav-height: 60px       !default;
 
 body {
@@ -154,6 +154,32 @@ body {
     }
 }
 
+@keyframes animations {
+    0% {
+        transform-origin: center bottom;
+        transform: translateY(-80px) scale(0);
+        opacity: 0;
+    }
+
+    25% {
+        transform-origin: center bottom;
+        transform: translateY(-120px) scale(.25);
+        opacity: .25;
+    }
+
+    60% {
+        transform-origin: center;
+        transform: translateY(0px) scale(.6);
+        opacity: .5;
+    }
+
+    100% {
+        transform-origin: center;
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+    }
+}
+
 .showPage{
     .page__info .info__title {
         animation: animations .7s linear forwards;
@@ -161,10 +187,10 @@ body {
 }
 
 .page__info {
+    text-align: center;
     position: absolute;
     left: 0;
-    top: 50%;
-    text-align: center;
+    top: 35%;
     width: 100%;
 
     .info__title {

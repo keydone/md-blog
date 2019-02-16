@@ -86,7 +86,7 @@
         _algorithm: function(option) {
             var
                 type = option.type || 'linear',
-                time = option.time || 1000,
+                time = option.time || 300,
                 now = option.now,
                 aims = option.aims || 0,
                 spendTime = option.spendTime || 0;
@@ -162,7 +162,7 @@
                 time = option;
             } else {
                 type = option.type || 'linear';
-                time = option.time || 200;
+                time = option.time || 100;
             }
 
             var point = this.record[this.index] || {};

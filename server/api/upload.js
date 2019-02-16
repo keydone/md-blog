@@ -9,9 +9,9 @@ const env = require('../../.env.js');
 
 const upload = ctx => new Promise((resolve, reject) => {
     const { header } = ctx.request;
-    const { store, postid } = ctx.request.query;
+    const { store, id } = ctx.request.query;
     const hash = randomBytes(5).toString('hex');
-    const postId = postid || `${Utils.today()}`;
+    const postId = id || `${Utils.today()}`;
     const filePath = `${store}/${postId}`;
     const saveToLocal = join(__dirname, `../../_temp/${filePath}`);
     const busboy = new Busboy({
@@ -38,13 +38,15 @@ const upload = ctx => new Promise((resolve, reject) => {
 
                     // 同步资源表
                     const stuffId = randomBytes(10).toString('hex');
-                    const { success } = await stuff.save(postId, filepath, stuffId, store);
+                    const { success, msg } = await stuff.save(postId, filepath, stuffId, store);
                     if (success) {
                         Object.assign(response, {
                             articleId: postId,
                             filepath,
                             stuffId,
                         });
+                    } else {
+                        response.error = msg;
                     }
 
                     resolve(response);

@@ -45,8 +45,29 @@ router
     .get('/note', (ctx) => {
         ctx.body = {};
         ctx.render('admin/note', {
-            pageheader: false,
+            hideheader: true,
+            hidefooter: true,
+            data: {
+
+            }
         });
+    })
+    .get('/cates', (ctx) => {
+        ctx.body = {};
+        ctx.render('admin/cates', {
+            hideheader: true,
+            hidefooter: true,
+            data: {
+
+            }
+        });
+    })
+    .post('/cates-action', (ctx) => {
+        console.log(ctx.request.body);
+        ctx.body = {
+            status: 0,
+            msg: 'ok',
+        };
     })
     .post('/article-publish', async (ctx, next) => {
         const { postType } = ctx.request.body;
@@ -56,7 +77,6 @@ router
         } else {
             await articles.update(ctx, next);
         }
-
     })
     .post('/article-delete', async (ctx, next) => {
         await articles.remove(ctx, next);

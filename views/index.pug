@@ -1,8 +1,12 @@
 extends layout/_layout
 
+append title
+    title 凯子
+
 append content
 
     - const { list, total, pagesize, page } = data
+
     main.page__container.page__main
         .page__content
             .page__posts.clearfix

@@ -9,6 +9,7 @@ html(lang="en")
 
     head
         include head.pug
+        block title
 
         link(rel="stylesheet", href=`${setting.static}static/css/base.css?t=${setting.tstamp}`)
         block pageCss

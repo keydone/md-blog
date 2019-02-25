@@ -86,13 +86,11 @@ const findOne = async (ctx, next) => {
             article.stuffs = attachment || {};
             const { _id } = article;
             let prevItem = await ArticlesModel.find({ _id: { $lt: _id } }).sort({ _id: -1 }).limit(1);
-            if (prevItem.length > 0) {
-                prevItem = prevItem[0];
-            }
+            prevItem = prevItem.length ? prevItem[0] : null;
+
             let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }).sort({ _id: 1 }).limit(1);
-            if (nextItem.length > 0) {
-                nextItem = nextItem[0];
-            }
+            nextItem = nextItem.length ? nextItem[0] : null;
+
             const { content } = article;
             if (content) {
                 article.origin = content || '';

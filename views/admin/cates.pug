@@ -1,0 +1,117 @@
+extends ../layout/_layout
+
+append pageCss
+    link(rel="stylesheet", href=`${setting.static}static/css/admin.css?t=${setting.tstamp}`)
+
+append content
+    - const { list, total, pagesize, page } = data
+
+    .col-layout
+        .col-4
+            include sidenav
+
+        .col-20
+            .col-wrap
+                .whitebg
+                    .card-title 分类管理:
+                    .card-header
+                        input.newCate(type="text", placeholder="填写分类即可提交")
+                        a.btn.addCates.btn-disabled(href="javascript:;", title="填写分类后可提交") 新增
+
+                    .card-body
+                        table.card-table
+                            thead
+                                th(width=50) 序号
+                                th ID
+                                th 分类名(双击分类名进行编辑)
+                                th 操作
+                            tbody
+                                tr
+                                    td 1
+                                    td id
+                                    td
+                                        .editable vue
+                                    td
+                                        a.delete.btn.btn-small.btn-action(href="javascript:;", data-id="")
+                                            i.icon.icon-delete
+                                            | 删除分类
+                                        a.delete.btn.btn-small.btn-danger(href="javascript:;", data-id="")
+                                            i.icon.icon-delete
+                                            | 删除分类
+                                tr
+                                    td 2
+                                    td id
+                                    td
+                                        .editable vue
+                                    td
+                                        a.delete.btn.btn-small.btn-danger(href="javascript:;", data-id="")
+                                            i.icon.icon-delete
+                                            | 删除分类
+
+append pagejs
+    script.
+        // 新增分类
+        var addCates = $('.addCates');
+        var newCate = $('.newCate');
+        newCate.on('input', function(){
+            var val = $(this).val();
+            if(val) {
+                addCates.removeClass('btn-disabled');
+            } else {
+                addCates.addClass('btn-disabled');
+            }
+        });
+        $(document).on('click', '.addCates', function() {
+            var cateName = newCate.val();
+            var data = {
+                type: 'add',
+                name: cateName,
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/cates-action',
+                dataType: 'json',
+                data: data,
+                success: function(res) {
+                    if(res.status === 0) {
+                        $.growl.notice({
+                            message: '新增成功!',
+                        });
+                        newCate.val('');
+                    } else {
+                        $.growl.error({
+                            message: res.msg,
+                        });
+                    }
+                },
+            })
+        });
+
+        // 删除分类
+        $(document).on('click', '.delete', function() {
+            var $this = $(this);
+            var cateid = $this.attr('data-id');
+            var data = {
+                type: 'delete',
+                _id: cateid,
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/cates-action',
+                dataType: 'json',
+                data: data,
+                success: function(res) {
+                    if(res.status === 0) {
+                        $.growl.notice({
+                            message: '删除成功!',
+                        });
+                    } else {
+                        $.growl.error({
+                            message: res.msg,
+                        });
+                    }
+                },
+            })
+        });

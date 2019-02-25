@@ -42,6 +42,7 @@ textarea,
 button {
     font-family: $font-family;
     outline: none;
+    border:0;
 }
 
 pre, code {
@@ -66,7 +67,7 @@ table {
 }
 
 img{
-    width: 100%;
+    max-width: 100%;
     height: auto;
 }
 

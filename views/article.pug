@@ -1,9 +1,13 @@
 extends layout/_layout
 
+append title
+    title 凯子 | #{data.article.title}
+
 append pageCss
     link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
 
 append content
+
     - const { article, prevItem, nextItem } = data
 
     main.page__container.page__main
@@ -46,5 +50,7 @@ append content
                             .post__next
                                 a(href=`/articles?id=${nextItem.path}`, title=nextItem.title) #{nextItem.title}
                                     i.icon.icon-next
-
         include _partial/sidebar
+
+append pagejs
+    script(src=`${setting.static}static/js/post.js?t=${setting.tstamp}`)

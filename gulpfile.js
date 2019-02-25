@@ -8,12 +8,7 @@ sass.compiler = require('node-sass');
 
 gulp.task('clean', () => del(['public/static/css', 'public/static/js']));
 
-gulp.task('css', () => gulp.src('./src/scss/base.css')
-    .pipe(sass())
-    .pipe(cssnano())
-    .pipe(gulp.dest('./public/static/css')));
-
-gulp.task('postcss', () => gulp.src('./src/scss/post.scss')
+gulp.task('css', () => gulp.src('./src/scss/*.scss')
     .pipe(sass())
     .pipe(cssnano())
     .pipe(gulp.dest('./public/static/css')));
@@ -44,6 +39,6 @@ gulp.task('md-plugins', () => gulp.src('./src/js/markdown/*.js')
 
 gulp.task('default', () => {
     gulp.watch('src/**/*', gulp.series(
-        'clean', 'css', 'postcss', 'commonjs', 'lib', 'post', 'filepond', 'md-plugins'
+        'clean', 'css', 'commonjs', 'lib', 'post', 'filepond', 'md-plugins'
     ));
 });

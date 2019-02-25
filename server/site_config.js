@@ -17,7 +17,7 @@ module.exports = {
     subtitle: 'For everything beautiful!',
     // banner显示的简短介绍
     subtitle_desc: '我不希望年老的时候，含着泪对年轻的自己说：<br>对不起，我没有成为当初你想要成为的那个人！',
-    keywords: '前端博客, 前端, 程序员, 前端开发, 全栈开发, node.js, javascript, react, vue',
+    keywords: '前端博客, 前端笔记, 前端, 程序员, 前端开发, 全栈开发, node.js, javascript, react, vue',
     timezone: 'Asia/Shanghai',
     logo: `${env.cdn}static/img/logo.png`,
     favicon_ico: `${env.cdn}static/img/favicon.ico`,

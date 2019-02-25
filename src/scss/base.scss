@@ -173,29 +173,3 @@
         }
     }
 }
-
-.post__content {
-    .vshow{
-        color: #fff;
-        position: relative;
-        border-radius: 4px;
-        border: 1px dashed #e0e0e0;
-        padding: 10px;
-    }
-}
-
-.vshow{
-    &.on{color:#666;
-        &:before {display: none;}
-    }
-    &:before {
-        content: '点击查看隐藏内容';
-        position: absolute;
-        top:10px; left:5px;
-        font-size: 10px;
-        display: block;
-        color: #a2a2a2;
-        cursor: pointer;
-        text-decoration:underline;
-    }
-}

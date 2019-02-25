@@ -43,7 +43,7 @@ pre.prettyprinted {
 //------------------------ */
 ol.linenums {
 	color: #75715e;
-	list-style: decimal inside !important;
+	list-style: decimal-leading-zero inside !important;
 } /* IE indents via margin-left */
 
 

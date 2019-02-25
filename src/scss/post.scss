@@ -116,6 +116,30 @@
 .post__content {
     @include post();
 
+    ol{list-style: decimal inside;}
+
+    .vshow{
+        color: #fff;
+        position: relative;
+        border-radius: 4px;
+        border: 1px dashed #e0e0e0;
+        padding: 10px;
+        &:before {
+            content: '点击查看隐藏内容';
+            position: absolute;
+            top:10px; left:5px;
+            right:5px;bottom:0;
+            font-size: 10px;
+            display: block;
+            color: #a2a2a2;
+            cursor: pointer;
+            text-decoration:underline;
+        }
+        &.on{color:#666;
+            &:before {display: none;}
+        }
+    }
+
     .post-announce {
         margin: 1em 0;
     }

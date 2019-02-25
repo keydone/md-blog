@@ -1,5 +1,8 @@
 extends ../layout/_layout
 
+append title
+    title 发布文章
+
 append pageCss
     link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
 
@@ -18,6 +21,8 @@ append content
 
             .label-btns
                 a#showlibrary.icon.icon-image(href="javascript:;", title="图库")
+                i.icon.icon-insert
+                i.icon.icon-code
 
                 .fr
                     .drop-panel.postset
@@ -67,6 +72,7 @@ append pagejs
     script.
         //- markdown editor
         var articleTitle = $('#article-title');
+        var post_preview = $('.post-preview');
         var post__title = $('.post__title');
         var textarea = $('#textarea');
         var preview = $('#preview');
@@ -199,7 +205,7 @@ append pagejs
             }
             posTo = scrollMap[lineNo];
 
-            preview.stop(true).animate({
+            post_preview.stop(true).animate({
                 scrollTop: posTo
             }, 50, 'linear');
         }, 50, { maxWait: 33 });
@@ -271,7 +277,7 @@ append pagejs
                     data.article[key] = val;
                 }
 
-                data.article.path = articlePath || postid.val();
+                data.article.path = articlePath || $.trim(postid.val());
                 data.article.date = postdate.val() || today();
                 data.article.author = data.author || 'keydone';
                 data.article.isDraft = type === 1 ? 1 : 0;
@@ -367,7 +373,7 @@ append pagejs
 
                     FilePond.setOptions({
                         server: {
-                            url: '/api/stuff-upload?store=images&id=' + postid.val(),
+                            url: '/api/stuff-upload?store=images&id=' + $.trim(postid.val()),
                             process: {
                                 onload: function(res) {
                                     var res = JSON.parse(res);

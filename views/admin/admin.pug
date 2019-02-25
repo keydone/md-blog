@@ -1,9 +1,13 @@
 extends ../layout/_layout
 
+append title
+    title 凯子
+
 append pageCss
-    link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
+    link(rel="stylesheet", href=`${setting.static}static/css/admin.css?t=${setting.tstamp}`)
 
 append content
+
     - const { list, total, pagesize, page } = data
 
     .col-layout
@@ -14,8 +18,9 @@ append content
             .col-list
                 a.new-article(href="/admin/write") <i class="icon"></i>新建文章
                 #articles-list.articles-list
+                    -let index = 0;
                     each article in list
-                        .dl(data-title=article.title, data-content=article.content)
+                        .dl(data-index=index++)
                             .dt
                                 .post-title
                                     i.icon.icon-title
@@ -42,21 +47,26 @@ append content
                         i.icon.icon-preview
                         p 点击文章标题进行预览
 
+    input(id="list", type="hidden" value=list)
+
 append pagejs
     script.
+        var list = $('#list').val();
         var article = $('.dl');
         var preview = $('#preview');
         var postTitle = $('#post__title');
+        if(list) {
+            list = JSON.parse(list);
+        }
 
         // 更新预览
         article.on('click', function() {
             var $this = $(this);
-            var title = $this.data('title');
-            var content = $this.data('content');
+            var index = $this.data('index');
             $this.addClass('on').siblings().removeClass('on');
 
-            postTitle.html(title);
-            preview.html(content);
+            postTitle.html(list[index].title);
+            preview.html(list[index].content);
             var codes = preview[0].querySelectorAll('pre');
             var i = 0;
             for (var length = codes.length; i < length; i++) {

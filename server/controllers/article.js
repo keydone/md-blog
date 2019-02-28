@@ -93,7 +93,7 @@ const findOne = async (ctx, next) => {
 
             const { content } = article;
             if (content) {
-                article.origin = content || '';
+                article.markdown = content || '';
                 article.content = md.render(content);
             } else {
                 article.content = '';

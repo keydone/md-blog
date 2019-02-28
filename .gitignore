@@ -5,3 +5,4 @@
 node_modules/
 _temp/*
 logs/*
+.DS_Store

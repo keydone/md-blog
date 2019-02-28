@@ -32,13 +32,34 @@ gulp.task('filepond', () => gulp.src('./src/js/page/filepond.js')
     .pipe(uglify())
     .pipe(gulp.dest('./public/static/js')));
 
-gulp.task('md-plugins', () => gulp.src('./src/js/markdown/*.js')
-    .pipe(concat('md-plugins.js'))
+gulp.task('editor', () => gulp.src('./src/js/editor/*.js')
     .pipe(uglify())
     .pipe(gulp.dest('./public/static/js')));
 
+gulp.task('editor-plugins-css', () => gulp.src('./src/js/editor/**/*.{css,json}')
+    .pipe(gulp.dest('./public/static/js')));
+
+gulp.task('editor-plugins-js', () => gulp.src('./src/js/editor/**/*.js')
+    // .pipe(uglify())
+    .pipe(gulp.dest('./public/static/js')));
+
+/* gulp.task('md-plugins', () => gulp.src('./src/js/markdown/*.js')
+    .pipe(concat('md-plugins.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./public/static/js'))); */
+
+const tasks = [
+    // 'clean',
+    'css',
+    // 'lib',
+    'post',
+    'commonjs',
+    // 'filepond',
+    'editor',
+    'editor-plugins-css',
+    'editor-plugins-js',
+];
+
 gulp.task('default', () => {
-    gulp.watch('src/**/*', gulp.series(
-        'clean', 'css', 'commonjs', 'lib', 'post', 'filepond', 'md-plugins'
-    ));
+    gulp.watch('src/**/*', gulp.series(tasks));
 });

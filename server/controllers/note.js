@@ -1,19 +1,19 @@
-const emoji = require('markdown-it-emoji');
+/* const emoji = require('markdown-it-emoji');
 const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
 const mdDivs = require('markdown-it-div');
-const md = require('markdown-it')({ html: true });
+const md = require('markdown-it')({ html: true }); */
 const NotesModel = require('../models/notes');
 const Utils = require('../utils/utils');
 
-md.use(emoji)
+/* md.use(emoji)
     .use(mdCheckbox, {
         divWrap: true,
         divClass: 'checkbox',
         idPrefix: 'checkbox_'
     })
     .use(mdSmartArrows)
-    .use(mdDivs);
+    .use(mdDivs); */
 
 const findAll = async (ctx, next) => {
     try {

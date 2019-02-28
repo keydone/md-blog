@@ -1,0 +1,114 @@
+@charset "UTF-8";
+@import './particles/consts';
+@import "./particles/lib/variables";
+@import "./particles/lib/prefixes";
+
+.editormd {
+    width: 90%;
+    height: 640px;
+    margin: 0 auto;
+    text-align: left;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 15px;
+    border: 1px solid $borderColor;
+    font-family: $font-family;
+
+    img {
+        border: none;
+        vertical-align: middle;
+    }
+
+    .CodeMirror{
+        border-right: 1px solid #ddd;
+    }
+
+    > textarea,
+    #{$prefix}html-textarea,
+    #{$prefix}markdown-textarea {
+        width: 0;
+        height: 0;
+        outline: 0;
+        resize:none;
+    }
+
+    #{$prefix}html-textarea,
+    #{$prefix}markdown-textarea {
+        display : none;
+    }
+
+    input[type="text"],
+    input[type="button"],
+    input[type="submit"],
+    select, textarea, button {
+        @include appearance(none);
+    }
+
+}
+
+#{$prefix}user-unselect {
+    @include user-select(none);
+}
+
+#{$prefix}toolbar {
+    width: 100%;
+    min-height: 37px;
+    background: #fff;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    border-bottom: 1px solid $borderColor;
+}
+
+#{$prefix}toolbar-container {
+    padding: 0 8px;
+    min-height: 35px;
+    @include user-select(none);
+}
+
+@import "./particles/editormd.menu";
+
+#{$prefix}container {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding: 35px 0 0;
+    position: relative;
+    background: #fff;
+    @include box-sizing(border-box);
+}
+
+@import "./particles/editormd.dialog";
+@import "./particles/editormd.grid";
+@import "./particles/editormd.tab";
+@import "./particles/editormd.form";
+@import "./particles/editormd.codemirror";
+@import "./particles/editormd.preview";
+@import "./particles/editormd.preview.themes";
+
+#{$prefix}onlyread {
+    #{$prefix}toolbar {
+        display: none;
+    }
+
+    .CodeMirror {
+        margin-top: 0;
+    }
+
+    #{$prefix}preview {
+        top: 0;
+    }
+}
+
+#{$prefix}fullscreen {
+    position: fixed;
+    top   : 0;
+    left  : 0;
+    border: none;
+    margin: 0 auto;
+}
+
+@import "./particles/editormd.themes";

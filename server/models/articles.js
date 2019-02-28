@@ -37,6 +37,7 @@ const Articles = new Schema({
     tags: Array,
     date: String,
     content: String,
+    markdown: String,
     // 是否为草稿
     isDraft: {
         type: Number,

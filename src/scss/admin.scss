@@ -63,6 +63,7 @@ html, body{
     right: 0;
     bottom:0;
     overflow: hidden;
+    background: #fff;
     .col-4{
         position: absolute;
         top:0; left:0;
@@ -158,6 +159,8 @@ html, body{
     transform: translate(-50%, -50%);
     .icon-preview{font-size: 100px;}
 }
+
+.editormd-preview-container{padding: 20px;}
 
 .card-title{
     padding: 10px;

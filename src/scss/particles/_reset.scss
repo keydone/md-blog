@@ -84,3 +84,21 @@ table, tr, th, td {
 
 ::-webkit-input-placeholder{color: #999;}
 ::-moz-placeholder{color: #999;}
+
+::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+    background: rgba(103, 103, 103, .3);
+    border-radius: 5px;
+    &:hover {
+        background: rgba(103, 103, 103, .3);
+    }
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(103, 103, 103, .7);
+    border-radius: 5px;
+    &:hover {
+        background-color: rgba(103, 103, 103, 1);
+    }
+}

@@ -112,16 +112,8 @@ function apiDelete(data, callback) {
     });
 }
 
-// 高亮代码块  可选语言: "bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html", "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh", "xhtml", "xml", "xsl".
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     var doc = document;
-    var codes = doc.querySelectorAll('pre');
-    var i = 0;
-    for (var length = codes.length; i < length; i++) {
-        addClass(codes[i], 'prettyprint linenums');
-    }
-    prettyPrint();
-
     var search = doc.getElementById('page-search-from');
     var searchBtn = doc.getElementById('page-search-btn');
     if(searchBtn) {

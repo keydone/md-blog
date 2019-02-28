@@ -22,8 +22,8 @@ module.exports = {
     logo: `${env.cdn}static/img/logo.png`,
     favicon_ico: `${env.cdn}static/img/favicon.ico`,
     avatar: `${env.cdn}static/img/avatar.png`,
-    header_cover: 'https://static.kaiziye.cn/static/images/dy.png',
-    default_cover: 'https://static.kaiziye.cn/static/images/dy.png',
+    header_cover: 'https://static.kaiziye.cn/static/img/dy.png',
+    default_cover: 'https://static.kaiziye.cn/static/img/dy.png',
     author: {
         name: 'keydone',
         link: 'https://github.com/keydone'
@@ -47,13 +47,17 @@ module.exports = {
             link: '/',
             title: '首页'
         },
+        reading: {
+            link: '/reading',
+            title: '悦读'
+        },
         archives: {
             link: '/archives',
-            title: '归档'
+            title: '流年'
         },
         precious: {
             link: '/precious',
-            title: '收藏'
+            title: '珍藏'
         },
         about: {
             link: '/about',

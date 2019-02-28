@@ -1,20 +1,20 @@
-const emoji = require('markdown-it-emoji');
+/* const emoji = require('markdown-it-emoji');
 const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
 const mdDivs = require('markdown-it-div');
-const md = require('markdown-it')({ html: true });
+const md = require('markdown-it')({ html: true }); */
 const ArticlesModel = require('../models/articles');
 const stuffs = require('../models/stuffs');
 const Utils = require('../utils/utils');
 
-md.use(emoji)
+/* md.use(emoji)
     .use(mdCheckbox, {
         divWrap: true,
         divClass: 'checkbox',
         idPrefix: 'checkbox_'
     })
     .use(mdSmartArrows)
-    .use(mdDivs);
+    .use(mdDivs); */
 
 /**
  * @param {*page} page
@@ -42,17 +42,6 @@ const findAll = async (ctx, next) => {
             .skip(page * pagesize)
             .sort({ createdAt: -1 })
             .then(async (list) => {
-                if (list.length) {
-                    list.forEach((article) => {
-                        const { content } = article;
-                        if (content) {
-                            article.origin = content || '';
-                            article.content = md.render(content);
-                        } else {
-                            article.content = '';
-                        }
-                    });
-                }
                 Object.assign(ctx.body, {
                     total,
                     pagesize,
@@ -90,14 +79,6 @@ const findOne = async (ctx, next) => {
 
             let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }).sort({ _id: 1 }).limit(1);
             nextItem = nextItem.length ? nextItem[0] : null;
-
-            const { content } = article;
-            if (content) {
-                article.origin = content || '';
-                article.content = md.render(content);
-            } else {
-                article.content = '';
-            }
 
             ctx.body = {
                 prevItem,

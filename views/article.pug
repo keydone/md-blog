@@ -34,7 +34,7 @@ append content
                                     li.mark__item
                                         a(href=`/tags/${tag}`) #{tag}
 
-            .post__content !{article.content}
+            .editormd-html-preview.post__content !{article.content}
                 #separator
                 .post-announce !{setting.announce} (
                     a(href=`https://kaiziye.cn/articles?id=${article.path}`) https://kaiziye.cn/articles?id=#{article.path}

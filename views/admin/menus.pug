@@ -1,0 +1,170 @@
+extends ../layout/_layout
+
+append pageCss
+    link(rel="stylesheet", href=`${setting.static}static/css/admin.css?t=${setting.tstamp}`)
+
+append content
+    - const { menus } = data
+
+    .col-layout
+        .col-4
+            include sidenav
+
+        .col-20
+            .col-wrap
+                .card-title 前台导航菜单:
+                .card-header
+                    .label-inline
+                        label.form-label 菜单名称:
+                        .form-label-input
+                            input.input-add(type="text", placeholder="填写菜单名称")
+                    .label-inline
+                        label.form-label 菜单链接:
+                        .form-label-input
+                            input.input-add(type="text", placeholder="填写菜单链接")
+
+                    a.btn.submit.btn-disabled(href="javascript:;", title="填写后可提交") 新增
+
+                .card-body
+                    table.card-table
+                        thead
+                            th(width=50) 序号
+                            th(width=100) ID
+                            th 菜单名称(双击进行编辑)
+                            th 菜单链接(双击进行编辑)
+                            th 排序(双击进行编辑)
+                            th(width=200) 操作
+                        tbody
+                            - let index = 0
+                            each item in menus
+                                - index++
+                                tr
+                                    td #{index}
+                                    td #{item._id}
+                                    td
+                                        .editable #{item.name}
+                                    td
+                                        .editable #{item.link}
+                                    td
+                                        .editable #{item.sort}
+                                    td
+                                        a.btn-hide.btn.btn-small.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? '' : 'hide'}`, data-type="hide")
+                                            i.icon.icon-hide
+                                            | 隐藏菜单
+                                        a.btn-show.btn.btn-small.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? 'hide' : ''}`, data-type="show")
+                                            i.icon.icon-open
+                                            | 启用菜单
+                                        a.btn-delete.btn.btn-small.btn-danger(href="javascript:;", data-id=`${item._id}`)
+                                            i.icon.icon-delete
+                                            | 删除
+
+append pagejs
+    script.
+        // 新增
+        var lock = false;
+        var submit = $('.submit');
+        var inputAdd = $('.input-add');
+
+        function action(data, msg, callback) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/menus-action',
+                dataType: 'json',
+                data: data,
+                success: function(res) {
+                    if(res.status === 0) {
+                        $.growl.notice({
+                            message: msg,
+                        });
+
+                        callback && callback();
+                    } else {
+                        $.growl.error({
+                            message: res.msg,
+                        });
+                    }
+                },
+            })
+        }
+
+        inputAdd.on('input', function(){
+            var vals = [];
+            inputAdd.each(function(index, item) {
+                var val = $(item).val();
+                if(val) {
+                    vals.push(1);
+                };
+            });
+
+            if(vals.length === inputAdd.length) {
+                submit.removeClass('btn-disabled');
+            } else {
+                submit.addClass('btn-disabled');
+            }
+        });
+
+        $(document).on('click', '.submit', function() {
+            if(lock) return;
+            lock = true;
+            setTimeout(function() {
+                lock = false;
+            }, 300);
+
+            var vals = [];
+            inputAdd.each(function(index, item) {
+                var val = $(item).val();
+                if(val) {
+                    vals.push(val);
+                };
+            });
+            var data = {
+                type: 'add',
+                name: vals[0],
+                link: vals[1],
+                show: true,
+            };
+
+            action(data, '新增成功!', function() {
+                inputAdd.val('');
+            });
+        });
+
+        // 删除
+        $(document).on('click', '.btn-delete', function() {
+            if(lock) return;
+            lock = true;
+            setTimeout(function() {
+                lock = false;
+            }, 300);
+
+            var $this = $(this);
+            var _id = $this.attr('data-id');
+            var data = {
+                type: 'remove',
+                _id: _id,
+            };
+
+            action(data, '删除成功!');
+        });
+
+        // 隐藏
+        $(document).on('click', '.btn-action', function() {
+            if(lock) return;
+            lock = true;
+            setTimeout(function() {
+                lock = false;
+            }, 300);
+
+            var $this = $(this);
+            var display = $this.attr('data-type') == 'show';
+            var _id = $this.attr('data-id');
+            var data = {
+                type: 'display',
+                _id: _id,
+                show: display,
+            };
+
+            action(data, display ? '菜单已显示!' : '菜单已隐藏!', function() {
+                $this.addClass('hide').siblings('.btn-action').removeClass('hide');
+            });
+        });

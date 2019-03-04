@@ -1,10 +1,11 @@
 extends ../layout/_layout
 
 append title
-    title 凯子
+    title 管理后台
 
 append pageCss
     link(rel="stylesheet", href=`${setting.static}static/css/admin.css?t=${setting.tstamp}`)
+    link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
 
 append content
 
@@ -50,14 +51,28 @@ append content
     input(id="list", type="hidden" value=list)
 
 append pagejs
+    script(src=`${setting.static}static/js/lib/marked.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/highlight.pack.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/raphael.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/underscore.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/flowchart.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/jquery.flowchart.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/lib/sequence-diagram.min.js?t=${setting.tstamp}`)
+    script(src=`${setting.static}static/js/editormd.js?t=${setting.tstamp}`)
     script.
         var list = $('#list').val();
-        var article = $('.dl');
+        var actions = $('.actions');
         var preview = $('#preview');
+        var article = $('.articles-list').find('.dl');
         var postTitle = $('#post__title');
+
         if(list) {
             list = JSON.parse(list);
         }
+
+        actions.on('click', function(e) {
+            e.stopPropagation();
+        });
 
         // 更新预览
         article.on('click', function() {
@@ -66,13 +81,22 @@ append pagejs
             $this.addClass('on').siblings().removeClass('on');
 
             postTitle.html(list[index].title);
-            preview.html(list[index].content);
-            var codes = preview[0].querySelectorAll('pre');
-            var i = 0;
-            for (var length = codes.length; i < length; i++) {
-                addClass(codes[i], 'prettyprint linenums');
-            }
-            prettyPrint();
+            preview.html('');
+            console.log(list[index]);
+            editormd.markdownToHTML("preview", {
+                markdown        : list[index].markdown,
+                htmlDecode      : true,
+                tocm            : true,    // Using [TOCM]
+                // tocContainer    : "#custom-toc-container",
+                tocDropdown     : true,
+                markdownSourceCode : false,
+                emoji           : true,
+                taskList        : true,
+                // tex             : true,
+                flowChart       : true,
+                sequenceDiagram : true,
+            });
+
         });
 
         var update = $('.update');

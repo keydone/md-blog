@@ -9,7 +9,7 @@ const findAll = async (ctx, next) => {
     } catch (err) {
         ctx.body = Utils.unexpected(err);
     }
-    next(ctx, next);
+    if (next) next(ctx, next);
 };
 
 const save = async (ctx, next) => {

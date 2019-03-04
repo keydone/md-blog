@@ -1,6 +1,7 @@
 @import './particles/consts';
 @import './particles/mixins';
 @import './particles/filepond';
+@import "./particles/editormd.preview";
 @import './layout/mini-post';
 
 .page__post{
@@ -196,7 +197,6 @@
 
 @media screen and (max-width: $mq-mobile) {
     .page__main{padding: 20px 0;}
-    .post-preview{display: none;}
 }
 
 .form-figure{
@@ -256,6 +256,7 @@
 }
 
 .drop-toggle{
+    display: block;
     text-align: center;
     cursor: pointer;
     transition: color .2s;
@@ -288,9 +289,15 @@
 
 .postset{
     .drop-toggle{
-        width: 30px;
-        height: 20px;
-        line-height: 14px;
+        width: 32px;
+        height: 32px;
+        line-height: 24px;
+        border: 1px solid #fff;
+        &:hover{
+            border-color: #ddd;
+            background: #eee;
+            border-radius: 2px;
+        }
     }
 }
 
@@ -322,17 +329,18 @@
 }
 
 #postform-list{
-    top:30px;
-    right: -100px;
+    top:37px;
+    right: -80px;
     background: #fff;
     border-radius: 4px;
     margin-top: -1px;
-    &:before, &:after{right:95px;}
+    &:before, &:after{right:75px;}
     .tip{font-size: 12px;
         margin-top: -6px;
     }
     .form-label{margin-top: 6px;}
-    .label-input{
+    .label-input,
+    .form-label-select{
         width: 200px;
         height: 30px;
         padding: 5px 10px;
@@ -343,41 +351,26 @@
 
 .editor__container{
     position: absolute;
-    top:0;
+    top:40px;
     right: 0;
     bottom:0;
     left: 0;
     overflow: hidden;
-    .post-content{
+    .scrollWrap-textarea{
         position: absolute;
         top:0;
         left:0;
-        width: 50%;
-        height:100%;
-        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        border-top: 1px solid #ddd;
     }
-    .post-preview{
-        position: absolute;
-        top:0; left:50%;
-        width: 50%;
-        height:100%;
-        padding: 10px 20px;
-        border-left:1px solid #e0e0e0;
-        overflow-y: auto;
-        .post__title{
-            margin: 6px 0;
-            font-size: 24px;
+    .editormd-toolbar{
+        .icon{font-size: 20px;
+            &:hover{color: $main-color;}
         }
     }
-    .scrollWrap-textarea{
-        position: absolute;
-        bottom: 0;
-        top:80px;
-        left:0;
-        width: 100%;
-    }
     .label-btns{
-        padding: 10px;
+        padding: 5px 10px;
         line-height: 20px;
         background: #f5f5f5;
         position: relative;

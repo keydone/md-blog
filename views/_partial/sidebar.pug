@@ -15,8 +15,9 @@ aside.page__sidebar
             ul.block-list.cates-list
                 each cate in data.categories
                     li
-                        a.block-list-link(href=cate.url, target="_blank") #{cate.name}
-                        span.block-list-count #{cate.num}
+                        a.block-list-link(href=cate.link, target="_blank") #{cate.name}
+                        if cate.num
+                            span.block-list-count #{cate.num}
 
     if data.last_post
         .sidebar__block

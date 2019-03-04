@@ -27,12 +27,11 @@
             display: none;
         }
     }
-    .dd{
-        background: #326d96;
-    }
+    .dd{background: #326d96;}
     li{height: 30px;
         cursor: pointer;
         position: relative;
         padding:0 10px 0 20px;
+        a{display: block;}
     }
 }

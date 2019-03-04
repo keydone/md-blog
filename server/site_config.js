@@ -13,8 +13,10 @@ module.exports = {
     cdn: env.cdn,
     static: env.static,
     tstamp: env.tstamp,
+    domain: '/',
     title: 'keydone',
     subtitle: 'For everything beautiful!',
+    description: '凯子的博客 / keydone\'s blog',
     // banner显示的简短介绍
     subtitle_desc: '我不希望年老的时候，含着泪对年轻的自己说：<br>对不起，我没有成为当初你想要成为的那个人！',
     keywords: '前端博客, 前端笔记, 前端, 程序员, 前端开发, 全栈开发, node.js, javascript, react, vue',
@@ -42,24 +44,6 @@ module.exports = {
     time_format: 'HH:mm:ss',
     per_page: 10,
     theme: 'hexo-theme-skapp',
-    menu: {
-        home: {
-            link: '/',
-            title: '首页'
-        },
-        archives: {
-            link: '/archives',
-            title: '归档'
-        },
-        precious: {
-            link: '/precious',
-            title: '收藏'
-        },
-        about: {
-            link: '/about',
-            title: '关于'
-        },
-    },
     QRcode: `${env.cdn}static/img/avatar.png`,
     footers: [{
         name: '友情链接',

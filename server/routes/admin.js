@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const articles = require('../controllers/article');
+const category = require('../controllers/category');
 const stuff = require('../controllers/stuff');
+const menu = require('../controllers/menu');
 
 const router = new Router();
 
@@ -19,13 +21,26 @@ router
             data: ctx.body,
         });
     })
+    .get('/menus', async (ctx, next) => {
+        ctx.body = {};
+        await menu.findAll(ctx, next);
+
+        ctx.render('admin/menus', {
+            hideheader: true,
+            hidefooter: true,
+            data: ctx.body,
+        });
+    })
     .get('/write', async (ctx) => {
         ctx.body = {};
         const { id } = ctx.query;
         let article = '';
 
+        // 获取分类信息
+        await category.findAll(ctx);
         if (id) {
-            const { body } = await articles.findOne(ctx);
+            await articles.findOne(ctx);
+            const { body } = ctx;
             const articleId = body.article.path;
             const stuffs = await stuff.findOne(articleId);
             article = body;
@@ -52,22 +67,35 @@ router
             }
         });
     })
-    .get('/cates', (ctx) => {
+    .get('/cates', async (ctx, next) => {
         ctx.body = {};
+        await category.findAll(ctx, next);
+
         ctx.render('admin/cates', {
             hideheader: true,
             hidefooter: true,
-            data: {
-
-            }
+            data: ctx.body,
         });
     })
-    .post('/cates-action', (ctx) => {
-        console.log(ctx.request.body);
-        ctx.body = {
-            status: 0,
-            msg: 'ok',
-        };
+    .post('/menus-action', async (ctx, next) => {
+        const { type } = ctx.request.body;
+        if (type === 'add') {
+            await menu.save(ctx, next);
+        } else if (type === 'display') {
+            await menu.update(ctx, next);
+        } else if (type === 'remove') {
+            await menu.remove(ctx, next);
+        }
+    })
+    .post('/cates-action', async (ctx, next) => {
+        const { type } = ctx.request.body;
+        if (type === 'add') {
+            await category.save(ctx, next);
+        } else if (type === 'display') {
+            await category.update(ctx, next);
+        } else if (type === 'remove') {
+            await category.remove(ctx, next);
+        }
     })
     .post('/article-publish', async (ctx, next) => {
         const { postType } = ctx.request.body;

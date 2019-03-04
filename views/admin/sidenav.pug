@@ -1,10 +1,16 @@
 aside#sidenav
     .dl
-        span.dt 菜单管理
+        a.dt(href="/admin/menus") 菜单管理
     .dl.cur
         span.dt 文章管理
         ul.dd
-            li 日志
-            li 笔记
-            li 专栏
-            li 分类
+            li
+                a(href="/admin") 博客
+            li
+                a(href="/admin/journal") 日志
+            li
+                a(href="/admin/notes") 笔记
+            li
+                a(href="/admin/books") 专栏
+            li
+                a(href="/admin/cates") 分类

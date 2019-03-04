@@ -4,7 +4,7 @@ append pageCss
     link(rel="stylesheet", href=`${setting.static}static/css/admin.css?t=${setting.tstamp}`)
 
 append content
-    - const { list, total, pagesize, page } = data
+    - const { categories } = data
 
     .col-layout
         .col-4
@@ -12,106 +12,111 @@ append content
 
         .col-20
             .col-wrap
-                .whitebg
-                    .card-title 分类管理:
-                    .card-header
-                        input.newCate(type="text", placeholder="填写分类即可提交")
-                        a.btn.addCates.btn-disabled(href="javascript:;", title="填写分类后可提交") 新增
+                .card-title 分类管理:
+                .card-header
+                    input.input-add(type="text", placeholder="填写分类即可提交")
+                    a.btn.submit.btn-disabled(href="javascript:;", title="填写分类后可提交") 新增
 
-                    .card-body
-                        table.card-table
-                            thead
-                                th(width=50) 序号
-                                th ID
-                                th 分类名(双击分类名进行编辑)
-                                th 操作
-                            tbody
+                .card-body
+                    table.card-table
+                        thead
+                            th(width=50) 序号
+                            th ID
+                            th 分类名称(双击进行编辑)
+                            th(width=200) 操作
+                        tbody
+                            - let index = 0
+                            each item in categories
+                                - index++
                                 tr
-                                    td 1
-                                    td id
+                                    td #{index}
+                                    td #{item._id}
                                     td
-                                        .editable vue
+                                        .editable #{item.name}
                                     td
-                                        a.delete.btn.btn-small.btn-action(href="javascript:;", data-id="")
+                                        a.btn-remove.btn.btn-small.btn-danger(href="javascript:;", data-id=`${item._id}`)
                                             i.icon.icon-delete
-                                            | 删除分类
-                                        a.delete.btn.btn-small.btn-danger(href="javascript:;", data-id="")
-                                            i.icon.icon-delete
-                                            | 删除分类
-                                tr
-                                    td 2
-                                    td id
-                                    td
-                                        .editable vue
-                                    td
-                                        a.delete.btn.btn-small.btn-danger(href="javascript:;", data-id="")
-                                            i.icon.icon-delete
-                                            | 删除分类
+                                            | 删除
 
 append pagejs
     script.
-        // 新增分类
-        var addCates = $('.addCates');
-        var newCate = $('.newCate');
-        newCate.on('input', function(){
-            var val = $(this).val();
-            if(val) {
-                addCates.removeClass('btn-disabled');
-            } else {
-                addCates.addClass('btn-disabled');
-            }
-        });
-        $(document).on('click', '.addCates', function() {
-            var cateName = newCate.val();
+        // 新增
+        var lock = false;
+        var submit = $('.submit');
+        var inputAdd = $('.input-add');
+
+        function action(data, msg, callback) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/cates-action',
+                dataType: 'json',
+                data: data,
+                success: function(res) {
+                    if(res.status === 0) {
+                        $.growl.notice({
+                            message: msg,
+                        });
+
+                        callback && callback();
+                    } else {
+                        $.growl.error({
+                            message: res.msg,
+                        });
+                    }
+                },
+            })
+        }
+
+        function addItem() {
+            if(lock) return;
+            lock = true;
+            setTimeout(function() {
+                lock = false;
+            }, 300);
+
+            var cateName = inputAdd.val();
             var data = {
                 type: 'add',
                 name: cateName,
             };
 
-            $.ajax({
-                type: 'POST',
-                url: '/admin/cates-action',
-                dataType: 'json',
-                data: data,
-                success: function(res) {
-                    if(res.status === 0) {
-                        $.growl.notice({
-                            message: '新增成功!',
-                        });
-                        newCate.val('');
-                    } else {
-                        $.growl.error({
-                            message: res.msg,
-                        });
-                    }
-                },
-            })
+            action(data, '新增成功!', function() {
+                inputAdd.val('');
+            });
+        }
+
+        inputAdd.on('input', function(){
+            var val = $(this).val();
+            var vals = [];
+            inputAdd.each(function(index, item) {
+                if($(item).val()) {
+                    vals.push(1);
+                };
+            });
+
+            if(vals.length === inputAdd.length) {
+                submit.removeClass('btn-disabled');
+            } else {
+                submit.addClass('btn-disabled');
+            }
         });
 
+        // 提交
+        inputAdd.on('keydown', function(e) {
+            if(e.keyCode === 13) {
+                addItem();
+            }
+        });
+        $(document).on('click', '.submit', addItem);
+
         // 删除分类
-        $(document).on('click', '.delete', function() {
+        $(document).on('click', '.btn-remove', function() {
             var $this = $(this);
-            var cateid = $this.attr('data-id');
+            var _id = $this.attr('data-id');
             var data = {
-                type: 'delete',
-                _id: cateid,
+                type: 'remove',
+                _id: _id,
             };
 
-            $.ajax({
-                type: 'POST',
-                url: '/admin/cates-action',
-                dataType: 'json',
-                data: data,
-                success: function(res) {
-                    if(res.status === 0) {
-                        $.growl.notice({
-                            message: '删除成功!',
-                        });
-                    } else {
-                        $.growl.error({
-                            message: res.msg,
-                        });
-                    }
-                },
-            })
+            action(data, '删除成功!');
         });

@@ -45,7 +45,7 @@ const pug = new Pug({
 app.use(helmet())
     .use(compression())
     .use(staticPath(path.join(__dirname, 'public')))
-    .use(favicon(`${__dirname}src/img/logo.png`))
+    .use(favicon(`${__dirname}/src/img/logo.png`))
     // 挂载日志模块
     .use(async (ctx, next) => {
         // 判断是否为手机访问
@@ -61,7 +61,11 @@ app.use(helmet())
         ctx.util.log.info(`host: ${ctx.req.headers.host} - url: ${ctx.request.url} - status: ${ctx.request.status}`);
         await next();
     })
-    .use(BodyParser())
+    .use(BodyParser({
+        formLimit: '200mb',
+        jsonLimit: '200mb',
+        textLimit: '200mb',
+    }))
     .use(router.routes())
     .use(router.allowedMethods())
     .use(async (ctx) => {

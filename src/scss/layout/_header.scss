@@ -68,7 +68,7 @@ body {
     background: center no-repeat;
     background-size: cover;
     color: #fff;
-    z-index: 2;
+    z-index: 3;
 
     &::before {
         content: '';
@@ -147,7 +147,7 @@ body {
             display: block;
             height: $nav-height;
             line-height: $nav-height;
-            padding: 0 $pad;
+            padding: 0 $pad / 2;
             @include link($main-color);
             color: #fff;
         }

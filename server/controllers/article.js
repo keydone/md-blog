@@ -68,6 +68,8 @@ const findLastPost = async (ctx) => {
 
 const findOne = async (ctx, next) => {
     const { id } = ctx.query;
+    if (!ctx.body) ctx.body = {};
+
     try {
         const article = await ArticlesModel.findOne({ path: id });
         if (article) {

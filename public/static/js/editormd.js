@@ -1664,16 +1664,11 @@
                     var percent   = (scrollTop / $(this)[0].scrollHeight);
                     var codeView  = codeMirror.find(".CodeMirror-scroll");
 
-                    if(scrollTop === 0)
-                    {
+                    if(scrollTop === 0) {
                         codeView.scrollTop(0);
-                    }
-                    else if (scrollTop + height >= $(this)[0].scrollHeight)
-                    {
+                    } else if (scrollTop + height >= $(this)[0].scrollHeight) {
                         codeView.scrollTop(codeView[0].scrollHeight);
-                    }
-                    else
-                    {
+                    } else {
                         codeView.scrollTop(codeView[0].scrollHeight * percent);
                     }
 

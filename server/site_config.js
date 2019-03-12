@@ -53,6 +53,9 @@ module.exports = {
         }, {
             link: 'https://www.pandashen.com',
             desc: 'PandaShen',
+        }, {
+            link: 'http://www.wushaobin.top',
+            desc: 'twenty-four K',
         }]
     }, {
         name: '构建工具',

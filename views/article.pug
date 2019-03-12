@@ -50,7 +50,20 @@ append content
                             .post__next
                                 a(href=`/articles?id=${nextItem.path}`, title=nextItem.title) #{nextItem.title}
                                     i.icon.icon-next
+
+            #comment-container
+
         include _partial/sidebar
 
 append pagejs
     script(src=`${setting.static}static/js/post.js?t=${setting.tstamp}`)
+    script(src='https://cdn1.lncld.net/static/js/3.0.4/av-min.js')
+    script(src='https://unpkg.com/valine/dist/Valine.min.js')
+    script.
+
+        new Valine({
+            el: '#comment-container',
+            appId: 'pcYeFpCEFCMlw9kraPeoaAPG-gzGzoHsz',
+            appKey: 'OSM5tWDgT5DA7gSInl99v2Sk',
+            avatar: 'monsterid',
+        });

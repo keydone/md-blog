@@ -9,6 +9,12 @@ module.exports = (router) => {
     router.use('/search', require('./routes/search.js'));
     router.use('/articles', require('./routes/article.js'));
     router.use('/tags', require('./routes/tags.js'));
+    // 通用文章页
+    router.use([
+        '/reading',
+        '/softwares'
+    ],
+    require('./routes/papers.js'));
 
     // 前台 post / get 接口
     router.use('/api', require('./api'));

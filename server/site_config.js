@@ -36,14 +36,6 @@ module.exports = {
         email: 'k754708625@gmail.com',
     },
     url: 'https://kaiziye.cn',
-    permalink: 'p-:title-:year:month:day',
-    new_post_name: ':title-:year:month:day.md',
-    external_link: true, // 新标签页打开
-    render_drafts: false,
-    date_format: 'YYYY-MM-DD',
-    time_format: 'HH:mm:ss',
-    per_page: 10,
-    theme: 'hexo-theme-skapp',
     QRcode: `${env.cdn}static/img/avatar.png`,
     footers: [{
         name: '友情链接',

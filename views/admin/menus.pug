@@ -14,56 +14,97 @@ append content
             .col-wrap
                 .card-title 前台导航菜单:
                 .card-header
-                    .label-inline
-                        label.form-label 菜单名称:
-                        .form-label-input
-                            input.input-add(type="text", placeholder="填写菜单名称")
-                    .label-inline
-                        label.form-label 菜单链接:
-                        .form-label-input
-                            input.input-add(type="text", placeholder="填写菜单链接")
+                    .cart-form.pr
+                        span.pickBtn
+                            i.icon.icon-down
+                        .label-block
+                            label.form-label 菜单名称:
+                            .form-label-input.label-inline
+                                input.form-input.menu-must(type="text", placeholder="填写菜单名称")
+                        .label-block
+                            label.form-label 菜单链接:
+                            .form-label-input.label-inline
+                                input.form-input.menu-must(type="text", placeholder="填写菜单链接")
 
-                    a.btn.submit.btn-disabled(href="javascript:;", title="填写后可提交") 新增
+                        .label-block.pickup
+                            label.form-label 菜单附属数据(用于扩展菜单字段):
+                            .label-inline
+                                .form-label-input
+                                    input.json-key.form-input(type="text", placeholder="key", value="title")
+                                    | -
+                                    input.json-value.form-input(type="text", placeholder="value")
+
+                                    span.btn.add-row +
+                                    span.btn.remove-row -
+                                .form-label-input
+                                    input.json-key.form-input(type="text", placeholder="key", value="desc")
+                                    | -
+                                    input.json-value.form-input(type="text", placeholder="value")
+
+                                    span.btn.add-row +
+                                    span.btn.remove-row -
+                                .form-label-input
+                                    input.json-key.form-input(type="text", placeholder="key", value="cover")
+                                    | -
+                                    input.json-value.form-input(type="text", placeholder="value")
+
+                                    span.btn.add-row +
+                                    span.btn.remove-row -
+
+                        a.btn.submit.btn-disabled(href="javascript:;", title="填写后可提交", style="margin-left:140px;") 新增
 
                 .card-body
-                    table.card-table
-                        thead
-                            th(width=50) 序号
-                            th(width=100) ID
-                            th 菜单名称(双击进行编辑)
-                            th 菜单链接(双击进行编辑)
-                            th 排序(双击进行编辑)
-                            th(width=200) 操作
-                        tbody
-                            - let index = 0
-                            each item in menus
-                                - index++
-                                tr
-                                    td #{index}
-                                    td #{item._id}
-                                    td
-                                        .editable #{item.name}
-                                    td
-                                        .editable #{item.link}
-                                    td
-                                        .editable #{item.sort}
-                                    td
-                                        a.btn-hide.btn.btn-small.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? '' : 'hide'}`, data-type="hide")
-                                            i.icon.icon-hide
-                                            | 隐藏菜单
-                                        a.btn-show.btn.btn-small.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? 'hide' : ''}`, data-type="show")
-                                            i.icon.icon-open
-                                            | 启用菜单
-                                        a.btn-delete.btn.btn-small.btn-danger(href="javascript:;", data-id=`${item._id}`)
-                                            i.icon.icon-delete
-                                            | 删除
+                    if menus && menus.length
+                        table.card-table
+                            thead
+                                th(width=50) 序号
+                                th(width=70) ID
+                                th(width=70) 菜单名称(双击进行编辑)
+                                th(width=60) 菜单链接(双击进行编辑)
+                                th(width=60) 排序(双击进行编辑)
+                                th(width=200) 操作
+                            tbody
+                                - let index = 0
+                                each item in menus
+                                    - index++
+                                    tr
+                                        td #{index}
+                                        td #{item._id}
+                                        td
+                                            .editable #{item.name}
+                                        td
+                                            .editable #{item.link}
+                                        td
+                                            .editable #{item.sort}
+                                        td
+                                            a.btn-edit.btn(href="javascript:;", data-id=`${item._id}`, data-index=`${index-1}`)
+                                                i.icon.icon-edit
+                                                | 编辑菜单
+                                            a.btn-hide.btn.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? '' : 'hide'}`, data-type="hide")
+                                                i.icon.icon-hide
+                                                | 隐藏菜单
+                                            a.btn-show.btn.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? 'hide' : ''}`, data-type="show")
+                                                i.icon.icon-open
+                                                | 启用菜单
+                                            a.btn-delete.btn.btn-danger(href="javascript:;", data-id=`${item._id}`)
+                                                i.icon.icon-delete
+                                                | 删除
+                        input#menu(type="hidden", value=menus)
+
+                    else
+                        .nothing
+                            i.icon.icon-result
+                            p 暂无数据
 
 append pagejs
     script.
         // 新增
         var lock = false;
         var submit = $('.submit');
-        var inputAdd = $('.input-add');
+        var formInput = $('.menu-must');
+        var pickBtn = $('.pickBtn');
+        var pickUp = $('.pickup');
+        var menus = $('#menu').length ? JSON.parse($('#menu').val()) : '';
 
         function action(data, msg, callback) {
             $.ajax({
@@ -87,23 +128,7 @@ append pagejs
             })
         }
 
-        inputAdd.on('input', function(){
-            var vals = [];
-            inputAdd.each(function(index, item) {
-                var val = $(item).val();
-                if(val) {
-                    vals.push(1);
-                };
-            });
-
-            if(vals.length === inputAdd.length) {
-                submit.removeClass('btn-disabled');
-            } else {
-                submit.addClass('btn-disabled');
-            }
-        });
-
-        $(document).on('click', '.submit', function() {
+        function precheck() {
             if(lock) return;
             lock = true;
             setTimeout(function() {
@@ -111,25 +136,108 @@ append pagejs
             }, 300);
 
             var vals = [];
-            inputAdd.each(function(index, item) {
+            formInput.each(function(index, item) {
                 var val = $(item).val();
                 if(val) {
                     vals.push(val);
                 };
             });
-            var data = {
-                type: 'add',
-                name: vals[0],
-                link: vals[1],
-                show: true,
-            };
 
-            action(data, '新增成功!', function() {
-                inputAdd.val('');
+            var settings = {};
+            $('.json-key').each(function(index, item) {
+                var key = $(item).val();
+                var val = $(item).siblings('.json-value').val();
+                if(key && val) {
+                    settings[key] = val;
+                }
+            });
+
+            if(vals.length) {
+                var data = {
+                    type: 'add',
+                    name: vals[0],
+                    link: vals[1],
+                    show: true,
+                };
+
+                if(JSON.stringify(settings) != '{}') {
+                    data.settings = settings;
+                }
+
+                action(data, '新增成功!', function() {
+                    formInput.val('');
+                });
+            }
+        }
+
+        formInput.on('input', function(){
+            var vals = [];
+            formInput.each(function(index, item) {
+                var val = $(item).val();
+                if(val) {
+                    vals.push(1);
+                };
+            });
+
+            if(vals.length === formInput.length) {
+                submit.removeClass('btn-disabled');
+            } else {
+                submit.addClass('btn-disabled');
+            }
+        });
+
+        $(document).on('click', 'a.submit', function() {
+            precheck();
+        });
+
+        $(document).on('keydown', '.submit', function(e) {
+            if(e.keyCode === 13){
+                precheck();
+            };
+        });
+
+        // 添加行
+        $(document).on('click', '.add-row', function() {
+            var $this = $(this);
+            var row = $this.closest('.form-label-input').clone();
+            var block = $this.closest('.label-inline');
+            block.find('.form-label-input').eq(0).find('.remove-row').removeClass('hide');
+            row.find('.remove-row').removeClass('hide');
+            block.append(row);
+        });
+        // 删除行
+        $(document).on('click', '.remove-row', function() {
+            var $this = $(this);
+            var row = $this.closest('.form-label-input');
+            var block = $this.closest('.label-inline');
+            row.remove();
+            block.find('.form-label-input').eq(0).find('.remove-row').addClass('hide');
+        });
+
+        pickBtn.on('click', () => {
+            pickBtn.toggleClass('rotated');
+            pickUp.toggleClass('expend');
+        });
+
+        // 编辑菜单
+        $(document).on('click', '.btn-edit', function() {
+            var $this = $(this);
+            var index = $this.attr('data-index');
+            var menu = menus[index];
+            console.log(menu);
+            $.growl({
+                duration: false,
+                clickToClose: false,
+                layout: 'menu-edit',
+                location: 'dialog',
+                title: '编辑菜单',
+                message: '<div class="">'
+                    +'<div></div>'
+                +'</div>',
             });
         });
 
-        // 删除
+        // 删除菜单
         $(document).on('click', '.btn-delete', function() {
             if(lock) return;
             lock = true;
@@ -144,10 +252,12 @@ append pagejs
                 _id: _id,
             };
 
-            action(data, '删除成功!');
+            action(data, '删除成功!', function() {
+                $this.closest('tr').remove();
+            });
         });
 
-        // 隐藏
+        // 隐藏菜单
         $(document).on('click', '.btn-action', function() {
             if(lock) return;
             lock = true;

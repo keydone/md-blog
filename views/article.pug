@@ -25,6 +25,11 @@ append content
                         i.mark__icon.icon.icon-time
                         .mark__list.clearfix #{article.date || article.createdAt}
 
+                    .mark__block
+                        i.mark__icon.icon.icon-time
+                        .leancloud-visitors(id=`/articles?id=${article.path}`, data-flag-title=article.title)
+                            .leancloud-visitors-count
+
                     - var tags = article.tags
                     if tags.length && tags[0].length
                         .mark__block
@@ -34,21 +39,26 @@ append content
                                     li.mark__item
                                         a(href=`/tags/${tag}`) #{tag}
 
+                    .mark__block
+                        i.mark__icon.icon.icon-open
+                        .leancloud-visitors(id=`/articles/${article.path}`, data-flag-title=article.title)
+                            .leancloud-visitors-count
+
             .editormd-html-preview.post__content !{article.content}
                 #separator
                 .post-announce !{setting.announce} (
-                    a(href=`https://kaiziye.cn/articles?id=${article.path}`) https://kaiziye.cn/articles?id=#{article.path}
+                    a(href=`https://kaiziye.cn/articles/${article.path}`) https://kaiziye.cn/articles/#{article.path}
                     | )
 
                 if prevItem || nextItem
                     .post__prevs
                         if prevItem
                             .post__prev
-                                a(href=`/articles?id=${prevItem.path}`, title=prevItem.title): i.icon.icon-prev
+                                a(href=`/articles/${prevItem.path}`, title=prevItem.title): i.icon.icon-prev
                                     | #{prevItem.title}
                         if nextItem
                             .post__next
-                                a(href=`/articles?id=${nextItem.path}`, title=nextItem.title) #{nextItem.title}
+                                a(href=`/articles/${nextItem.path}`, title=nextItem.title) #{nextItem.title}
                                     i.icon.icon-next
 
             #comment-container
@@ -66,4 +76,5 @@ append pagejs
             appId: 'pcYeFpCEFCMlw9kraPeoaAPG-gzGzoHsz',
             appKey: 'OSM5tWDgT5DA7gSInl99v2Sk',
             avatar: 'monsterid',
+            visitor: true,
         });

@@ -1,20 +1,27 @@
 const Router = require('koa-router');
 const menu = require('../controllers/menu');
+const paper = require('../controllers/paper');
 
 const router = new Router();
 
 router
     .get('/',
-        async (ctx, next) => {
-            ctx.body = {};
-            // 首页分类数量限制
-            ctx.request.body.catesLimit = 12;
+        async (ctx) => {
+            ctx.body = {
+                route: `/papers-${ctx.params[0]}`,
+            };
             // 获取导航菜单
             await menu.findAll(ctx);
 
-            ctx.render('reading', {
+            ctx.render('papers', {
+                pageheader: false,
                 data: ctx.body,
             });
+        })
+    .post('/',
+        async (ctx) => {
+            console.log(3);
+            await paper.save(ctx);
         });
 
 module.exports = router.routes();

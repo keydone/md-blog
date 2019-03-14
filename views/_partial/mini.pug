@@ -5,11 +5,11 @@ article.page__mini-article
             span.date__day #{date.getDate()}
             span.date__month #{date.getMonth() + 1}月
 
-        a.icon.icon-open(target="_blank", href=`/articles?id=${post.path}`)
+        a.icon.icon-open(target="_blank", href=`/articles/${post.path}`)
 
     .mini-article__info
         h3.mini-article__title
-            a(href=`/articles?id=${post.path}`, title=post.title) #{ post.title }
+            a(href=`/articles/${post.path}`, title=post.title) #{ post.title }
         p.mini-article__author by&nbsp;
             a.author__item(href=setting.author.link, target="_blank") #{ setting.author.name || setting.author.nick }
 

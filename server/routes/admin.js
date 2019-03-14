@@ -31,9 +31,9 @@ router
             data: ctx.body,
         });
     })
-    .get('/write', async (ctx) => {
+    .get('/write/:id', async (ctx) => {
         ctx.body = {};
-        const { id } = ctx.query;
+        const { id } = ctx.params;
         let article = '';
 
         // 获取分类信息
@@ -52,9 +52,7 @@ router
         ctx.render('admin/write', {
             hideheader: true,
             hidefooter: true,
-            data: {
-                ...article,
-            },
+            data: article,
         });
     })
     .get('/note', (ctx) => {

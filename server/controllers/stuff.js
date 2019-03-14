@@ -1,4 +1,4 @@
-const StuffModel = require('../models/stuffs');
+const StuffModel = require('../models/stuffs-model');
 const Utils = require('../utils/utils');
 
 const findOne = async (articleId) => {

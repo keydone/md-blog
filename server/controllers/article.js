@@ -3,8 +3,8 @@ const mdCheckbox = require('markdown-it-checkbox');
 const mdSmartArrows = require('markdown-it-smartarrows');
 const mdDivs = require('markdown-it-div');
 const md = require('markdown-it')({ html: true }); */
-const ArticlesModel = require('../models/articles');
-const stuffs = require('../models/stuffs');
+const ArticlesModel = require('../models/articles-model');
+const stuffs = require('../models/stuffs-model');
 const Utils = require('../utils/utils');
 
 /* md.use(emoji)
@@ -67,7 +67,7 @@ const findLastPost = async (ctx) => {
 };
 
 const findOne = async (ctx, next) => {
-    const { id } = ctx.query;
+    const { id } = ctx.params;
     if (!ctx.body) ctx.body = {};
 
     try {

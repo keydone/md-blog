@@ -1,4 +1,4 @@
-const CatesModel = require('../models/categories');
+const CatesModel = require('../models/category-model');
 const Utils = require('../utils/utils');
 
 const findAll = async (ctx, next) => {

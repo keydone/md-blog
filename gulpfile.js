@@ -10,7 +10,13 @@ gulp.task('clean', () => del(['public/static/css', 'public/static/js']));
 
 gulp.task('css', () => gulp.src('./src/scss/*.scss')
     .pipe(sass())
-    .pipe(cssnano())
+    .pipe(cssnano({
+        'cssnano-preset-advanced': {
+            zindex: false,
+        },
+        reduceIdents: false,
+        discardComments: { removeAll: true }
+    }))
     .pipe(gulp.dest('./public/static/css')));
 
 gulp.task('commonjs', () => gulp.src('./src/js/common/*.js')
@@ -50,11 +56,11 @@ gulp.task('editor-plugins-js', () => gulp.src('./src/js/editor/**/*.js')
 
 const tasks = [
     // 'clean',
-    'css',
     // 'lib',
+    'css',
     'post',
     'commonjs',
-    // 'filepond',
+    'filepond',
     'editor',
     'editor-plugins-css',
     'editor-plugins-js',

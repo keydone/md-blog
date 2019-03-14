@@ -28,6 +28,7 @@ const Menus = new Schema({
         type: Number,
         default: 1,
     },
+    settings: Object,
 }, { timestamps: true });
 
 module.exports = mongoose.model('Menus', Menus);

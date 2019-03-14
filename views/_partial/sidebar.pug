@@ -9,7 +9,7 @@ aside.page__sidebar
         h3.block__title #{aside.intro}
         p.block__text !{aside.desc}
 
-    if data.categories
+    if data.categories && data.categories.length
         .sidebar__block
             h3.block__title #{aside.categories}
             ul.block-list.cates-list
@@ -19,7 +19,7 @@ aside.page__sidebar
                         if cate.num
                             span.block-list-count #{cate.num}
 
-    if data.last_post
+    if data.last_post && data.last_post.length
         .sidebar__block
             h3.block__title #{aside.last_post}
             ul.block-list.latest-post-list
@@ -33,7 +33,7 @@ aside.page__sidebar
                                     h3.item__title #{post.title}
                                     span.item__text #{post.date}
 
-    if data.tags
+    if data.tags && data.tags.length
         .sidebar__block
             h3.block__title #{aside.tag}
             ul.block-list.tag-list

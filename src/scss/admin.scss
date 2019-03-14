@@ -7,10 +7,10 @@ html, body{
 
 .btn{display: inline-block;
     transition: background .2s;
-    height: 40px;
-    line-height:40px;
+    height: 32px;
+    line-height:32px;
     padding: 0 20px;
-    background: #3b4444;
+    background: #14a3ce;
     white-space: nowrap;
     text-align: center;
     border-radius: 4px;
@@ -18,11 +18,11 @@ html, body{
     color: #fff;
     border: none;
     &:hover{
-        background: #222;
+        background: #0f93bb;
     }
 }
 
-.btn-disabled{background: #ccc !important;}
+.btn.btn-disabled{background: #ccc !important;}
 
 .btn-small{
     height: 24px;
@@ -35,12 +35,6 @@ html, body{
     }
 }
 
-.btn-action{background: #14a3ce;
-    .icon-hide{font-size: 17px;
-        vertical-align: middle;
-    }
-    &:hover{background: #0f93bb;}
-}
 .btn-danger{background: #ff4e2a;
     &:hover{background: #f12500;}
 }
@@ -56,6 +50,12 @@ html, body{
 .col-wrap{
     padding: 10px 15px;
     line-height: 24px;
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .col-layout{
@@ -81,9 +81,9 @@ html, body{
         display: block;
         margin:0 auto 10px;
         width: 120px;
-        height: 32px;
         color:#fff;
-        line-height: 30px;
+        height: 32px;
+        line-height: 32px;
         text-align: center;
         border-radius: 50px;
         background: $main-color;
@@ -172,6 +172,21 @@ html, body{
 .card-header{
     padding:20px 10px;
     border-bottom: 1px solid #f2f2f2;
+    .pickBtn{
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        position: absolute;
+        left: 330px;
+        top: 20px;
+        transition: transform .2s;
+        .icon-down{font-size: 30px;}
+        &.rotated{
+            transform: rotate(180deg);
+        }
+    }
 }
 
 .card-body{padding: 10px;}
@@ -193,26 +208,78 @@ html, body{
         border-color: #e6e6e6;
         text-align: left;
     }
+    .btn{
+        margin: 5px;
+        font-size: 13px;
+        .icon{margin-right: 5px;
+            vertical-align: middle;
+            top: -2px;
+        }
+        .icon-open{
+            font-size: 12px;
+            top: -1px;
+        }
+    }
 }
 
 .label-inline{
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     .form-label, .form-label-input{
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: top;
     }
     .form-label{
         margin-right: 10px;
     }
 }
 
-.input-add{
+.form-input{
     padding: 5px 10px;
-    height: 40px;
-    line-height: 40px;
+    line-height: 32px;
     border-radius: 3px;
     border:1px solid #e0e0e0;
     margin-right: 15px;
     font-size: 14px;
+    &.json-key{width: 70px;}
+    &.json-value{
+        width: 150px;
+        margin-left: 15px;
+    }
+}
+
+.label-block{
+    margin-bottom: 15px;
+    .form-label{
+        width: 130px;
+        text-align: right;
+        display: inline-block;
+        margin:7px 10px 0 0;
+        line-height: 18px;
+    }
+    .form-label-input{
+        margin-bottom:15px;
+        &.label-inline{margin:0;}
+    }
+    .label-inline{
+        .form-label-input{
+            display: block;
+        }
+    }
+    .btn{font-size: 24px;
+        vertical-align: middle;
+        margin-right: 15px;
+    }
+}
+
+input.form-input{height: 32px;}
+
+.pickup{
+    max-height: 0;
+    transition: max-height .2s;
+    overflow: hidden;
+    margin: 0;
+    &.expend{
+        max-height: 300px;
+    }
 }

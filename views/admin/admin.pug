@@ -17,7 +17,7 @@ append content
 
         .col-20
             .col-list
-                a.new-article(href="/admin/write") <i class="icon"></i>新建文章
+                a.new-article(href="/admin/write") 新建文章
                 #articles-list.articles-list
                     -let index = 0;
                     each article in list
@@ -35,7 +35,7 @@ append content
                                 i.update.icon.icon-publish(data-id=article._id, data-isdraft=0, class=`${article.isDraft? '': 'hide'}`) 立即发布
                                 i.update.icon.icon-draft(data-id=article._id, data-isdraft=1, class=`${article.isDraft? 'hide': ''}`) 转为草稿
                                 i.icon.icon-delete(data-id=article._id) 删除
-                                a.icon.icon-edit(href=`/admin/write?id=${article.path}`) 编辑
+                                a.icon.icon-edit(href=`/admin/write/${article.path}`) 编辑
 
                 //- 分页 paginator
                 include ../_partial/paginator

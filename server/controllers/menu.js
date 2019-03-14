@@ -1,4 +1,4 @@
-const MenusModel = require('../models/menus');
+const MenusModel = require('../models/menus-model');
 const Utils = require('../utils/utils');
 
 const findAll = async (ctx, next) => {

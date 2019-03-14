@@ -23,7 +23,7 @@ const findAll = async (ctx, next) => {
                 res.forEach((article) => {
                     const { content } = article;
                     if (content) {
-                        article.content = md.render(content);
+                        article.content = content;
                     } else {
                         article.content = '';
                     }
@@ -48,7 +48,7 @@ const findOne = async (ctx, next) => {
             .then((article) => {
                 const { content } = article;
                 if (content) {
-                    article.content = md.render(content);
+                    article.content = content;
                 } else {
                     article.content = '';
                 }
@@ -65,7 +65,7 @@ const findOne = async (ctx, next) => {
 const save = async (ctx, next) => {
     const article = new NotesModel(ctx.request.body);
     try {
-        await article.create();
+        await article.save();
         return { success: true };
     } catch (err) {
         return { success: false, msg: Utils.unexpected(err) };

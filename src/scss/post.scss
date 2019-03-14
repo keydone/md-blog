@@ -71,9 +71,11 @@
     margin-right: 15px;
     height: 24px;
 
+    .icon-open{font-size: 12px;}
+
     .mark__icon {
         margin-right: 5px;
-        width: 16px;
+        min-width: 16px;
     }
 
     .mark__list {

@@ -1,6 +1,51 @@
 extends ../layout/_layout
 
+append title
+    title 凯子 | 登录
+
+append pageCss
+    link(rel="stylesheet", href=`${setting.static}static/css/login.css?t=${setting.tstamp}`)
+
 append content
-    main.page__container.page__main
-        .page__content
-            .content__container 登录
+    .top-banner
+    main.page__container
+        if data.type === 'register'
+            .title-line
+                span.tit 注册
+            .login-box
+                .status-box
+                    input#form-username.input(maxlength="30", placeholder="你的手机号/邮箱", type="text", autocomplete="on")
+                    p.tips 请告诉我你的昵称吧
+                .status-box
+                    input#form-passwd.input(maxlength="30", placeholder="密码（6-16个字符组成，区分大小写）", type="password")
+                    p.tips 喵，你的密码太简单了
+                .status-box
+                    input#form-passwd_again.input(maxlength="30", placeholder="重新输入密码", type="password")
+                    p.tips 喵，你的密码不对
+                a.btn.btn-full.btn-reg(href="javascript:;") 注册
+                    i.icon.icon-loading
+                p.text-right
+                    a(href="/login") 已有账号，直接登录>
+
+        else
+            .title-line
+                span.tit 登录
+            .login-box
+                .status-box
+                    input#form-username.input(maxlength="30", placeholder="你的手机号/邮箱", type="text", autocomplete="on")
+                    p.tips 请输入注册时用的邮箱或者手机号呀
+                .status-box
+                    input#form-passwd.input(maxlength="30", placeholder="密码", type="password")
+                    p.tips 喵，你没输入密码么？
+                a.btn.btn-full.btn-login(href="javascript:;") 登录
+                    i.icon.icon-loading
+                //- .btn-box
+                    a.btn.btn-login(href="javascript:;") 登录
+                        i.icon.icon-loading
+                    a.btn.btn-reg.btn-white(href="/login?type=register") 注册
+                        i.icon.icon-loading
+
+append pagejs
+    script.
+        window.performanceTimer.loginStart = +window.performance.now();
+    script(src=`${setting.static}static/js/login.js?t=${setting.tstamp}`)

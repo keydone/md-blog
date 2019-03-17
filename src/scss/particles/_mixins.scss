@@ -13,10 +13,6 @@
     font-size: inherit;
     text-decoration: $dct;
     transition: color $transition;
-
-    &:hover {
-        color: $color;
-    }
 }
 
 @mixin post() {

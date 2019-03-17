@@ -1,20 +1,6 @@
-/* const emoji = require('markdown-it-emoji');
-const mdCheckbox = require('markdown-it-checkbox');
-const mdSmartArrows = require('markdown-it-smartarrows');
-const mdDivs = require('markdown-it-div');
-const md = require('markdown-it')({ html: true }); */
 const ArticlesModel = require('../models/articles-model');
 const stuffs = require('../models/stuffs-model');
 const Utils = require('../utils/utils');
-
-/* md.use(emoji)
-    .use(mdCheckbox, {
-        divWrap: true,
-        divClass: 'checkbox',
-        idPrefix: 'checkbox_'
-    })
-    .use(mdSmartArrows)
-    .use(mdDivs); */
 
 /**
  * @param {*page} page
@@ -68,7 +54,6 @@ const findLastPost = async (ctx) => {
 
 const findOne = async (ctx, next) => {
     const { id } = ctx.params;
-    if (!ctx.body) ctx.body = {};
 
     try {
         const article = await ArticlesModel.findOne({ path: id });
@@ -119,9 +104,8 @@ const save = async (ctx, next) => {
             ctx.body = { status: 1, msg: '文章id 已存在' };
         } else {
             try {
-                const article = new ArticlesModel(articleData);
-                await article.save();
-                ctx.body = { status: 0, msg: '发布成功!' };
+                const article = await new ArticlesModel(articleData).save();
+                ctx.body = { status: 0, msg: '发布成功!', article };
             } catch (err) {
                 ctx.body = { status: 1, msg: Utils.unexpected(err) };
             }

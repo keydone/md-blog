@@ -45,7 +45,6 @@
 }
 
 .post__info {
-    margin: $pad 0;
     padding-top: 10px;
     border-bottom: 1px dashed #ccc;
 }
@@ -119,6 +118,11 @@
 .post__content {
     @include post();
 
+    ul{list-style: disc inside;
+        ul{list-style: circle inside;
+            padding-left: 20px;
+        }
+    }
     ol{list-style: decimal inside;}
 
     .vshow{
@@ -195,10 +199,6 @@
         max-height: 65px;
         overflow: hidden;
     }
-}
-
-@media screen and (max-width: $mq-mobile) {
-    .page__main{padding: 20px 0;}
 }
 
 .form-figure{

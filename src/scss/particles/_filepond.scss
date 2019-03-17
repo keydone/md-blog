@@ -337,16 +337,6 @@
 /**
  * States
  */
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotateZ(0deg);
-    transform: rotateZ(0deg);
-  }
-  100% {
-    -webkit-transform: rotateZ(360deg);
-    transform: rotateZ(360deg);
-  }
-}
 @keyframes spin {
   0% {
     -webkit-transform: rotateZ(0deg);
@@ -355,30 +345,6 @@
   100% {
     -webkit-transform: rotateZ(360deg);
     transform: rotateZ(360deg);
-  }
-}
-
-@-webkit-keyframes shake {
-  10%,
-  90% {
-    -webkit-transform: translateX(-0.0625em);
-    transform: translateX(-0.0625em);
-  }
-  20%,
-  80% {
-    -webkit-transform: translateX(0.125em);
-    transform: translateX(0.125em);
-  }
-  30%,
-  50%,
-  70% {
-    -webkit-transform: translateX(-0.25em);
-    transform: translateX(-0.25em);
-  }
-  40%,
-  60% {
-    -webkit-transform: translateX(0.25em);
-    transform: translateX(0.25em);
   }
 }
 
@@ -403,29 +369,6 @@
   60% {
     -webkit-transform: translateX(0.25em);
     transform: translateX(0.25em);
-  }
-}
-
-@-webkit-keyframes fall {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(0.5);
-    transform: scale(0.5);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
-  }
-  70% {
-    opacity: 1;
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-    -webkit-animation-timing-function: ease-in-out;
-    animation-timing-function: ease-in-out;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    -webkit-animation-timing-function: ease-out;
-    animation-timing-function: ease-out;
   }
 }
 
@@ -541,7 +484,7 @@
 }
 
 .filepond--list-scroller::-webkit-scrollbar:vertical {
-  width: 5px;
+  width: 6px;
 }
 
 .filepond--list-scroller::-webkit-scrollbar:horizontal {
@@ -551,7 +494,7 @@
 .filepond--list-scroller::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10000px;
-  border: 0.3125em solid transparent;
+  border: 3px solid transparent;
   background-clip: content-box;
 }
 

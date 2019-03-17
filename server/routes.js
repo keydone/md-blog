@@ -1,3 +1,4 @@
+const Utils = require('./utils/utils');
 
 module.exports = (router) => {
     // 前台页面
@@ -11,10 +12,13 @@ module.exports = (router) => {
     // 通用文章页
     router.use('/papers-*', require('./routes/papers.js'));
 
-    // 前台 post / get 接口
+    // 前台接口
     router.use('/api', require('./api'));
 
-    // 后台管理 / 发布文章, 管理文章
-    router.use('/admin', require('./routes/admin.js'));
+    // 登录后台系统
+    router.use('/login', Utils.checkSession, require('./routes/login.js'));
+
+    // 后台管理 / 发布文章 / 管理文章
+    router.use('/admin', Utils.checkSession, require('./routes/admin.js'));
 
 };

@@ -10,18 +10,31 @@ const Pager = new Schema({
         type: String,
         default: ObjectId,
     },
-    // 标题
+    // 文章标题
     title: {
         type: String,
-        validate: requires('标题'),
+        validate: requires('文章标题'),
     },
-    content: {
-        type: String,
-        validate: requires('内容'),
-    },
+    // 副标题
+    subtitle: String,
+    // 文章封面
     cover: String,
-    category: String,
+    // 文章链接
+    path: {
+        type: String,
+        validate: requires('文章 id'),
+    },
+    // 作者
+    author: String,
+    date: String,
     assets: Array,
+    content: String,
+    markdown: String,
+    // 是否为草稿
+    isDraft: {
+        type: Number,
+        default: 0,
+    },
 }, { timestamps: true });
 
 module.exports = Pager;

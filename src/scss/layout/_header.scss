@@ -2,13 +2,17 @@ $header-height: 270px   !default;
 $nav-height: 60px       !default;
 
 body {
+
     @media screen and (max-width: $mq-mobile) {
-        .page__header--small {
+        /* .page__header--small {
             .nav__list {
                 background: $main-color;
                 background: linear-gradient(to right, $main-color 35%, $main-color--hover 100%);
             }
-        }
+        } */
+
+        #page{padding-bottom: 0;}
+        .page__main{padding: 20px 10px;}
 
         .page__menu-btn {
             display: inline-block;
@@ -79,19 +83,28 @@ body {
     }
 
     &--small {
+        .page-navmask, .page-navmaskbg{
+            position: absolute;
+            left: 0; right: 0;
+            height: $nav-height;
+        }
+        /* .page-navmask{
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .page-navmaskbg{
+            filter: blur(7px);
+            background: url('/static/img/navmask.png') center -10px no-repeat;
+        } */
         .page__navbar {
             height: $nav-height;
             background: $main-color;
-            background: linear-gradient(to right, #326d96 35%, $main-color--hover 100%);
+            /* background: linear-gradient(to right, #326d96 35%, $main-color--hover 100%); */
         }
 
         .page__logo {
             margin: 0;
         }
 
-        #page__nav .nav__item a:hover {
-            color: darken($main-color, 20%);
-        }
     }
 }
 
@@ -129,6 +142,15 @@ body {
     }
 }
 
+.page__header--small{
+    .nav__item{
+        &.active, &:hover{
+            background: #3592ba;
+            a{color: #fff !important;}
+        }
+    }
+}
+
 #page__nav {
     transition: transform $transition, opacity $transition;
 
@@ -141,42 +163,19 @@ body {
 
     .nav__item {
         float: left;
-        list-style: none;
+        margin-left: 5px;
+        transition: background .2s;
 
-        & > a {
+        a {
             display: block;
             height: $nav-height;
             line-height: $nav-height;
-            padding: 0 $pad / 2;
             @include link($main-color);
+            position: relative;
+            padding: 0 10px;
             color: #fff;
+            &:hover{color: $main-color;}
         }
-    }
-}
-
-@keyframes animations {
-    0% {
-        transform-origin: center bottom;
-        transform: translateY(-80px) scale(0);
-        opacity: 0;
-    }
-
-    25% {
-        transform-origin: center bottom;
-        transform: translateY(-120px) scale(.25);
-        opacity: .25;
-    }
-
-    60% {
-        transform-origin: center;
-        transform: translateY(0px) scale(.6);
-        opacity: .5;
-    }
-
-    100% {
-        transform-origin: center;
-        transform: translateY(0px) scale(1);
-        opacity: 1;
     }
 }
 

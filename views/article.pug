@@ -25,11 +25,6 @@ append content
                         i.mark__icon.icon.icon-time
                         .mark__list.clearfix #{article.date || article.createdAt}
 
-                    .mark__block
-                        i.mark__icon.icon.icon-time
-                        .leancloud-visitors(id=`/articles?id=${article.path}`, data-flag-title=article.title)
-                            .leancloud-visitors-count
-
                     - var tags = article.tags
                     if tags.length && tags[0].length
                         .mark__block
@@ -54,7 +49,8 @@ append content
                     .post__prevs
                         if prevItem
                             .post__prev
-                                a(href=`/articles/${prevItem.path}`, title=prevItem.title): i.icon.icon-prev
+                                a(href=`/articles/${prevItem.path}`, title=prevItem.title)
+                                    i.icon.icon-prev
                                     | #{prevItem.title}
                         if nextItem
                             .post__next
@@ -66,15 +62,24 @@ append content
         include _partial/sidebar
 
 append pagejs
-    script(src=`${setting.static}static/js/post.js?t=${setting.tstamp}`)
-    script(src='https://cdn1.lncld.net/static/js/3.0.4/av-min.js')
-    script(src='https://unpkg.com/valine/dist/Valine.min.js')
     script.
-
-        new Valine({
-            el: '#comment-container',
-            appId: 'pcYeFpCEFCMlw9kraPeoaAPG-gzGzoHsz',
-            appKey: 'OSM5tWDgT5DA7gSInl99v2Sk',
-            avatar: 'monsterid',
-            visitor: true,
-        });
+        window.performanceTimer.postStart = +window.performance.now();
+    script(src=`${setting.static}static/js/post.js?t=${setting.tstamp}`)
+    script.
+        window.performanceTimer.avStart = +window.performance.now();
+    script(src='https://cdn1.lncld.net/static/js/3.0.4/av-min.js')
+    script.
+        window.performanceTimer.valineStart = +window.performance.now();
+    script(src='https://unpkg.com/valine/dist/Valine.min.js', async)
+    script.
+        window.performanceTimer.valineEnd = +window.performance.now();
+    script.
+        window.onload = function() {
+            new Valine({
+                el: '#comment-container',
+                appId: 'pcYeFpCEFCMlw9kraPeoaAPG-gzGzoHsz',
+                appKey: 'OSM5tWDgT5DA7gSInl99v2Sk',
+                avatar: 'monsterid',
+                visitor: true,
+            });
+        }

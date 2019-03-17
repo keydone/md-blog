@@ -25,7 +25,7 @@ module.exports = {
     favicon_ico: `${env.cdn}static/img/favicon.ico`,
     avatar: `${env.cdn}static/img/avatar.png`,
     header_cover: 'https://static.kaiziye.cn/static/images/dy.png',
-    default_cover: 'https://static.kaiziye.cn/static/images/dy.png',
+    default_cover: '/static/img/img_loading.png',
     author: {
         name: 'keydone',
         link: 'https://github.com/keydone'

@@ -86,10 +86,10 @@ table, tr, th, td {
 ::-moz-placeholder{color: #999;}
 
 ::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
+    height: 6px;
+    width: 6px;
     background: rgba(103, 103, 103, .3);
-    border-radius: 5px;
+    border-radius: 3px;
     &:hover {
         background: rgba(103, 103, 103, .3);
     }
@@ -97,7 +97,7 @@ table, tr, th, td {
 
 ::-webkit-scrollbar-thumb {
     background: rgba(103, 103, 103, .7);
-    border-radius: 5px;
+    border-radius: 6px;
     &:hover {
         background-color: rgba(103, 103, 103, 1);
     }

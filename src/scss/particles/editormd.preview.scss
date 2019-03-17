@@ -11,7 +11,7 @@
     padding: 20px 0;
     overflow: auto;
     width: 100%;
-    background-color: #fff;color: #888;
+    background-color: #fff;
 
     table {
         border: none;
@@ -76,8 +76,6 @@
     }
 
     #{$prefix}toc-menu {
-        display: inline-block;
-
         .markdown-toc {
             position: relative;
             @include border-radius(4px);
@@ -100,7 +98,7 @@
                 display: none;
                 background: #fff;
                 border: 1px solid #ddd;
-                @include border-radius(4px);
+                border-radius: 4px;
                 @include box-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
 
                 > li ul {
@@ -109,7 +107,8 @@
                     border: 1px solid #ddd;
                     display: none;
                     background: #fff;
-                    @include border-radius(4px);
+                    border-radius: 4px;
+                    padding: 0;
                 }
 
                 > li a {
@@ -126,7 +125,6 @@
 
             li {
                 position: relative;
-
                 > ul {
                     position: absolute;
                     top: 32px;
@@ -170,9 +168,7 @@
             line-height: 1;
             border-bottom: 1px solid #eee;
 
-            .fa {
-                padding-left: 10px;
-            }
+            .fa {padding-left: 10px;}
         }
 
         .toc-menu-btn {
@@ -183,9 +179,7 @@
             display: inline-block;
             @include transition(background-color 500ms ease-out);
 
-            &:hover {
-                background-color: #f6f6f6;
-            }
+            &:hover {background-color: #f6f6f6;}
 
             .fa {
                 float: right;
@@ -211,9 +205,7 @@ hr.editormd-page-break {
 }
 
 #{$prefix}html-preview {
-    textarea {
-        display : none;
-    }
+    textarea {display : none;}
 
     hr.editormd-page-break {
         background: none;
@@ -228,15 +220,15 @@ hr.editormd-page-break {
     font-size: 18px;
     @include border-radius(500px);
     display: none;
-    background-color: #ccc;
+    background: #ccc;
     position: absolute;
     top: 25px;
     right: 35px;
     z-index: 20;
-    @include transition(background-color 300ms ease-out);
+    @include transition(background 300ms ease-out);
 
     &:hover {
-        background-color: #999;
+        background: #999;
     }
 }
 

@@ -28,7 +28,11 @@ aside.page__sidebar
                         li
                             a(href=post.path, title=post.title)
                                 .item__cover
-                                    img(src=setting.default_cover || post.img, alt=post.title)
+                                    if post.img
+                                        img(src=post.img, alt=post.title)
+                                    else
+                                        img.default_cover(src=setting.default_cover, alt=post.title)
+
                                 .item__info
                                     h3.item__title #{post.title}
                                     span.item__text #{post.date}

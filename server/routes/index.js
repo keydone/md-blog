@@ -8,7 +8,9 @@ const articles = require('../controllers/article');
 router
     .get('/',
         async (ctx, next) => {
-            ctx.body = {};
+            ctx.body = {
+                route: '/',
+            };
             // 首页分类数量限制
             ctx.request.body.catesLimit = 12;
             // 获取导航菜单

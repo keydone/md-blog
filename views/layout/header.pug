@@ -1,9 +1,11 @@
 
 if data
+    -const { route, menus } = data
 
-    header(id=`${pageheader !== false? 'page-header' : ''}`, class=`page__header${pageheader === false? '--small' : ''}`, style=`background: url(${setting.header_cover}) 50% 50%;background-size:cover;`)
-
+    header(id=`${pageheader !== false? 'page-header' : ''}`, class=`page__header${pageheader === false? '--small' : ''}`, style=`${pageheader === false ? '' : `background: url(${setting.header_cover}) 50% 50%;background-size:cover;`}`)
         nav.page__navbar
+            .page-navmaskbg
+            .page-navmask
             .page__container.navbar-container
                 a#page__logo.page__logo(href=setting.domain, title=setting.title, alt=setting.title)
                     span.letter(data-letter="k") k
@@ -16,9 +18,9 @@ if data
 
                 nav#page__nav
                     ul.nav__list.clearfix
-                        each menu in data.menus
+                        each menu in menus
                             if menu.show
-                                li.nav__item
+                                li.nav__item(class=`${menu.link === route ? 'active' : ''}`)
                                     a(href=menu.link, title=menu.name) #{menu.name}
 
                 button.page__menu-btn(type="button")

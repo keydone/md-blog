@@ -52,6 +52,31 @@ class Utils {
         }
         return { success: false, msg: msgArr[0] || err.message || '我也不知道发生了什么 (-_-)' };
     }
+
+    async checkSession(ctx, next) {
+        if (ctx.session.user) {
+            // 已登录
+            if (ctx.request.path === '/login') {
+                const { url } = ctx.request;
+                const ref = url.split('?ref=')[1];
+                ctx.redirect(ref || '/admin');
+            }
+        } else if (ctx.request.path !== '/login') {
+            // 未登录
+            const { url } = ctx.request;
+
+            if (ctx.request.method === 'POST') {
+                ctx.body = {
+                    status: 1,
+                    msg: '请重新登录!',
+                    redirect: '/login',
+                };
+                return;
+            }
+            ctx.redirect(`/login?ref=${url}`);
+        }
+        await next();
+    }
 }
 
 module.exports = new Utils();

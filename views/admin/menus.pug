@@ -14,7 +14,7 @@ append content
             .col-wrap
                 .card-title 前台导航菜单:
                 .card-header
-                    .cart-form.pr
+                    .card-form.pr
                         span.pickBtn
                             i.icon.icon-down
                         .label-block
@@ -79,16 +79,12 @@ append content
                                         td
                                             a.btn-edit.btn(href="javascript:;", data-id=`${item._id}`, data-index=`${index-1}`)
                                                 i.icon.icon-edit
-                                                | 编辑菜单
                                             a.btn-hide.btn.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? '' : 'hide'}`, data-type="hide")
                                                 i.icon.icon-hide
-                                                | 隐藏菜单
                                             a.btn-show.btn.btn-action(href="javascript:;", data-id=`${item._id}`, class=`${item.show ? 'hide' : ''}`, data-type="show")
                                                 i.icon.icon-open
-                                                | 启用菜单
                                             a.btn-delete.btn.btn-danger(href="javascript:;", data-id=`${item._id}`)
                                                 i.icon.icon-delete
-                                                | 删除
                         input#menu(type="hidden", value=menus)
 
                     else
@@ -97,184 +93,4 @@ append content
                             p 暂无数据
 
 append pagejs
-    script.
-        // 新增
-        var lock = false;
-        var submit = $('.submit');
-        var formInput = $('.menu-must');
-        var pickBtn = $('.pickBtn');
-        var pickUp = $('.pickup');
-        var menus = $('#menu').length ? JSON.parse($('#menu').val()) : '';
-
-        function action(data, msg, callback) {
-            $.ajax({
-                type: 'POST',
-                url: '/admin/menus-action',
-                dataType: 'json',
-                data: data,
-                success: function(res) {
-                    if(res.status === 0) {
-                        $.growl.notice({
-                            message: msg,
-                        });
-
-                        callback && callback();
-                    } else {
-                        $.growl.error({
-                            message: res.msg,
-                        });
-                    }
-                },
-            })
-        }
-
-        function precheck() {
-            if(lock) return;
-            lock = true;
-            setTimeout(function() {
-                lock = false;
-            }, 300);
-
-            var vals = [];
-            formInput.each(function(index, item) {
-                var val = $(item).val();
-                if(val) {
-                    vals.push(val);
-                };
-            });
-
-            var settings = {};
-            $('.json-key').each(function(index, item) {
-                var key = $(item).val();
-                var val = $(item).siblings('.json-value').val();
-                if(key && val) {
-                    settings[key] = val;
-                }
-            });
-
-            if(vals.length) {
-                var data = {
-                    type: 'add',
-                    name: vals[0],
-                    link: vals[1],
-                    show: true,
-                };
-
-                if(JSON.stringify(settings) != '{}') {
-                    data.settings = settings;
-                }
-
-                action(data, '新增成功!', function() {
-                    formInput.val('');
-                });
-            }
-        }
-
-        formInput.on('input', function(){
-            var vals = [];
-            formInput.each(function(index, item) {
-                var val = $(item).val();
-                if(val) {
-                    vals.push(1);
-                };
-            });
-
-            if(vals.length === formInput.length) {
-                submit.removeClass('btn-disabled');
-            } else {
-                submit.addClass('btn-disabled');
-            }
-        });
-
-        $(document).on('click', 'a.submit', function() {
-            precheck();
-        });
-
-        $(document).on('keydown', '.submit', function(e) {
-            if(e.keyCode === 13){
-                precheck();
-            };
-        });
-
-        // 添加行
-        $(document).on('click', '.add-row', function() {
-            var $this = $(this);
-            var row = $this.closest('.form-label-input').clone();
-            var block = $this.closest('.label-inline');
-            block.find('.form-label-input').eq(0).find('.remove-row').removeClass('hide');
-            row.find('.remove-row').removeClass('hide');
-            block.append(row);
-        });
-        // 删除行
-        $(document).on('click', '.remove-row', function() {
-            var $this = $(this);
-            var row = $this.closest('.form-label-input');
-            var block = $this.closest('.label-inline');
-            row.remove();
-            block.find('.form-label-input').eq(0).find('.remove-row').addClass('hide');
-        });
-
-        pickBtn.on('click', () => {
-            pickBtn.toggleClass('rotated');
-            pickUp.toggleClass('expend');
-        });
-
-        // 编辑菜单
-        $(document).on('click', '.btn-edit', function() {
-            var $this = $(this);
-            var index = $this.attr('data-index');
-            var menu = menus[index];
-            console.log(menu);
-            $.growl({
-                duration: false,
-                clickToClose: false,
-                layout: 'menu-edit',
-                location: 'dialog',
-                title: '编辑菜单',
-                message: '<div class="">'
-                    +'<div></div>'
-                +'</div>',
-            });
-        });
-
-        // 删除菜单
-        $(document).on('click', '.btn-delete', function() {
-            if(lock) return;
-            lock = true;
-            setTimeout(function() {
-                lock = false;
-            }, 300);
-
-            var $this = $(this);
-            var _id = $this.attr('data-id');
-            var data = {
-                type: 'remove',
-                _id: _id,
-            };
-
-            action(data, '删除成功!', function() {
-                $this.closest('tr').remove();
-            });
-        });
-
-        // 隐藏菜单
-        $(document).on('click', '.btn-action', function() {
-            if(lock) return;
-            lock = true;
-            setTimeout(function() {
-                lock = false;
-            }, 300);
-
-            var $this = $(this);
-            var display = $this.attr('data-type') == 'show';
-            var _id = $this.attr('data-id');
-            var data = {
-                type: 'display',
-                _id: _id,
-                show: display,
-            };
-
-            action(data, display ? '菜单已显示!' : '菜单已隐藏!', function() {
-                $this.addClass('hide').siblings('.btn-action').removeClass('hide');
-            });
-        });
+    script(src=`${setting.static}static/js/menus.js?t=${setting.tstamp}`)

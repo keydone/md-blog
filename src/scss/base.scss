@@ -1,5 +1,7 @@
 @import './particles/consts';
+@import './particles/keyframes';
 @import './particles/reset';
+@import './particles/wares';
 @import './particles/icon';
 @import './particles/js-toggle';
 @import './particles/prettify';
@@ -7,6 +9,7 @@
 @import './particles/mixins';
 @import './particles/index';
 @import './messager/growl';
+@import './messager/snarl';
 @import './layout/index';
 
 .fl{float: left;}
@@ -21,6 +24,46 @@
 .pa{position: absolute;}
 .tac{text-align: center;}
 
+.btn{display: inline-block;
+    vertical-align: top;
+    transition: background .2s;
+    height: 32px;
+    line-height:32px;
+    padding: 0 20px;
+    background: #14a3ce;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    &:hover{background: #0f93bb;}
+    &.btn-full{display: block;}
+    &.btn-disabled{background: #ccc !important;}
+}
+
+.btn-white{
+    color: #555;
+    background: #fff;
+    border: 1px solid #ccc;
+    &:hover{background: #f7f7f7;}
+}
+
+.btn-small{
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    padding: 0 5px;
+    margin: 0 5px;
+    .icon{font-size: inherit;
+        margin-right:5px;
+    }
+}
+
+.btn-cancel, .btn-danger{background: #ff4e2a;
+    &:hover{background: #f12500;}
+}
+
 .link {
     font-size: inherit;
     text-decoration: none;
@@ -33,21 +76,6 @@
 
 .main-color{
     color: $main-color;
-}
-
-@keyframes overturn{
-    0%{
-        transform:
-            rotateX(0deg)
-            rotateY(-30deg)
-            rotateZ(0deg);
-    }
-    100%{
-        transform:
-            rotateX(0deg)
-            rotateY(-50deg)
-            rotateZ(0deg);
-    }
 }
 
 .letter{

@@ -1,11 +1,11 @@
 doctype html
 html(lang="en")
     //- loading 页面
-    - var isMobile = locals.isMobile
-    - var pageheader = locals.pageheader
-    - var hideheader = locals.hideheader
-    - var setting = locals.setting
-    - var data = locals.data
+    - const isMobile = locals.isMobile
+    - const pageheader = locals.pageheader
+    - const hideheader = locals.hideheader
+    - const setting = locals.setting
+    - const data = locals.data
 
     head
         include head.pug
@@ -45,8 +45,17 @@ html(lang="en")
 
         script.
             var isMobile = #{isMobile};
-        script(type="text/javascript", src='https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js')
-        script(type="text/javascript", src=`${setting.static}static/js/lib.js?t=${setting.tstamp}`)
-        script(type="text/javascript", src=`${setting.static}static/js/common.js?t=${setting.tstamp}`)
+            window.performanceTimer = {};
+        script.
+            window.performanceTimer.jQStart = +window.performance.now();
+        script(src='https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js')
+        script.
+            window.performanceTimer.libStart = +window.performance.now();
+        script(src=`${setting.static}static/js/lib.js?t=${setting.tstamp}`)
+        script.
+            window.performanceTimer.commonStart = +window.performance.now();
+        script(src=`${setting.static}static/js/common.js?t=${setting.tstamp}`)
+        script.
+            window.performanceTimer.commonEnd = +window.performance.now();
 
         block pagejs

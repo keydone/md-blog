@@ -1,22 +1,26 @@
 extends layout/_layout
 
 append title
-    title 凯子 | 悦读
+    -const { route, menus } = data
+    -let curmenu = {}
+    each menu in menus
+        if menu.link === route
+            - curmenu = menu
+
+    title 凯子 | #{curmenu.name}
 
 append pageCss
     link(rel="stylesheet", href=`${setting.static}static/css/post.css?t=${setting.tstamp}`)
 
 append content
 
-    main.page__container.page__main
+    main.page__container
         .page__content
             .content__container
-                each menu in data.menus
-                    if menu.link === data.route
-                        header#papers-header.post__info
-                            h1.post__title #{menu.name}
-                            if menu.settings
-                                p.post__desc #{menu.settings.desc}
+                header#papers-header.post__info
+                    h1.post__title #{curmenu.name}
+                    if curmenu.settings
+                        p.post__desc #{curmenu.settings.desc}
 
                 if list
                     ul.blog__list
@@ -40,17 +44,20 @@ append content
                         i.icon.icon-result
                         p 暂无数据
 
+    input(id="type", type="hidden", value=curmenu.link)
 
 append pagejs
     script.
+        var type = $('#type').val();
+
         $.ajax({
             type: 'POST',
-            url: '/kz-reading/111',
+            url: type + '/111',
             data: {
                 title: 'title',
                 content: 'content',
             },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
             }
         });

@@ -7,7 +7,9 @@ const articles = require('../controllers/article');
 
 router
     .get('/', async (ctx) => {
-        ctx.body = {};
+        ctx.body = {
+            route: `/papers-${ctx.params[0]}`,
+        };
         ctx.request.body.catesLimit = 12;
         // 获取导航菜单
         await menu.findAll(ctx);

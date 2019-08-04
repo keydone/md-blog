@@ -9,7 +9,7 @@
     "i": "sudo yarn install --ignore-engines",
     "pull": "sudo git pull --rebase",
     "start": "nodemon app.js & gulp",
-    "serve": "node webpack/utils/koa-serve.js"
+    "serve": "node frontend/webpack/utils/koa-serve.js"
   },
   "keywords": [
     "Mac",
@@ -29,13 +29,13 @@
   "devDependencies": {
     "@babel/core": "^7.5.4",
     "@babel/plugin-transform-runtime": "^7.5.0",
-    "@vue/babel-preset-app": "^3.9.2",
-    "babel-loader": "^8.0.6",
     "@koa/cors": "^3.0.0",
     "@logux/eslint-config": "^27.0.0",
+    "@vue/babel-preset-app": "^3.9.2",
     "ali-oss": "^6.1.0",
     "autoprefixer": "^9.6.1",
     "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.6",
     "busboy": "^0.3.0",
     "chalk": "^2.4.2",
     "clean-webpack-plugin": "^3.0.0",
@@ -67,6 +67,7 @@
     "markdown-it-div": "^1.1.0",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-smartarrows": "^1.0.1",
+    "mime": "^2.4.4",
     "mini-css-extract-plugin": "^0.7.0",
     "moment": "^2.24.0",
     "mongoose": "^5.4.10",

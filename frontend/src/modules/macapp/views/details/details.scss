@@ -1,0 +1,40 @@
+.detail-container{
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,.1);
+    margin-bottom: 20px;
+    padding:25px;
+    .crumb-nav{
+        margin-bottom: 20px;
+    }
+}
+
+.article-header{
+    border-bottom: 1px solid $border-color-base;
+    margin-bottom: 20px;
+    .big-title{
+        font-size: 24px;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    .article-meta{
+        display: flex;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 13px;
+        color: #999;
+        .meta-block{
+            flex: 1;
+            padding:0 10px;
+            border-left: 1px solid #999;
+            &:first-child{border-left:0;}
+        }
+    }
+}
+
+.article-main{
+    line-height: 1.7;
+    font-size: 16px;
+    color: #444;
+}

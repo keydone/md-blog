@@ -49,10 +49,41 @@
     }
 }
 
+#app{
+    min-height: 100vh;
+}
+
 .full-screen{
     height: 100vh;
 }
 
 .main-container{
     display: flex;
+}
+
+/*
+* login
+*/
+.user-auth {
+    background: url("../../assets/images/logo.jpg") repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-auth__wrap{
+    width: 400px;
+    padding: 50px 0;
+    transform: translate(0, -40px);
+}
+.auth-logo {
+    padding: 50px;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+.auth-title {
+    font-weight: bold;
+    text-align: center;
+    margin: 30px 0;
+    color: #fff;
 }

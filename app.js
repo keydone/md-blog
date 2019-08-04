@@ -3,8 +3,8 @@ const path = require('path');
 const Pug = require('koa-pug');
 const cors = require('@koa/cors');
 const Router = require('koa-router');
-const cacheControl = require('koa-cache-control');
-const BodyParser = require('koa-bodyparser');
+// const cacheControl = require('koa-cache-control');
+const bodyParser = require('koa-bodyparser');
 const compression = require('koa-compress');
 const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
@@ -68,9 +68,10 @@ app.use(cors())
     .use(async (ctx, next) => {
         // 判断是否为手机访问
         const isMobile = Utils.isMobile(ctx);
+
         pug.locals.isMobile = isMobile;
         ctx.util = {
-            log: log4js
+            log: log4js,
         };
         await next();
     })
@@ -79,7 +80,7 @@ app.use(cors())
         ctx.util.log.info(`host: ${ctx.req.headers.host} - url: ${ctx.request.url} - status: ${ctx.request.status}`);
         await next();
     })
-    .use(BodyParser({
+    .use(bodyParser({
         formLimit: '200mb',
         jsonLimit: '200mb',
         textLimit: '200mb',

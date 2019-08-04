@@ -1,6 +1,13 @@
 .main-aside{
     width: 300px;
     margin:0 30px;
+    position: relative;
+    .aside-container{
+        /* position: absolute;
+        top: 0;
+        left: 0;
+        right: 0; */
+    }
     .notice-banner,
     .side-block{
         &:first-child{margin-top:0;}
@@ -19,5 +26,42 @@
     .sideblock-box,
     .notice-banner{
         padding: 15px;
+    }
+    .statistics{
+        display: flex;
+        text-align: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+    .statistics-span{
+        flex: 1;
+        padding: 10px;
+        border-left: 1px solid $border-color-base;
+        &:first-child{border-left:0;}
+    }
+    .align-center{
+        text-align: center;
+    }
+
+    .list-col{
+        .list-col-item{
+            margin-top: 10px;
+            border-radius: 3px;
+            display: flex;
+            &:first-child{margin-top:0;}
+        }
+    }
+    .list-col-img{
+        width: 60px;
+    }
+    .list-col-detail{
+        flex: 1;
+        padding-left: 10px;
+        h4{@include textoverflow(2);}
+        time{display: block;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #999;
+        }
     }
 }

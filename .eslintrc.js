@@ -60,6 +60,7 @@ module.exports = {
         'prefer-spread': 2,
         'quotes': [1, 'single'],
         'radix': 2,
+        'require-atomic-updates': 0,
         'semi': [2, 'always'],
         'space-unary-ops': [2, { 'words': true, 'nonwords': false }],
         'strict': 2,

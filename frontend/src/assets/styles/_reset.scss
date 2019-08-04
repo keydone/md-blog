@@ -58,6 +58,7 @@ a {display: inline-block;
     font-size: inherit;
     outline: none;
     cursor: pointer; /* 解决IOS10.3点不动问题 */
+    &:hover{color: $color-link-base-hover;}
 }
 
 table {

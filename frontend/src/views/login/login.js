@@ -5,12 +5,13 @@ import { serviceLogin } from '@js/common/services';
 export default {
     data() {
         return {
+            appOnload: true,
             form: {
 
             },
-            rules: [{
+            rules: {
 
-            }],
+            },
         };
     },
     computed: {

@@ -2,7 +2,7 @@
  * 公共服务接口
  */
 
-import baseService from '@js/http/service.js';
+import baseService from '@js/http/http.js';
 
 /**
  * 用户登录

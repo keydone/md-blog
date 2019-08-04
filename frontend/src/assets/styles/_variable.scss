@@ -18,7 +18,7 @@ $nav-background-hover              : #585858;
 /* link
 -------------------------- */
 $color-link-base                   : #61A5FF;
-$color-link-base-hover             : rgba(51, 51, 51, .9);
+$color-link-base-hover             : #1488ff;
 
 /* checkbox radio
 -------------------------- */
@@ -61,7 +61,13 @@ $font-weight-medium                : 500;
 $font-family                       : OpenSans,Arial,Helvetica,PingFang SC,Microsoft YaHei,SimSun,sans-serif;
 $font-line-height                  : 1;
 
-/* Animation
--------------------------- */
-$animation-transition-time          : 300ms;
-$animation-transition-timing        : ease-in-out;
+/*
+* mixin
+*/
+@mixin textoverflow($lines){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+}

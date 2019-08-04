@@ -1,9 +1,11 @@
-/**
- * localstorage 公共信息等
+/*!
+ * @author claude
+ * date 07/05/2019
+ * localstorage 常量
  */
 
-const lsKey = 'mylocalstorage';
+const lsKeyLogin = 'login';
 
-export default {
-    lsKey,
+export {
+    lsKeyLogin,
 };

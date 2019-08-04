@@ -80,6 +80,14 @@
     }
 }
 
+.main-nav-fly{
+    height: 64px;
+}
+
+.main-nav-right{
+    background: linear-gradient(#eff0f0, #2c2c2c);
+}
+
 .heading-side{
     height: 36px;
     li{margin-left: 15px;
@@ -106,7 +114,7 @@
     .el-input{
         width: 0;
         overflow: hidden;
-        transition: width .3s;
+        transition: width .4s;
         vertical-align: top;
     }
     .el-input-target{

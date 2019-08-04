@@ -98,7 +98,7 @@
 		align-items: center;
 	}
 	.footer-top {
-		padding: 30px 0;
+		padding: 60px 0 30px;
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 	}
 	.footer-bottom {

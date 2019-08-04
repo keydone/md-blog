@@ -4,13 +4,13 @@
 */
 
 const routes = [{
-    path: '/weconfig',
-    name: 'weconfig-index',
+    path: '/softs',
+    name: 'softs',
     component: () => import('../views/index/index.vue'),
 }, {
-    path: '/weconfig/list',
-    name: 'weconfig-list',
-    component: () => import('../views/list/list.vue'),
+    path: '/softs/detail',
+    name: 'softs-detail',
+    component: () => import('../views/details/details.vue'),
 }];
 
 export default routes;

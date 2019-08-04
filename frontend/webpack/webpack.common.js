@@ -162,7 +162,7 @@ const webpackConfig = {
         }),
         new HtmlWebpackPlugin({
             template: resolve('../src/template/index.ejs'),
-            favicon: resolve('../src/assets/images/x-logo.png'),
+            favicon: resolve('../src/assets/images/logo.jpg'),
             inject: true,
         }),
         new FriendlyErrorsPlugin(),

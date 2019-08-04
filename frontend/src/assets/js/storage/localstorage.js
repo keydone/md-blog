@@ -1,4 +1,6 @@
-/**
+/*!
+ * @author claude
+ * date 07/05/2019
  * 简单封装 ls
  */
 const { localStorage } = window;

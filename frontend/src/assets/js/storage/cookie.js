@@ -1,4 +1,6 @@
-/**
+/*!
+ * @author claude
+ * date 07/05/2019
  * 简单封装 cookie
  * api 与 js-cookie 相同
  * 默认所有 api 都会自动添加前缀

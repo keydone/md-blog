@@ -17,6 +17,12 @@
 .hidden{display: none;}
 .shown{display: block;}
 
+.align-center{text-align: center;}
+.block-center{
+    display: block;
+    margin: 0 auto;
+}
+
 .btn-normal{
     height: 36px;
     line-height: 1;

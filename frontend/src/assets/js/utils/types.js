@@ -102,10 +102,8 @@ export const deepMerge = (/* obj1, obj2, obj3, ... */...args) => {
         }
     }
 
-    /* eslint-disable */
     for (let i = 0, l = args.length; i < l; i++) {
         forEach(args[i], assignValue);
     }
-    /* eslint-enable */
     return result;
 };

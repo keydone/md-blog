@@ -4,16 +4,17 @@
  * 公共 route 配置文件
  */
 
+/**
+ * @param {meta: requiresAuth} Boolean false 无需登录权限即可进入
+ * @param {meta: requiresLogout} Boolean true 必须未登录才能访问
+ * @param {meta: permission} Boolean 表明当前用户是否有权限访问
+ * @param {meta: icon} String 当前菜单的图标
+ * @param {meta: title} String 当前菜单的标题
+ */
 import others from './others';
 
-/**
- * @param {meta: requiresAuth} Boolean false 无需登录即可进入
- * @param {meta: requiresLogout} Boolean true 登录后将无法访问
- * @param {meta: showSidebar} Boolean true 是否显示侧边栏导航
- */
-
 // 主框架路由
-const routes = [
+const baseRoutes = [
     {
         path: '/',
         meta: {
@@ -50,6 +51,10 @@ const routes = [
         },
         component: () => import('@views/register/register.vue'),
     }, {
+        path: '/resetpassword',
+        name: 'resetpassword',
+        component: () => import('@views/index/index.vue'),
+    }, {
         path: '*',
         name: 'notfound',
         meta: {
@@ -60,4 +65,4 @@ const routes = [
     },
 ];
 
-export default routes;
+export default baseRoutes;

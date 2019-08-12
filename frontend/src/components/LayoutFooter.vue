@@ -94,8 +94,14 @@
 	}
 	.footer-container {
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
+	}
+	.footer-top__item {
+		padding: 20px;
+		flex: 1;
+		&:first-child {
+			flex: 2;
+		}
 	}
 	.footer-top {
 		padding: 60px 0 30px;

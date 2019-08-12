@@ -24,7 +24,7 @@
                 </el-form-item>
             </el-form>
             <el-button>返回首页</el-button>
-            <el-button>立即登录</el-button>
+            <el-button @click="autoLogin">立即登录</el-button>
 
             <div class="to-register">
                 <router-link :to="{name: 'register'}">立即注册</router-link> . <router-link :to="{name: 'resetpassword'}">忘记密码</router-link>
@@ -36,6 +36,3 @@
 </template>
 
 <script src="./login.js"></script>
-
-<style lang="scss">
-</style>

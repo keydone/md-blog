@@ -1,8 +1,13 @@
+import markdownItVue from 'markdown-it-vue';
+
 export default {
+    components: {
+        markdownItVue,
+    },
     data() {
         return {
             form: {
-
+                email: '',
             },
             select: [{
                 label: '@163.com',
@@ -18,5 +23,11 @@ export default {
                 value: '@gmail.com',
             }],
         };
+    },
+    methods: {
+        handleCommand(command) {
+            console.log(command);
+
+        },
     },
 };

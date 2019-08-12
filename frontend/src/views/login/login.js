@@ -1,6 +1,6 @@
 import { mapState } from 'vuex';
 import { baseLogin } from '@js/router/auth';
-import { serviceLogin } from '@js/common/services';
+import { } from '@js/common/services';
 
 export default {
     data() {
@@ -28,13 +28,13 @@ export default {
     methods: {
         async autoLogin() {
             // 请求接口
-            const { code } = await serviceLogin({
+            /* const { code } = await this.http(serviceLogin, {
                 data: {
 
                 },
-            });
+            }); */
 
-            // const code = 0;
+            const code = 0;
 
             if (code === 0) {
                 const isLogin = true;
@@ -46,8 +46,6 @@ export default {
                     name: 'index',
                 });
             }
-
-
         },
     },
 };

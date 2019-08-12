@@ -1,7 +1,7 @@
 <template>
     <blocker
         id="popular"
-        title="站长推荐"
+        title="站长精选"
     >
         <ul slot="content-slot">
             <div class="col-col">

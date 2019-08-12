@@ -5,7 +5,11 @@
  */
 
 const lsKeyLogin = 'login';
+const lsKeyUserinf = 'userinf';
+const lsKeyMenuList = 'menuList';
 
 export {
     lsKeyLogin,
+    lsKeyUserinf,
+    lsKeyMenuList,
 };

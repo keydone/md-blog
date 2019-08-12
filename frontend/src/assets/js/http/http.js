@@ -33,30 +33,14 @@
  * 所以你可以根据 code 进行不同错误的后续处理
  * 前台 code 提供了 'cancelled', 'timeout'
  */
-// import axios from 'axios';
 import baseService from '@js/http/httpCreate.js';
 import { deepMerge } from '@js/utils/types';
 
-// 需要啥方法就直接加, 后面支持扩展
-const methods = ['get', 'post', 'delete', 'put'];
+const http = (config = {}, options = {}) => {
+    const result = deepMerge(config, options);
 
-// 创建 http 对象
-const http = {
-    // 添加 cancelToken
-    // cancelToken: () => axios.CancelToken.source(),
-    // isCancel: (thrown) => String(thrown).includes('Cancel menually: '),
+    result.btnState = options.btnState; // deepMerge 无法合并正确的 dom, 也无法合并正确的 promise
+    return baseService(result);
 };
-
-// 添加默认方法
-methods.forEach(method => {
-    http[method] = (config = {}, options = {}) => {
-        const result = deepMerge(config, options);
-
-        result.method = method;
-        result.btnState = options.btnState; // deepMerge 无法合并正确的 dom
-        // result.cancelToken = options.cancelToken; // deepMerge 无法合并正确的 promise
-        return baseService(result);
-    };
-});
 
 export default http;

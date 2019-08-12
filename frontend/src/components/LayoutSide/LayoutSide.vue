@@ -1,31 +1,34 @@
 <template>
     <aside class="main-aside">
-        <transition name="transverse-revert">
+        <transition name="fade">
             <div
                 v-if="transition"
                 class="aside-container"
             >
                 <div class="side-block notice-banner">
-                    <div class="imgbanner">
-                        <router-link :to="{name: 'index'}">
-                            <img
-                                src="../../assets/images/adguard.png"
-                                class="notice-img"
-                            >
-                        </router-link>
-                    </div>
-                    <div class="imgbanner">
-                        <router-link :to="{name: 'index'}">
-                            <img
-                                src="../../assets/images/adguard.png"
-                                class="notice-img"
-                            >
-                        </router-link>
-                    </div>
+                    <slider
+                        slot="content-slot"
+                        class="imgbanner"
+                        animation="fade"
+                        height="135px"
+                    >
+                        <slider-item
+                            v-for="index in 3"
+                            :key="index"
+                            :speed="300"
+                        >
+                            <router-link :to="{ name: 'softs-detail' }">
+                                <img
+                                    src="../../assets/images/adguard.png"
+                                    class="notice-img"
+                                >
+                            </router-link>
+                        </slider-item>
+                    </slider>
                 </div>
 
                 <!-- 站内搜索 -->
-                <div class="side-block">
+                <!-- <div class="side-block">
                     <h3 class="sideblock-title">站内搜索</h3>
                     <div class="sideblock-box">
                         <div class="search">
@@ -50,26 +53,39 @@
                             <el-button type="primary">打赏</el-button>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <!-- 个人信息 -->
-                <div class="side-block">
-                    <h3 class="sideblock-title">个人信息</h3>
+                <!-- 个人等级 -->
+                <!-- <div class="side-block">
+                    <h3 class="sideblock-title">个人等级</h3>
                     <div class="sideblock-box">
                         <div class="userProfile">
-                            <el-button
-                                class="empty-block"
-                                type="primary"
+                            <router-link
+                                class="empty-block block-center"
+                                :to="{ name: 'login' }"
                             >
-                                登录查看
-                            </el-button>
+                                <el-button
+                                    class="block-center"
+                                    type="primary"
+                                >
+                                    登录 查看
+                                </el-button>
+                            </router-link>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- 最新文章 -->
                 <div class="side-block">
-                    <h3 class="sideblock-title">最新文章</h3>
+                    <h3 class="sideblock-title">
+                        最新文章
+                        <router-link
+                            class="more-link"
+                            to="/"
+                        >
+                            查看更多<i class="el-icon-arrow-right" />
+                        </router-link>
+                    </h3>
                     <div class="sideblock-box list-col">
                         <router-link
                             class="list-col-item"
@@ -100,7 +116,15 @@
 
                 <!-- 热门标签 -->
                 <div class="side-block">
-                    <h3 class="sideblock-title">热门标签</h3>
+                    <h3 class="sideblock-title">
+                        热门标签
+                        <router-link
+                            class="more-link"
+                            to="/"
+                        >
+                            查看更多<i class="el-icon-arrow-right" />
+                        </router-link>
+                    </h3>
                     <ul class="sideblock-box tags">
                         <li>热门</li>
                         <li>标签</li>
@@ -112,7 +136,13 @@
 </template>
 
 <script>
+	import { Slider, SliderItem } from 'vue-easy-slider';
+
 	export default {
+		components: {
+			Slider,
+			SliderItem,
+		},
 		props: {
 			transition: {
 				type: Boolean,

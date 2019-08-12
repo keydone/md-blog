@@ -26,11 +26,10 @@ $checkbox-color                    : #61A5FF;
 
 /* text color
 -------------------------- */
-$color-text-base                   : #000;
-$color-text-second                 : #333;
-$color-text-third                  : #666;
+$color-text-base                   : #333;
+$color-text-second                 : #666;
 $color-text-light                  : #999;
-$color-text-placeholder            : #999;
+$color-text-third                  : #ccc;
 $color-text-disabled               : #D8D8D8;
 $color-text-selected               : #FF8A00;
 
@@ -70,4 +69,9 @@ $font-line-height                  : 1;
     display: -webkit-box;
     -webkit-line-clamp: $lines;
     -webkit-box-orient: vertical;
+}
+
+@mixin inline-block(){
+    display: inline-block;
+    vertical-align: middle;
 }

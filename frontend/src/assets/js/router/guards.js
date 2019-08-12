@@ -6,7 +6,7 @@
 
 /**
  * 实现思路:
- * - 判断 to.meta 是否需要登录权限
+ * - 根据 to.meta 判断是否需要登录权限
  *      1, 不需要
  *          - 如果跳转后有需要, 跳到登录页并带上 redirect
  *          - 确定跳转后不需要, 但是登录时访问登录页, 则自动跳转到首页
@@ -22,54 +22,38 @@
  */
 import { baseIsLogin } from './auth';
 
-// 返回来源页
-const redirect = () => {
-    const { href } = window.location;
-    const redirect = window.decodeURIComponent(href).split('?redirect=')[1];
-
-    if (redirect) {
-        window.location.href = redirect;
-    }
-};
-
 export default function guards(router) {
 
     router.beforeEach((to, from, next) => {
-        // to and from are both route objects. must call `next`.
-
-        // console.log(to, from);
-        // 权限认证
+        // 获取登录信息 & 权限认证
         const isLogin = baseIsLogin();
 
         // 无需登录
         if (to.matched.some(record => record.meta.requiresAuth !== true)) {
-            // 可能会有登录权限
-            if (to.matched.some(record => record.meta.requiresAuth)) {
-                // 只能未登录时访问
-                if (isLogin) {
-                    redirect(redirect);
-                }
-            } else if (to.matched.some(record => record.meta.requiresLogout)) {
+            if (to.matched.some(record => record.meta.requiresLogout)) {
                 // 登录后访问了不可访问的路由, 比如登录页
                 if (isLogin) {
                     router.replace({
                         name: 'index',
                     });
                 }
-            } else {
-                redirect(redirect);
             }
         } else {
-            // 未登录
+            // 需要登录
             if (!isLogin) {
                 router.replace({
                     name: 'login',
                     query: {
-                        redirect,
+                        redirect: window.location.pathname,
                     },
                 });
+            } else if (to.matched.some(record => record.meta.permission === true)) {
+                // 有访问权限
+                // next();
             } else {
-                redirect(redirect);
+                // 没有访问权限
+                console.log('没有访问权限');
+                router.push({ name: 'notfound' });
             }
         }
         // 最后必须调用 next

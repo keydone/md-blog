@@ -2,22 +2,6 @@
     .banners{
         padding: 10px;
     }
-
-    .articles{
-        position: relative;
-        margin-bottom: -30px;
-        padding: 25px 40px;
-        &:after{
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 0;
-            border-top: 20px solid #fff;
-            border-left:20px solid #fff;
-            border-right:20px solid transparent;
-            border-bottom:20px solid transparent;
-        }
-    }
 }
 
 .index-block{
@@ -141,5 +125,29 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+    }
+}
+
+.broadcast-msg{
+    position: relative;
+    margin-bottom: -30px;
+    padding: 25px 40px;
+    &:after{
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 0;
+        border-top: 20px solid #fff;
+        border-left:20px solid #fff;
+        border-right:20px solid transparent;
+        border-bottom:20px solid transparent;
+    }
+    .broadcast-msg_wrap{
+        height: 20px;
+        line-height: 20px;
+        overflow: hidden;
+        li{float: left;
+            width: 50%;
+        }
     }
 }

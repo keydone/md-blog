@@ -2,22 +2,19 @@
  * 公共服务接口
  */
 
-import baseService from '@js/http/http.js';
-
 /**
  * 用户登录
  */
-export const serviceLogin = (config = {}, defaultOpt = {
+export const serviceLogin = {
     url: '/user/login',
-    loading: false,
-}) => baseService(config, defaultOpt);
+};
 
 /**
  * 注销登录
  */
-export const serviceLogout = () => { };
+export const serviceLogout = {};
 
 /**
  * 找回密码
  */
-export const serviceFindPw = () => { };
+export const serviceFindPw = {};

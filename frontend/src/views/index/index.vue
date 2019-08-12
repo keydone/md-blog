@@ -2,7 +2,6 @@
     <div class="index-content">
         <!-- 轮播 -->
         <div class="index-block banners">
-            <router-link :to="{ name: 'softs-detail' }">正文</router-link>
             <banner />
         </div>
 
@@ -19,10 +18,10 @@
         <popular />
 
         <!-- 文章 -->
-        <div class="index-block articles">
-            <ul class="article_wrap">
-                <li>article</li>
-                <li>article</li>
+        <div class="index-block broadcast-msg">
+            <ul class="broadcast-msg_wrap">
+                <li>欢迎 Claude 加入</li>
+                <li>欢迎 Claude 加入</li>
             </ul>
         </div>
     </div>
@@ -31,7 +30,6 @@
 <script>
 	import { mapState } from 'vuex';
 	import { baseLoginOut } from '@js/router/auth';
-	import { serviceLogin } from '@js/common/services';
 	import banner from './components/banner.vue';
 	import besttop from './components/besttop.vue';
 	import newest from './components/newest.vue';
@@ -58,16 +56,11 @@
 			}),
 		},
 		created() {
-			console.log('isLogin:', this.isLogin);
+			// console.log('isLogin:', this.isLogin);
 		},
 		methods: {
 			loginOut() {
 				baseLoginOut();
-			},
-			async http() {
-				const { code } = await serviceLogin();
-
-				console.log(code);
 			},
 		},
 	};

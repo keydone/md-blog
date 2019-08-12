@@ -28,7 +28,7 @@ const httpInstance = axios.create({
 
 // 请求拦截器
 httpInstance.interceptors.request.use(config => {
-    console.log('config:', config);
+    // console.log('config:', config);
     // 在这里处理默认请求头等配置
     // 如: config.timeout = 1000;
 
@@ -52,7 +52,7 @@ httpInstance.interceptors.request.use(config => {
 // 响应拦截器
 httpInstance.interceptors.response.use(
     response => {
-        console.log('response:', response);
+        // console.log('response:', response);
         // 登录信息失效或需要重新登录
         if (response.data.redirect) {
             // 跳转到登录页

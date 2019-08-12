@@ -13,7 +13,7 @@
         <main :class="['main-container', { 'full-screen': $route.meta.hideBaseHeader }]">
             <section class="main-section">
                 <!-- 主体开始 -->
-                <transition name="transverse-slide">
+                <transition name="fade">
                     <router-view />
                 </transition>
                 <!-- 主体结束 -->
@@ -71,7 +71,7 @@
 			transform: translate(0, 0);
 		}
 		80% {
-			transform: translate(0, 5px);
+			transform: translate(0, 10px);
 		}
 		100% {
 			transform: translate(0, 0);
@@ -79,7 +79,7 @@
 	}
 	.appOnload {
 		.base-heading {
-			animation: bounce 0.24s linear forwards;
+			animation: bounce 0.24s ease-in forwards;
 		}
 	}
 	/* 头部样式 */
@@ -100,28 +100,37 @@
 	.main-section {
 		flex: 1;
 		padding-left: 30px;
+		min-width: 800px;
 	}
 	/* .vertical-slide-enter-active,
-		.vertical-slide-leave-active,
-		.transverse-slide-enter-active,
-		.transverse-slide-leave-active {
-		transition: transform 0.2s ease;
-		}
-		.vertical-slide-enter,
-		.vertical-slide-leave-to {
-		transform: translateY(10px);
-		}
-		.transverse-slide-enter,
-		.transverse-slide-leave-to {
-		transform: translateX(10px);
-		}
+	.vertical-slide-leave-active,
+	.transverse-slide-enter-active,
+	.transverse-slide-leave-active {
+	transition: transform 0.2s ease;
+	}
+	.vertical-slide-enter,
+	.vertical-slide-leave-to {
+	transform: translateY(10px);
+	}
+	.transverse-slide-enter,
+	.transverse-slide-leave-to {
+	transform: translateX(10px);
+	}
 
-		.transverse-revert-enter-active,
-		.transverse-revert-leave-active {
-		transition: transform 0.3s ease;
-		}
-		.transverse-revert-enter,
-		.transverse-revert-leave-to {
-		transform: translateX(-10px);
-		} */
+	.transverse-revert-enter-active,
+	.transverse-revert-leave-active {
+	transition: transform 0.3s ease;
+	}
+	.transverse-revert-enter,
+	.transverse-revert-leave-to {
+	transform: translateX(-10px);
+	} */
+	.fade-enter-active,
+	.fade-leave-active {
+		transition: opacity 0.2s ease-out;
+	}
+	.fade-enter,
+	.fade-leave-to {
+		opacity: 0.5;
+	}
 </style>

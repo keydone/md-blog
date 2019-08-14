@@ -1,23 +1,26 @@
 /**
+ * @author claude
+ * date 07/05/2019
  * 公共服务接口
  */
-
-import baseService from '@bjs/http/service.js';
 
 /**
  * 用户登录
  */
-export const serviceLogin = (config = {}, defaultOpt = {
-    url: '/user/login',
-    loading: false,
-}) => baseService(config, defaultOpt);
+export const serviceLogin = {
+    url: '/api/user/login',
+};
 
 /**
  * 注销登录
  */
-export const serviceLogout = () => { };
+export const serviceLogout = {
+    url: '/api/user/login',
+};
 
 /**
  * 找回密码
  */
-export const serviceFindPw = () => { };
+export const serviceFindPw = {
+    url: '/api/user/login',
+};

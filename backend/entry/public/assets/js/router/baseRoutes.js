@@ -1,40 +1,67 @@
-/*
-*  公共 route 配置文件
-*/
-
-import others from './others';
+/*!
+ * @author claude
+ * date 07/05/2019
+ * 公共 route 配置文件
+ */
 
 /**
- * @param {meta: ignoreLogin} Boolean 为 true 无需登录即可进入
+ * @param {meta: requiresAuth} Boolean false 无需登录权限即可进入
+ * @param {meta: requiresLogout} Boolean true 必须未登录才能访问
+ * @param {meta: permission} Boolean 表明当前用户是否有权限访问
+ * @param {meta: icon} String 当前菜单的图标
+ * @param {meta: title} String 当前菜单的标题
  */
 
 // 主框架路由
-const mainRoutes = [
-    {
+const baseRoutes = [
+    /* {
         path: '/',
-        name: 'index',
-        component: () => import('@bviews/index.vue'),
-    }, {
+        meta: {
+            // hidden: true, // 默认菜单不显示
+        },
+        component: () => import('@bcomp/LayoutBase.vue'),
+        children: [
+            {
+                path: '/',
+                name: 'index',
+                component: () => import('@bviews/index/index.vue'),
+            },
+            // 其他系统路由挂在到主系统下
+            ...others,
+        ],
+    },  */{
         path: '/login',
         name: 'login',
         meta: {
-            ignoreLogin: true,
+            requiresLogout: true,
+            showSideBlock: false,
+            hideBaseHeader: true,
+            hideBaseFooter: true,
         },
         component: () => import('@bviews/login/login.vue'),
+    }, {
+        path: '/register',
+        name: 'register',
+        meta: {
+            requiresLogout: true,
+            showSideBlock: false,
+            hideBaseHeader: true,
+            hideBaseFooter: true,
+        },
+        component: () => import('@bviews/register/register.vue'),
+    }, {
+        path: '/resetpassword',
+        name: 'resetpassword',
+        component: () => import('@bviews/index.vue'),
     }, {
         path: '*',
         name: 'notfound',
         meta: {
-            ignoreLogin: true,
+            showSidebar: false,
+            roles: '*',
         },
         component: () => import('@bviews/404.vue'),
     },
 ];
 
-const routes = [
-    ...mainRoutes,
-    // 其他系统路由
-    ...others,
-];
-
-export default routes;
+export default baseRoutes;

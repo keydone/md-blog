@@ -1,4 +1,6 @@
-/**
+/*!
+ * @author claude
+ * date 07/05/2019
  * 日期格式化
  */
 export const dateFormat = (timestamp, format = 'yyyy-MM-dd hh:mm') => {

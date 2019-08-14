@@ -1,8 +1,17 @@
-/**
+/*!
+ * @author claude
+ * date 07/05/2019
  * 用户认证相关
  */
+
 import { UPDATE_USER } from '@bjs/const/mutationTypes';
+import {
+    lsKeyLogin,
+    lsKeyMenuList,
+    lsKeyUserinf,
+} from '@bjs/const/localstorage';
 import ls from '@bjs/storage/localstorage';
+import { mergeRoute } from './resolve';
 import store from '@bjs/store/store';
 
 /**
@@ -10,11 +19,12 @@ import store from '@bjs/store/store';
  */
 export const baseIsLogin = () => {
     // 以 ls 为准
-    let isLogin = ls.get('login');
+    const isLogin = ls.get(lsKeyLogin);
 
-    isLogin = isLogin == null ? null : (isLogin === 'true');
-
-    baseLogin(isLogin);
+    if (isLogin && !store.getters.isLogin) {
+        // 同步更新 store
+        syncStoreUserinfo({ isLogin });
+    }
 
     return isLogin;
 };
@@ -22,29 +32,55 @@ export const baseIsLogin = () => {
 /**
  * 登录
  */
-export const baseLogin = async (isLogin) => {
-    // 同步更新 store
-    store.commit(UPDATE_USER, { isLogin });
-    if (isLogin != null) {
-        ls.set('login', isLogin);
+export const baseLogin = async (isLogin, menuList) => {
+
+    syncStoreUserinfo({ isLogin, menuList });
+
+    if (isLogin) {
+        // 登录成功, 存储用户信息
+        ls.set(lsKeyLogin, isLogin);
+        ls.set(lsKeyMenuList, menuList);
+        // 合并路由权限等
+        mergeRoute();
+
+        const { $route, $router } = window.$app;
+
+        if ($route.meta.requiresLogout) {
+            const { href } = window.location;
+            const url = window.decodeURIComponent(href);
+            const target = url.split('?redirect=')[1];
+
+            $router.replace(target || '/');
+        } else {
+            window.location.reload();
+        }
     }
 };
 
 /**
- * 同步用户状态
+ * 同步 store 中的用户状态
  */
-export const syncUserState = async () => {
+export const syncStoreUserinfo = ({ isLogin }) => {
+    // 同步更新 store
+    store.commit(UPDATE_USER, { isLogin });
+};
+
+/**
+ * 同步多标签用户状态
+ */
+export const syncTabsUserState = async () => {
     // 未登录
     window.addEventListener('storage', (e) => {
 
-        if (e.key === 'isLogin') {
+        if (e.key === ls.get(lsKeyLogin)) {
 
-            if (e.newValue === 'true') {
+            if (ls.get(e.newValue)) {
                 // 已登录
-                baseLogin(true);
+                baseLogin();
+
             } else {
                 // 未登录或已过期
-                resetToLogin();
+                baseLoginOut();
             }
         }
     });
@@ -53,18 +89,28 @@ export const syncUserState = async () => {
 /**
  * 强制用户下线, 清除登录信息并跳转到登录页面
  */
-export const resetToLogin = (router) => {
+export const baseLoginOut = () => {
 
-    const $router = router || window.$app.$router;
+    const { $router } = window.$app;
 
     // 重置 store 和 localstorage
-    store.commit(UPDATE_USER, { isLogin: null });
-    ls.remove('login');
+    syncStoreUserinfo({ isLogin: null });
+    ls.remove(lsKeyLogin, lsKeyUserinf);
 
     $router.replace({
         name: 'login',
         query: {
-            // redirect: router.currentRoute.fullPath,
+            redirect: $router.currentRoute.fullPath,
         },
     });
+};
+
+/**
+ * 读取用户信息
+ */
+export const getUserInfo = () => {
+    // 读取本地存储
+    const menuList = ls.get(lsKeyMenuList);
+
+    return menuList;
 };

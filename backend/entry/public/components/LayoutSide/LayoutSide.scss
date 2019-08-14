@@ -1,6 +1,6 @@
 .nav-aside{
     display: flex;
-    background: url('../../assets/images/bg.jpg') repeat-y;
+    background: url('../../assets/images/shiyuan.jpg') repeat-y;
 }
 
 /* 系统导航 */
@@ -10,7 +10,7 @@
         text-align: center;
         padding: 10px 20px;
         line-height: 20px;
-        border-bottom: $border-base-style;
+        // border-bottom: $border-base-style;
     }
     [class^=el-icon-]{
         display: block;

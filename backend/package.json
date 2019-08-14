@@ -9,7 +9,7 @@
     "i": "sudo yarn install --ignore-engines",
     "pull": "sudo git pull --rebase",
     "start": "nodemon app.js & gulp",
-    "serve": "node webpack/utils/koa-serve.js"
+    "serve": "node entry/webpack/utils/koa-serve.js"
   },
   "keywords": [
     "Mac",

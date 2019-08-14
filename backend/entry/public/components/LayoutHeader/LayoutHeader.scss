@@ -1,6 +1,16 @@
 .base-heading{
     display: flex;
     color: #fff;
-    justify-content: center;
-    line-height: 56px;
+    height: 60px;
+    .heading-logo{
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 60px;
+        background: none;
+        color: #fff;
+        border: 0;
+    }
+    .heading-bar{
+        margin-left: auto;
+    }
 }

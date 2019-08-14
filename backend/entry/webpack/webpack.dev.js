@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const { webpackConfig } = require('./webpack.common.js');
+const { webpackConfig } = require('./webpack.common.js.js');
 
 const resolve = (dir) => path.resolve(__dirname, dir);
 
@@ -43,8 +43,8 @@ const devServer = {
     watchOptions: {
         ignored: [
             'node_modules',
-            resolve('../../../frontend'),
-            resolve('../../../covers'),
+            resolve('../../backend'),
+            resolve('../../covers'),
         ],
     },
     plugins,

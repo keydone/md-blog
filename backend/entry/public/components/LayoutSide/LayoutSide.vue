@@ -1,38 +1,57 @@
 <template>
     <div
+        v-if="mainMenus.length"
         width="200px"
         class="nav-aside"
     >
-        <el-aside
-            width="100px"
-            class="main-aside"
-        >
+        <el-aside class="main-aside">
             <el-menu>
-                <el-menu-item index="1">
-                    <i class="el-icon-menu" />
-                    <h4 slot="title">weconfig</h4>
-                </el-menu-item>
-                <el-menu-item index="2">
-                    <i class="el-icon-setting" />
-                    <h4 slot="title">wedefend</h4>
-                </el-menu-item>
+                <el-menu-item-group
+                    v-for="item in mainMenus"
+                    :key="item.name"
+                >
+                    <template slot="title">
+                        <i
+                            v-if="item.icon"
+                            :class="item.icon"
+                        />
+                        <h4>{{ item.title }}</h4>
+                    </template>
+                    <el-menu-item
+                        v-for="(value, key) in item.children"
+                        :key="key"
+                    >
+                        <i
+                            v-if="value.icon"
+                            :class="value.icon"
+                        />
+                        <h4 class="title">{{ value.title }}</h4>
+                    </el-menu-item>
+                </el-menu-item-group>
             </el-menu>
         </el-aside>
-        <el-aside
+        <!-- <el-aside
             width="200px"
             class="second-menus"
         >
             <el-menu>
-                <el-menu-item index="1">
-                    <i class="el-icon-menu" />
-                    <span slot="title">导航1</span>
-                </el-menu-item>
-                <el-menu-item index="2">
-                    <i class="el-icon-setting" />
-                    <span slot="title">导航2</span>
+                <el-menu-item
+                    v-for="item in secondMenus"
+                    :key="item.name"
+                >
+                    <i
+                        v-if="item.icon"
+                        :class="item.icon"
+                    />
+                    <span
+                        slot="title"
+                        class="subtitle"
+                    >
+                        <router-link :to="{name: item.name}">{{ item.title }}</router-link>
+                    </span>
                 </el-menu-item>
             </el-menu>
-        </el-aside>
+        </el-aside> -->
     </div>
 </template>
 

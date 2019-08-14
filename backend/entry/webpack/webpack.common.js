@@ -158,7 +158,7 @@ const webpackConfig = {
         }),
         new HtmlWebpackPlugin({
             template: resolve('../public/template/index.ejs'),
-            favicon: resolve('../public/assets/images/x-logo.png'),
+            favicon: resolve('../public/assets/images/logo.jpg'),
             inject: true,
         }),
         new FriendlyErrorsPlugin(),

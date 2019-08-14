@@ -1,12 +1,8 @@
 /* base color
 -------------------------- */
-$color-white                       : #FFF;
-$color-black                       : #000;
-$color-yellow                      : #FFDA00;
-$color-ddd                         : #DDD;
-
-$color-primary                     : #AFA37E;
-$color-primary-light               : #EAE5D4;
+$color-main                        : #3d464d;
+$color-primary                     : #1E9FFF;
+$color-primary-light               : #1ea0ffcc;
 $color-primary-darken              : #978755;
 
 $color-success                     : #5BBA69;
@@ -21,7 +17,8 @@ $nav-background-hover              : #585858;
 
 /* link
 -------------------------- */
-$color-link-base                   : #2774FF;
+$color-link-base                   : #61A5FF;
+$color-link-base-hover             : #1488ff;
 
 /* checkbox radio
 -------------------------- */
@@ -29,17 +26,16 @@ $checkbox-color                    : #61A5FF;
 
 /* text color
 -------------------------- */
-$color-text-base                   : #000;
-$color-text-second                 : #333;
-$color-text-third                  : #666;
+$color-text-base                   : #333;
+$color-text-second                 : #666;
 $color-text-light                  : #999;
-$color-text-placeholder            : #999;
+$color-text-third                  : #ccc;
 $color-text-disabled               : #D8D8D8;
 $color-text-selected               : #FF8A00;
 
 /* background-color
 -------------------------- */
-$background-color-base             : #F2F2F2;
+$background-color-base             : #f5f5f5;
 $background-color-selected         : #F2F2F2;
 $background-color-hover            : #F7F7F7;
 $background-color-light            : #FBFBFB;
@@ -48,7 +44,7 @@ $background-color-lighter          : #FAFAFA;
 /* border
 -------------------------- */
 $border-radius                     : 4px;
-$border-color-base                 : #DDD;
+$border-color-base                 : #f1f1f1;
 $border-color-light                : #D8D8D8;
 $border-color-lighter              : #EEE;
 $border-base-style                 : 1px solid $border-color-base;
@@ -64,7 +60,18 @@ $font-weight-medium                : 500;
 $font-family                       : OpenSans,Arial,Helvetica,PingFang SC,Microsoft YaHei,SimSun,sans-serif;
 $font-line-height                  : 1;
 
-/* Animation
--------------------------- */
-$animation-transition-time          : 300ms;
-$animation-transition-timing        : ease-in-out;
+/*
+* mixin
+*/
+@mixin textoverflow($lines){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+}
+
+@mixin inline-block(){
+    display: inline-block;
+    vertical-align: middle;
+}

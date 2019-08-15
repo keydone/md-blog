@@ -6,11 +6,11 @@ const { ObjectId } = mongoose.Types;
 mongoose.Promise = global.Promise;
 
 const schema = {
-    data: Object,
+    data:      Object,
     updatedAt: {
         default: new Date(),
         expires: 86400 * 2, // 2 day
-        type: Date,
+        type:    Date,
     },
 };
 
@@ -20,7 +20,7 @@ class MongooseStore {
     } = {}) {
         this.SessionModel = mongoose.model(name, new Schema({
             _id: {
-                type: String,
+                type:    String,
                 default: ObjectId,
             },
             ...schema,
@@ -52,7 +52,7 @@ class MongooseStore {
             const record = { _id: id, data, updatedAt: new Date() };
 
             await SessionModel.findByIdAndUpdate(id, record, {
-                upsert: true,
+                upsert:           true,
                 useFindAndModify: false,
             });
         }

@@ -1,13 +1,20 @@
-const path = require('path');
-const { readdirSync } = require('fs');
-const { original } = JSON.parse(process.env.npm_config_argv);
-const resolve = (dir) => path.resolve(__dirname, dir);
-const envjs = require('../../.frontend.env');
+/*!
+ * @author claude
+ * date 07/05/2019
+ * 解析 webpack 命令行参数
+ * npm run dev --param
+ */
 
+/* const path = require('path');
+const { readdirSync } = require('fs');
+const resolve = (dir) => path.resolve(__dirname, dir);
+const envjs = require('../../.frontend.env'); */
+
+const { original } = JSON.parse(process.env.npm_config_argv);
 const envConfig = {
-    excludes: [],  // dev 时忽略的项目
+    excludes:  [],  // dev 时忽略的项目
     envParams: {}, // 命令行参数集合
-    devMode: process.env.NODE_ENV !== 'production',
+    devMode:   process.env.NODE_ENV !== 'production',
 };
 
 // 非 prod 环境才可以忽略文件夹
@@ -22,18 +29,18 @@ if (process.env.npm_lifecycle_event !== 'prod') {
     });
 
     // 按文件夹读取子项目的配置文件
-    const modules = readdirSync(resolve('../../src/modules'));
+    /* const modules = readdirSync(resolve('../../src/modules'));
 
     modules.forEach(item => {
-        const system = envjs[item.toLowerCase()];
+        const module = envjs[item.toLowerCase()];
 
-        if (system) {
-            if (system.watch === false) {
+        if (module) {
+            if (module.watch === false) {
                 // 排除监听的路径
                 envConfig.excludes.push(resolve(`../../src/${item}`));
             }
         }
-    });
+    }); */
 }
 
 module.exports = envConfig;

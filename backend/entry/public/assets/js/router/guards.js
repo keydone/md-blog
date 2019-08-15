@@ -18,7 +18,7 @@
  */
 import { baseIsLogin } from './auth';
 
-export default function guards(router) {
+export default (router) => {
 
     // 导航前置导航
     router.beforeEach((to, from, next) => {
@@ -26,24 +26,35 @@ export default function guards(router) {
         const isLogin = baseIsLogin();
 
         // 无需登录
-        if (to.matched.some(record => record.meta.requiresAuth !== true)) {
+        if (to.matched.some(record => record.meta.requiresAuth === false)) {
             // 登录后访问了不可访问的路由, 比如登录页
             if (isLogin && to.matched.some(record => record.meta.requiresLogout)) {
                 router.replace({
                     name: 'index',
+                });
+            } else if (to.matched.some(record => record.meta.permission !== true) && to.matched.some(record => record.meta.requiresAuth !== false)) {
+                // 此处主要是针对 name: index
+                router.replace({
+                    name: 'login',
                 });
             }
         } else {
             // 需要登录
             if (!isLogin) {
                 // 没有登录/登录失效则带上当前 url 跳转到登录页
+                let query = {};
+                const { location: { pathname, href } } = window;
+
+                if (pathname !== '/' && !href.includes('?redirect=')) {
+                    query = {
+                        redirect: pathname,
+                    };
+                }
                 router.replace({
                     name: 'login',
-                    query: {
-                        redirect: window.location.pathname,
-                    },
+                    query,
                 });
-            } else if (!to.matched.some(record => record.meta.permission === true)) {
+            } else if (to.meta.roles !== '*' && !to.matched.some(record => record.meta.permission === true)) {
                 // 没有访问权限
                 console.log('没有访问权限');
                 router.push({ name: 'forbidden' });
@@ -62,4 +73,4 @@ export default function guards(router) {
             document.title = route.meta.title || '';
         }
     });
-}
+};

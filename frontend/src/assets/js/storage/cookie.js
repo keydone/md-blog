@@ -7,42 +7,95 @@
  */
 
 import Cookies from 'js-cookie';
-import { cookiePrefix } from '@js/const/cookie';
+import base64url from 'base64-url';
 
 Cookies.defaults = {
-    path: '/',
-    domain: window.location.hostname,
-    // expires: 14,
+    path:    '/',
+    domain:  window.location.hostname,
+    expires: 7,
 };
 
-const Cookie = {
-    // 获取
-    get(name, options = {
-        prefix: cookiePrefix,
-    }) {
-        return Cookies.get(`${options.prefix}${name}`);
-    },
-
-    // 获取并尝试转换为JSON格式返回
-    getJSON(name, options = {
-        prefix: cookiePrefix,
-    }) {
-        return Cookies.getJSON(`${options.prefix}${name}`);
-    },
-
+const cookie = {
     // 设置cookie
     set(name, value, options = {
-        prefix: cookiePrefix,
+        expires:   7, // 过期时间默认 7 天
+        expiresAt: 0,
+        encode:    true,
     }) {
-        Cookies.set(`${options.prefix}${name}`, value, options);
-    },
+        if (typeof name === 'object') {
+            for (const key in name) {
+                const value = name[key];
 
-    // 移除cookie
-    remove(name, options = {
-        prefix: cookiePrefix,
+                cookie.setOne(key, value, options);
+            }
+        } else {
+            cookie.setOne(name, value, options);
+        }
+    },
+    setOne(name, value, options = {}) {
+        const now = Date.now();
+        const expires = options.expires * 3660 * 24 * 1000 + now;
+
+        // 存储格式: {expires: 过期时间, value: 存入的值}
+        let val = JSON.stringify({
+            expires,
+            value,
+        });
+
+        if (options.encode) {
+            name = base64url.encode(name);
+            val = base64url.encode(val);
+        }
+
+        Cookies.set(name, val, options);
+    },
+    // 获取并尝试转换为JSON格式返回
+    get(name, options = {
+        encode: true,
     }) {
-        Cookies.remove(`${options.prefix}${name}`, options);
+        const originName = name;
+
+        if (options.encode) {
+            name = base64url.encode(name);
+        }
+
+        let result = Cookies.getJSON(name);
+
+        if (result) {
+            if (options.encode) {
+                result = base64url.decode(result);
+            }
+
+            const item = JSON.parse(result);
+            const { value, expires } = item;
+
+            // 已过期
+            if (Date.now() > expires) {
+                cookie.remove(originName);
+                return null;
+            }
+            return value;
+        }
+        return result;
+    },
+    /**
+     * 移除 key
+     * @param {String} name
+     * @param {Object} options
+     */
+    remove(name, options = {}) {
+        if (Array.isArray(name)) {
+            name.forEach(item => {
+                const key = `${base64url.encode(`${item}`)}`;
+
+                Cookies.remove(key, options);
+                Cookies.remove(item);
+            });
+        } else {
+            Cookies.remove(`${base64url.encode(`${name}`)}`, options);
+            Cookies.remove(name, options);
+        }
     },
 };
 
-export default Cookie;
+export default cookie;

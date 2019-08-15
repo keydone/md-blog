@@ -16,7 +16,7 @@
         "@bjs": ["backend/entry/public/assets/js"],
         "@bstyles": ["backend/entry/public/assets/styles"],
         "@bmodules": ["backend/entry/public/modules"],
-        "@bviews": ["backend/entry/public/views"],
+        "@bviews": ["backend/entry/public/views"]
       },
       "target": "es6",
       "module": "es6",

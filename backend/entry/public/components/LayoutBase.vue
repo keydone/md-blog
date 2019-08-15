@@ -1,75 +1,104 @@
 <template>
-    <el-container v-loading="loading">
-        <!-- 头部开始 -->
-        <el-header class="base-header">
-            <layout-header />
-        </el-header>
-        <!-- 头部结束 -->
+    <el-container
+        id="app"
+        v-loading="loading"
+        :class="{ 'sideBarCollapsed': sideBarCollapsed }"
+    >
+        <!-- 侧边栏开始 -->
+        <v-side />
+        <!-- 侧边栏结束 -->
 
-        <el-container>
-            <!-- 侧边栏开始 -->
-            <layout-side v-if="showSidebar" />
-            <!-- 侧边栏结束 -->
+        <section class="section-container">
+            <!-- 头部开始 -->
+            <el-header class="base-header">
+                <v-header />
+            </el-header>
+            <!-- 头部结束 -->
 
-            <el-container class="base-container">
+            <el-scrollbar
+                ref="scrollbar"
+                class="base-container"
+            >
+                <v-tags v-if="tagsList.length" />
                 <!-- 主体开始 -->
-                <el-main>
-                    <bread-crumb v-if="showSidebar" />
-                    <router-view />
+                <el-main class="posr">
+                    <v-bread-crumb />
+                    <transition name="slide">
+                        <keep-alive :include="tagsList">
+                            <router-view />
+                        </keep-alive>
+                    </transition>
                 </el-main>
                 <!-- 主体结束 -->
 
                 <!-- footer 开始 -->
-                <el-footer>
-                    <layout-footer />
-                </el-footer>
+                <!-- <el-footer height="40px">
+                    <img src="../assets/images/logo.png">
+                    xxx 管理系统
+                </el-footer> -->
                 <!-- footer 结束 -->
-            </el-container>
-        </el-container>
+            </el-scrollbar>
+        </section>
     </el-container>
 </template>
 
 <script>
-	import { mapState } from 'vuex';
-	import BreadCrumb from './BreadCrumb/BreadCrumb.vue';
-	import LayoutSide from './LayoutSide/LayoutSide.vue';
-	import LayoutHeader from './LayoutHeader/LayoutHeader.vue';
-	import LayoutFooter from './LayoutFooter/LayoutFooter.vue';
+    import vTags from './LayoutTags.vue';
+    import vHeader from './LayoutHeader.vue';
+    import vBreadCrumb from './BreadCrumb.vue';
+    import vSide from './LayoutSide/LayoutSide.vue';
+    import ls from '@bjs/storage/localstorage';
+    import { lsAsideCollapsedKey } from '@bjs/const/consts';
 
-	export default {
-		name: 'App',
-		components: {
-			BreadCrumb,
-			LayoutSide,
-			LayoutHeader,
-			LayoutFooter,
-		},
-		data() {
-			return {
-				showSidebar: true,
-				loading: false,
-			};
-		},
-		computed: {
-			...mapState({
-				isLogin: state => state.user.isLogin,
-			}),
-		},
-		created() {
-			this.loading = false;
-			console.log('isLogin:', this.isLogin);
-		},
-	};
+    export default {
+        name:       'App',
+        components: {
+            vTags,
+            vSide,
+            vBreadCrumb,
+            vHeader,
+        },
+        data() {
+            return {
+                tagsList:         [],
+                loading:          false,
+                sideBarCollapsed: false,
+            };
+        },
+        created() {
+            this.sideBarCollapsed = ls.get(lsAsideCollapsedKey);
+
+            this.$bus.$on('collapseChanged', asideCollapsed => {
+                this.sideBarCollapsed = asideCollapsed;
+            });
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.$root.scrollbar = this.$refs.scrollbar.$el;
+                setTimeout(() => {
+                    this.loading = false;
+                }, 500);
+            });
+        },
+    };
 </script>
 
 <style lang="scss">
-	/* 头部样式 */
-	.base-header {
-		background: url("../assets/images/shiyuan.jpg") repeat-x;
-	}
-
-	/* 内容区样式 */
-	.base-container {
-		overflow-x: hidden;
-	}
+    .el-header {
+        position: relative;
+        z-index: 201;
+    }
+    .el-footer {
+        line-height: 30px;
+        font-weight: bold;
+        padding-bottom: 10px;
+        text-align: center;
+        font-size: 14px;
+        color: #fff;
+        img {
+            width: 30px;
+            position: relative;
+            top: -2px;
+        }
+    }
 </style>

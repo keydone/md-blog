@@ -8,32 +8,32 @@ mongoose.Promise = global.Promise;
 
 const Pager = new Schema({
     _id: {
-        type: String,
+        type:    String,
         default: ObjectId,
     },
     // 文章标题
     title: {
-        type: String,
+        type:     String,
         validate: requires('文章标题'),
     },
     // 副标题
     subtitle: String,
     // 文章封面
-    cover: String,
+    cover:    String,
     // 文章链接
-    path: {
-        type: String,
+    path:     {
+        type:     String,
         validate: requires('文章 id'),
     },
     // 作者
-    author: String,
-    date: String,
-    assets: Array,
-    content: String,
+    author:   String,
+    date:     String,
+    assets:   Array,
+    content:  String,
     markdown: String,
     // 是否为草稿
-    isDraft: {
-        type: Number,
+    isDraft:  {
+        type:    Number,
         default: 0,
     },
 }, { timestamps: true });

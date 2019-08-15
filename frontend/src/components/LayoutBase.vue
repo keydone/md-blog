@@ -1,7 +1,7 @@
 <template>
-    <div
+    <section
         id="app"
-        :class="{'appOnload': appOnload}"
+        :class="{'scroll-x': $route.meta.showSideBlock !== false}"
     >
         <!-- 头部开始 -->
         <layout-header
@@ -10,127 +10,73 @@
         />
         <!-- 头部结束 -->
 
-        <main :class="['main-container', { 'full-screen': $route.meta.hideBaseHeader }]">
+        <el-container :class="['main-container', { 'full-height': $route.meta.hideBaseHeader, 'full-width': $route.meta.showSideBlock === false }]">
             <section class="main-section">
                 <!-- 主体开始 -->
                 <transition name="fade">
-                    <router-view />
+                    <keep-alive v-if="$route.meta.keepAlive">
+                        <router-view />
+                    </keep-alive>
+
+                    <router-view v-else />
                 </transition>
                 <!-- 主体结束 -->
             </section>
 
             <!-- 侧边栏开始 -->
-            <layout-side
-                v-if="$route.meta.showSideBlock !== false"
-                :transition="transition"
-            />
+            <transition name="fade">
+                <layout-side v-if="$route.meta.showSideBlock !== false" />
+            </transition>
             <!-- 侧边栏结束 -->
-        </main>
+        </el-container>
 
         <!-- footer 开始 -->
         <layout-footer v-if="!$route.meta.hideBaseHeader" />
         <!-- footer 结束 -->
-    </div>
+    </section>
 </template>
 
 <script>
-	import LayoutSide from '@comp/LayoutSide/LayoutSide.vue';
-	import LayoutHeader from '@comp/LayoutHeader/LayoutHeader.vue';
-	import LayoutFooter from '@comp/LayoutFooter.vue';
+    import LayoutSide from '@comp/LayoutSide/LayoutSide.vue';
+    import LayoutHeader from '@comp/LayoutHeader/LayoutHeader.vue';
+    import LayoutFooter from '@comp/LayoutFooter.vue';
 
-	export default {
-		name: 'App',
-		components: {
-			LayoutSide,
-			LayoutHeader,
-			LayoutFooter,
-		},
-		data() {
-			return {
-				appOnload: false,
-				showSideBlock: false,
-				transition: false,
-			};
-		},
-		created() {
-			console.log('----- app initialized -----');
-		},
-		mounted() {
-			this.appOnload = true;
-			this.transition = true;
-		},
-	};
+    export default {
+        name:       'App',
+        components: {
+            LayoutSide,
+            LayoutHeader,
+            LayoutFooter,
+        },
+        data() {
+            return {
+                transition: false,
+            };
+        },
+        mounted() {
+            this.$nextTick(() => {
+                this.transition = true;
+            });
+        },
+    };
 </script>
 
 <style lang="scss">
-	@keyframes bounce {
-		0% {
-			transform: translate(0, -36px);
-		}
-		50% {
-			transform: translate(0, 0);
-		}
-		80% {
-			transform: translate(0, 10px);
-		}
-		100% {
-			transform: translate(0, 0);
-		}
-	}
-	.appOnload {
-		.base-heading {
-			animation: bounce 0.24s ease-in forwards;
-		}
-	}
-	/* 头部样式 */
-	.base-heading {
-		margin-bottom: 30px;
-		height: 64px;
-		line-height: 36px;
-		background: #fff;
-		transform: translate(0, -66px);
-	}
-
-	/* 内容区样式 */
-	.main-container {
-		max-width: 1600px;
-		min-height: 900px;
-		margin: 0 auto;
-	}
-	.main-section {
-		flex: 1;
-		padding-left: 30px;
-		min-width: 800px;
-	}
-	/* .vertical-slide-enter-active,
-	.vertical-slide-leave-active,
-	.transverse-slide-enter-active,
-	.transverse-slide-leave-active {
-	transition: transform 0.2s ease;
-	}
-	.vertical-slide-enter,
-	.vertical-slide-leave-to {
-	transform: translateY(10px);
-	}
-	.transverse-slide-enter,
-	.transverse-slide-leave-to {
-	transform: translateX(10px);
-	}
-
-	.transverse-revert-enter-active,
-	.transverse-revert-leave-active {
-	transition: transform 0.3s ease;
-	}
-	.transverse-revert-enter,
-	.transverse-revert-leave-to {
-	transform: translateX(-10px);
-	} */
-	.fade-enter-active,
-	.fade-leave-active {
-		transition: opacity 0.2s ease-out;
-	}
-	.fade-enter,
-	.fade-leave-to {
-		opacity: 0.5;
-	}
+    /* 内容区样式 */
+    .main-container {
+        max-width: 1600px;
+        min-height: 700px;
+        margin: 0 auto;
+        &.full-width {
+            .main-aside {
+                display: none;
+            }
+        }
+    }
+    .main-section {
+        flex: 1;
+        margin: 0 30px;
+        min-width: 800px;
+        position: relative;
+    }
 </style>

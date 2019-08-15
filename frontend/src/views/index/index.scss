@@ -64,7 +64,10 @@
         .col-item{display: flex;}
         .entry-thumb{flex: 1;}
         .thumb-icon,
-        .thumb-img{height: 100px;}
+        .thumb-img{
+            display: block;
+            height: 100px;
+        }
         .entry-detail{
             flex: 2;
             padding-left: 20px;
@@ -131,7 +134,7 @@
 .broadcast-msg{
     position: relative;
     margin-bottom: -30px;
-    padding: 25px 40px;
+    padding: 25px;
     &:after{
         content: '';
         position: absolute;
@@ -146,8 +149,10 @@
         height: 20px;
         line-height: 20px;
         overflow: hidden;
-        li{float: left;
-            width: 50%;
+        li{width: 50%;
+            float: left;
+            padding: 0 10px;
+            @include text-overflow;
         }
     }
 }

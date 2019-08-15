@@ -2,10 +2,10 @@
 module.exports = {
     plugins: [
         require('postcss-units')({
-            size: 75,
-            fallback: false,
-            precision: 4
+            size:      75,
+            fallback:  false,
+            precision: 4,
         }),
         require('autoprefixer')(),
-    ]
+    ],
 };

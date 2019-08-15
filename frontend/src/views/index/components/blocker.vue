@@ -17,23 +17,23 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			id: {
-				type: String,
-				default: '',
-			},
-			title: {
-				type: String,
-				default: '',
-			},
-			showtitle: {
-				type: Boolean,
-				default: true,
-			},
-		},
-		data() {
-			return {};
-		},
-	};
+    export default {
+        props: {
+            id: {
+                type:    String,
+                default: '',
+            },
+            title: {
+                type:    String,
+                default: '',
+            },
+            showtitle: {
+                type:    Boolean,
+                default: true,
+            },
+        },
+        data() {
+            return {};
+        },
+    };
 </script>

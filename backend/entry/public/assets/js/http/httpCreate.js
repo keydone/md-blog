@@ -7,17 +7,19 @@
 
 import axios from 'axios';
 // 要使用 0.18 版本  高版本会过滤掉自定义入参导致很多逻辑没法处理
-import store from '@js/store/store';
-import env from '@/frontend/.frontend.env.js';
+import store from '@bjs/store/store';
 import { Message, Loading } from 'element-ui';
-import { baseLoginOut } from '@js/router/auth';
-import { deepMerge } from '@js/utils/types';
+import { deepMerge } from '@bjs/utils/types';
+import { baseLogout } from '@bjs/router/auth';
+import env from '../../../../../.backend.env.js';
 
 const $env = process.env.NODE_ENV === 'production';
 
+const cancelTokenQueue = {}; // 取消请求 token 队列
+// 创建 axios 实例
 const httpInstance = axios.create({
-    baseURL: $env ? env.public.API_PROD : env.public.API_DEV,
-    timeout: 5000, // 请求超时 5s
+    baseURL: $env ? env.entry.baseURL_DEV : env.entry.baseURL_PROD,
+    timeout: 7000, // 请求超时 7s
     headers: {}, // 公共请求头
     // withCredentials: true,
     // responseType: 'json', // default
@@ -39,7 +41,7 @@ httpInstance.interceptors.request.use(config => {
             cancelTokenQueue[key].cancel();
         }
         // 跳转到登录页
-        baseLoginOut();
+        baseLogout();
     }
     return config;
 }, error => {
@@ -53,13 +55,27 @@ httpInstance.interceptors.request.use(config => {
 httpInstance.interceptors.response.use(
     response => {
         // console.log('response:', response);
+        const { config, data } = response;
+
         // 登录信息失效或需要重新登录
-        if (response.data.redirect) {
+        /* if (data.redirect) {
             // 跳转到登录页
-            baseLoginOut();
+            baseLogout();
+        } */
+        // 全局错误处理
+        if (config.systemError !== false) {
+            if (data && data.code !== 0 && data.msg) {
+                Message.error(data.msg);
+            }
+        }
+        // 全局成功提示
+        if (config.showSuccessMsg === true) {
+            if (data.code === 0 && data.msg) {
+                Message.success(data.msg);
+            }
         }
         // 请求成功 将结果返回给前台
-        return response.data;
+        return data;
     },
     result => {
         const { code, response, isCancel, systemError } = result;
@@ -89,10 +105,12 @@ httpInstance.interceptors.response.use(
                 const msg = `${status}: ${response.statusText}`;
 
                 switch (status) {
-                    /* case 404:
-                        Message.error(msg);
+                    case 401:
+                        // 登录信息失效 自动跳转登录
+                        Message.error('登录已过期, 请重新登录');
+                        baseLogout();
                         break;
-                    case 504:
+                    /* case 504:
                         Message.error(msg);
                         break; */
                     default:
@@ -100,7 +118,7 @@ httpInstance.interceptors.response.use(
                 }
                 return {
                     code: status,
-                    msg: response.statusText,
+                    msg,
                 };
             }
         }
@@ -115,8 +133,7 @@ httpInstance.interceptors.response.use(
  */
 let loadingCount = 0; // loading 层计数
 const btnQueue = {};  // 请求按钮队列
-const cancelTokenQueue = {};
-const adapter = {
+const policy = {
     isCancel(options, state, msg) {
         if (state === true) {
             const cancelToken = cancelTokenQueue[`${options.url}`];
@@ -142,11 +159,9 @@ const adapter = {
         }
     },
     btnState(btnState) {
-        if (!btnState) return;
+        if (!btnState || !btnState.target) return;
 
-        let srcElement = null;
-
-        srcElement = btnState.target.srcElement;
+        let srcElement = btnState.target.srcElement;
 
         if (srcElement.nodeName !== 'BUTTON') {
             while (srcElement.nodeName !== 'BUTTON') {
@@ -199,9 +214,9 @@ const baseService = (config = {}) => {
     // 保存 cancelToken 队列
     const { isCancel } = options;
 
-    adapter.isCancel(options, isCancel);
+    policy.isCancel(options, isCancel);
     if (isCancel && isCancel.state) {
-        adapter.isCancel(options, isCancel.state, isCancel.msg);
+        policy.isCancel(options, isCancel.state, isCancel.msg);
     }
 
     const source = axios.CancelToken.source();
@@ -210,18 +225,26 @@ const baseService = (config = {}) => {
     options.cancelToken = source.token;
 
     // 添加尾部 url
-    adapter.urlTail(options);
+    policy.urlTail(options);
 
     // 自动处理按钮状态
-    const srcElement = adapter.btnState(config.btnState); // 这里必须传 config
+    const srcElement = policy.btnState(config.btnState); // 这里必须传 config
 
     // 阻止重复请求
     if (srcElement === false) {
         return false;
     }
 
+    // 默认设置 headers
+    if (options.headers !== false) {
+        options.headers = {
+            token: store.getters.token,
+            sysCode: store.getters.sysCode,
+        };
+    }
+
     // 添加全局 loading
-    const loadingInstance = adapter.loading(options);
+    const loadingInstance = policy.loading(options);
 
     // 调用 httpInstance
     return new Promise((resolve, reject) => {

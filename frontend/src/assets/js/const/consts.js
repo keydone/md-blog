@@ -4,5 +4,21 @@
  * 全局常量
  */
 
-// 图片logo 等资源路径前缀
-export const CDN = '/';
+// localstorage 常量
+const lsLoginKeys = {
+    btnPermission: 'btnPermission',
+    menuList:      'menuList',
+    phoneNum:      'phoneNum',
+    userInfo:      'userInfo',
+    sysCode:       'sysCode',
+    token:         'token',
+    role:          'role',
+};
+
+// cookie 常量
+const cookieLoginKeys = lsLoginKeys;
+
+export {
+    lsLoginKeys,
+    cookieLoginKeys,
+};

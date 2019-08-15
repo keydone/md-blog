@@ -1,3 +1,7 @@
+/**
+ * @author claude
+ * 文章表
+*/
 const mongoose = require('mongoose');
 const { requires } = require('./validator');
 
@@ -8,41 +12,89 @@ mongoose.Promise = global.Promise;
 
 const Articles = new Schema({
     _id: {
-        type: String,
+        type:    String,
         default: ObjectId,
     },
     // 文章标题
     title: {
-        type: String,
+        type:     String,
         validate: requires('文章标题'),
     },
     // 副标题
     subtitle: String,
     // 文章封面
-    cover: String,
+    cover:    {
+        type:    String,
+        default: '',
+    },
     // 文章链接
     path: {
-        type: String,
+        type:     String,
         validate: requires('文章 id'),
     },
     // 作者
-    author: String,
+    author:     String,
+    authorId:   String,
     // 分类id
     categoryId: String,
-    // 分类名称
-    categoryName: {
-        type: String,
-        default: '未分类',
-    },
-    // 标签
-    tags: Array,
-    date: String,
-    content: String,
-    markdown: String,
+    // 标签id
+    tags:       Array,
+    // 发布时间
+    postDate:   Date,
+    // 最后更新时间
+    modDate:    Date,
+    // 内容 id
+    contentId:  String,
+    // 内容
+    content:    String,
+    // 内容
+    text:       String,
     // 是否为草稿
-    isDraft: {
-        type: Number,
+    isDraft:    {
+        type:    Boolean,
+        default: false,
+    },
+    // 待审核
+    isPending: {
+        type:    Boolean,
+        default: true,
+    },
+    // 审核人员id
+    passedMan: {
+        type:    Number,
         default: 0,
+    },
+    // 阅读量
+    readTimes: {
+        type:    Number,
+        default: 0,
+    },
+    // 点赞数
+    liked: {
+        type:    Number,
+        default: 0,
+    },
+    // 评论数
+    comments: {
+        type:    Number,
+        default: 0,
+    },
+    // 阅读权限
+    role: {
+        type:    Number,
+        default: 4,
+    },
+    // 赞助人
+    donates: Array,
+    // 首页推荐
+    isIndex: {
+        type:    Boolean,
+        default: false,
+    },
+    // 站长推荐
+    recommandBlocks: {
+        type:    Array,
+        default: null,
     },
 }, { timestamps: true });
 

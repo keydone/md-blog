@@ -4,12 +4,6 @@
  * 其他模块路由
  */
 
-const files = require.context('../../../modules', true, /route\/routes\.js$/);
+const dynamicRoutes = [];
 
-const modules = [];
-
-files.keys().forEach(key => {
-    modules.push(...files(key).default);
-});
-
-export default modules;
+export default dynamicRoutes;

@@ -1,0 +1,9 @@
+
+.short-input{
+    .el-form-item__content{
+        &>.el-input{
+            width: 250px;
+            margin-right: 20px;
+        }
+    }
+}

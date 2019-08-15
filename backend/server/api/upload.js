@@ -5,14 +5,13 @@ const { createWriteStream } = require('fs');
 const aliUpload = require('./aliUpload');
 const Utils = require('../utils/utils');
 const stuff = require('../controllers/stuff');
-const env = require('../../../.backend.env.js');
+const env = require('../../.backend.env.js');
 
 const upload = ctx => new Promise((resolve, reject) => {
     const { header } = ctx.request;
-    const { store, id } = ctx.request.query;
-    const hash = randomBytes(5).toString('hex');
-    const postId = id || `${Utils.today()}`;
-    const filePath = `${store}/${postId}`;
+    const { store } = ctx.request.query;
+    const uploadDate = `${Utils.today()}`;
+    const filePath = `${store || 'images'}/${uploadDate}`;
     const saveToLocal = join(__dirname, `../../../_temp/${filePath}`);
     const busboy = new Busboy({
         headers: header,
@@ -23,6 +22,7 @@ const upload = ctx => new Promise((resolve, reject) => {
     busboy.on('file', async (fieldname, file, fileName, encoding, mimetype) => {
         const suffixs = fileName.split('.');
         const suffix = suffixs[suffixs.length - 1];
+        const hash = randomBytes(5).toString('hex');
         const fileLocalPath = `${saveToLocal}/${hash}.${suffix}`;
 
         await new Promise((writeEnd) => {
@@ -30,35 +30,42 @@ const upload = ctx => new Promise((resolve, reject) => {
 
             writeStream.on('finish', async () => {
                 console.log('文件写入完毕！');
-                writeEnd();
                 // 存储文件流
                 try {
                     const response = await aliUpload(fileLocalPath, `${filePath}/${hash}.${suffix}`);
-                    const filepath = `${env.aliStatic}/${response.filename}`;
 
-                    delete response.url;
+                    if (response.code === 200) {
+                        const { filename } = response;
+                        const filepath = `${env.aliStatic}/${filename}`;
 
-                    // 同步资源表
-                    const stuffId = randomBytes(10).toString('hex');
-                    const { success, msg } = await stuff.save(postId, filepath, stuffId, store);
+                        delete response.url;
 
-                    if (success) {
-                        Object.assign(response, {
-                            articleId: postId,
-                            filepath,
-                            stuffId,
-                        });
+                        // 同步资源表
+                        const stuffId = randomBytes(10).toString('hex');
+                        const { success, msg } = await stuff.save(uploadDate, filename, filepath, stuffId);
+
+                        if (success) {
+                            Object.assign(response, {
+                                uploadDate,
+                                filepath,
+                                stuffId,
+                            });
+                        } else {
+                            response.error = msg;
+                        }
+
+                        resolve(response);
                     } else {
-                        response.error = msg;
+                        resolve({
+                            error: response.code,
+                        });
                     }
-
-                    resolve(response);
                 } catch (error) {
                     reject(error);
                 }
+                writeEnd();
             });
         });
-
     });
 
     ctx.req.pipe(busboy);

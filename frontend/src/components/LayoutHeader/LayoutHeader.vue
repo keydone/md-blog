@@ -1,124 +1,162 @@
 <template>
-    <div class="base-heading">
-        <transition
+    <header class="base-heading">
+        <div
             v-if="skin !== 'fly'"
-            name="vertical-slide"
+            class="heading-container"
         >
-            <div
-                v-if="transition"
-                class="heading-container"
-            >
-                <div class="logo">
-                    <img src="">
-                </div>
-
-                <!-- 导航开始 -->
-                <div class="main-nav fl">
-                    <div class="nav-menu">
-                        <router-link
-                            :to="{name: 'index'}"
-                            class="menu-link"
-                        >
-                            首页
-                        </router-link>
-                    </div>
-                    <div class="nav-menu">
-                        <a
-                            href="##"
-                            class="menu-link"
-                        >Mac 软件</a>
-                        <ul class="sub-nav">
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >装机必备</a>
-                            </li>
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >系统工具</a>
-                            </li>
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >图片视频</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="nav-menu">
-                        <a
-                            href="##"
-                            class="menu-link"
-                        >设计资源</a>
-                        <ul class="sub-nav">
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >装机必备</a>
-                            </li>
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >系统工具</a>
-                            </li>
-                            <li class="sub-menu">
-                                <a
-                                    href="##"
-                                    class="submenu-link"
-                                >图片视频</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- 导航右侧内容 -->
-                <ul class="heading-side fr">
-                    <li>
-                        <router-link :to="{ name: 'login' }">
-                            <button class="btn-normal">登录</button>
-                        </router-link>
-                    </li>
-                    <li>
-                        <router-link :to="{ name: 'register' }">
-                            <button class="btn-normal btn-primary">注册</button>
-                        </router-link>
-                    </li>
-                    <li class="search-for">
-                        <i class="el-icon-search" />
-                        <div class="el-input">
-                            <input
-                                type="text"
-                                class="el-input-target"
-                                placeholder="回车发起搜索"
-                            >
-                        </div>
-                    </li>
-                </ul>
-
-                <!-- 公告 -->
-                <div class="base-notice">
-                    公告轮播
-                    新开站点
-                    会员 5 折
-                </div>
+            <div class="logo">
+                <img src="">
             </div>
-        </transition>
+
+            <!-- 导航开始 -->
+            <div class="nav-menu fl">
+                <div class="nav-menu">
+                    <router-link
+                        :to="{ name: 'index' }"
+                        :class="['menu-link', {'exact-match-link': $route.path === '/'}]"
+                    >
+                        首页
+                    </router-link>
+                </div>
+                <el-dropdown
+                    class="nav-menu"
+                    placement="bottom"
+                >
+                    <router-link
+                        :to="{ name: 'list' }"
+                        :class="['menu-link', {'exact-match-link': $route.path === '/list'}]"
+                    >
+                        Mac 软件
+                    </router-link>
+                    <el-dropdown-menu
+                        slot="dropdown"
+                        class="sub-nav"
+                    >
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                装机必备
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                系统工具
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                图片视频
+                            </router-link>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <el-dropdown
+                    class="nav-menu"
+                    placement="bottom"
+                >
+                    <router-link
+                        :to="{ name: 'list' }"
+                        class="menu-link"
+                    >
+                        设计资源
+                    </router-link>
+                    <el-dropdown-menu
+                        slot="dropdown"
+                        class="sub-nav"
+                    >
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                装机必备
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                系统工具
+                            </router-link>
+                        </el-dropdown-item>
+                        <el-dropdown-item>
+                            <router-link
+                                :to="{ name: 'list' }"
+                                class="menu-link"
+                            >
+                                图片视频
+                            </router-link>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+
+            <!-- 导航右侧内容 -->
+            <ul class="heading-side fr">
+                <li v-if="!isLogin">
+                    <router-link :to="{ name: 'login' }">
+                        <button class="btn-normal">登录</button>
+                    </router-link>
+                </li>
+                <li v-if="!isLogin">
+                    <router-link :to="{ name: 'register' }">
+                        <button class="btn-normal btn-primary">注册</button>
+                    </router-link>
+                </li>
+                <li class="search-for">
+                    <div
+                        class="search-global"
+                        @mouseenter="autoFocus"
+                    >
+                        <el-input
+                            ref="searchInput"
+                            v-model="keywords"
+                            placeholder="回车发起搜索"
+                            @keyup.native.enter="search"
+                        />
+                        <i
+                            class="el-icon-search"
+                            @click="search"
+                        />
+                    </div>
+                    <el-dropdown class="posr">
+                        <i class="el-icon-time" />
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>黄金糕</el-dropdown-item>
+                            <el-dropdown-item>狮子头</el-dropdown-item>
+                            <el-dropdown-item>螺蛳粉</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </li>
+            </ul>
+
+            <!-- 公告 -->
+            <div class="base-notice">
+                公告轮播
+                新开站点
+                会员 5 折
+            </div>
+        </div>
 
         <div
             v-else
             class="main-nav-fly"
         >
             <div class="main-nav-logo fl">
-                <router-link :to="{name: 'index'}">
+                <router-link :to="{ name: 'index' }">
                     <img
-                        src=""
-                        alt=""
                         class="logo"
+                        src="../../assets/images/logo.png"
+                        alt="logo"
                     >
                 </router-link>
             </div>
@@ -194,26 +232,46 @@
                 </div>
             </div>
         </div>
-    </div>
+    </header>
 </template>
 
 <script>
-	export default {
-		props: {
-			transition: {
-				type: Boolean,
-				default: false,
-			},
-		},
-		data() {
-			return {
-				skin: 'fly-',
-				// transition: false,
-			};
-		},
-	};
+    import { mapState } from 'vuex';
+
+    export default {
+        data() {
+            return {
+                skin:     'fly-',
+                keywords: '',
+            };
+        },
+        computed: {
+            ...mapState({
+                isLogin: state => state.base.isLogin,
+            }),
+        },
+        methods: {
+            autoFocus() {
+                setTimeout(() => {
+                    this.$refs.searchInput.focus();
+                }, 200);
+            },
+            search() {
+                const keywords = this.keywords.trim();
+
+                if (keywords !== '' && keywords.length > 2) {
+                    this.$router.push({
+                        name:  'search',
+                        query: {
+                            keywords: '',
+                        },
+                    });
+                }
+            },
+        },
+    };
 </script>
 
 <style lang="scss">
-	@import "./LayoutHeader.scss";
+    @import "./LayoutHeader.scss";
 </style>

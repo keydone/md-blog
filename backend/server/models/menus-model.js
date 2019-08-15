@@ -1,3 +1,7 @@
+/**
+ * @author claude
+ * 前台导航菜单表
+ */
 const mongoose = require('mongoose');
 const { requires } = require('./validator');
 
@@ -8,25 +12,25 @@ mongoose.Promise = global.Promise;
 
 const Menus = new Schema({
     _id: {
-        type: String,
+        type:    String,
         default: ObjectId,
     },
     // 菜单名称
     name: {
-        type: String,
+        type:     String,
         validate: requires('菜单名称'),
     },
     link: {
-        type: String,
+        type:     String,
         validate: requires('菜单链接'),
     },
     // 是否显示
     show: {
-        type: Boolean,
+        type:    Boolean,
         default: true,
     },
     sort: {
-        type: Number,
+        type:    Number,
         default: 1,
     },
     settings: Object,

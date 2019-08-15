@@ -43,11 +43,11 @@
 </template>
 
 <script>
-	import blocker from './blocker';
+    import blocker from './blocker';
 
-	export default {
-		components: {
-			blocker,
-		},
-	};
+    export default {
+        components: {
+            blocker,
+        },
+    };
 </script>

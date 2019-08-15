@@ -4,15 +4,26 @@
  * 1, 请求后台接口获取用户可访问权限
  * 2, 合并到本地 routes
  */
-import store from '@js/store/store';
-import { UPDATE_MENUS } from '@js/store/mutationTypes';
-import {
-    getUserInfo,
-    baseIsLogin,
-} from './auth';
+import store from '@bjs/store/store';
+import ls from '@bjs/storage/localstorage';
+import { lsLoginKeys } from '@bjs/const/consts';
+import { UPDATE_MENUS } from '@bjs/store/mutationTypes';
 import dynamicRoutes from './dynamicRoutes';
 
-const recursionPermission = (route) => {
+const hasPermission = (url, path) => new RegExp(url).test(path);
+
+// 恢复默认 权限开关
+const resetPermission = (route) => {
+    route.hasPermissioned = false;
+    if (route.children) {
+        route.children.forEach(sub => {
+            resetPermission(sub);
+        });
+    }
+};
+
+// 递归路由
+const recursionRoutes = (route) => {
     // 设置 routes meta
     if (!route.meta) {
         route.meta = {};
@@ -21,111 +32,83 @@ const recursionPermission = (route) => {
     route.meta.permission = true;
     // 递归匹配次级菜单
     if (route.children) {
-        for (const index in route.children) {
-            const sub = route.children[index];
-
-            return recursionPermission(sub);
-        }
+        route.children.forEach(sub => {
+            recursionRoutes(sub);
+        });
     }
-    return route;
 };
 
-const resolvePermission = (menuList, routes) => {
+// 处理路由权限
+const reduceRoutes = (menuList, routes) => {
+    // 存储有权限的路由
+    const authorizedRoutes = [];
 
-    for (const index in menuList) {
-        const menu = menuList[index];
+    routes.forEach(route => {
+        if (!route.component) {
+            route.component = () => import('@bcomp/LayoutBase.vue');
+        }
+        resetPermission(route);
+    });
 
-        for (const $index in routes) {
-            const route = routes[$index];
-
+    menuList.forEach(menu => {
+        routes.forEach(route => {
             // 匹配路由 path
-            const reg = new RegExp(menu.url.endsWith('/**') ? menu.url.substr(0, menu.url.length - 1) : menu.url);
-
-            if (reg.test(route.path)) {
-                recursionPermission(route);
+            if (!route.hasPermissioned && (hasPermission(menu.url, route.path) || route.meta.permission)) {
+                recursionRoutes(route);
+                authorizedRoutes.push(route);
+                route.hasPermissioned = true;
             }
-        }
-    }
+        });
+    });
 
-    return routes;
+    return authorizedRoutes;
 };
 
-const mergeRoute = (baseRoutes) => {
-    const isLogin = baseIsLogin();
-
-    if (isLogin) {
-        const menuList = getUserInfo();
-
-        if (menuList) {
-            const result = resolvePermission(menuList, dynamicRoutes);
-            const routeBase = {
-                path: '/',
-                component: () => import('@comp/LayoutBase.vue'),
-                children: [
-                    {
-                        path: '/dashboard',
-                        name: 'dashboard',
-                        meta: {
-                            hidden: true,
-                            requiresAuth: true,
-                            permission: true,
-                        },
-                        component: () => import('@views/index.vue'),
-                    }, {
-                        path: '/',
-                        name: 'index',
-                        meta: {
-                            hidden: true,
-                            permission: true,
-                        },
-                        redirect: {
-                            name: 'dashboard',
-                        },
-                    },
-                    ...result,
-                ],
+// 更新默认路由
+const updateRoute = (routes) => {
+    routes.find(item => {
+        if (item.path === '*') {
+            item.redirect = {
+                path: '/notfound',
             };
+        }
+    });
+};
 
-            // 存入 store
-            store.commit(UPDATE_MENUS, { menuList: routeBase.children });
+// 合并动态路由
+const mergeRoute = (router, baseRoutes) => {
+    const menuList = ls.get(lsLoginKeys.menuList);
 
-            const { $app } = window;
+    if (menuList) {
+        // 处理路由权限
+        const resultArray = reduceRoutes(menuList, dynamicRoutes);
 
-            // 无刷新时合并路由
-            if ($app) {
-                let addRoutesLock = true;
-                const { $router } = $app;
+        // 将侧边栏菜单存入 store (侧边栏菜单支持无限级嵌套)
+        store.commit(UPDATE_MENUS, {
+            menuList:      resultArray,
+            btnPermission: resultArray,
+        });
 
-                for (const index in $router.options.routes) {
-                    const item = $router.options.routes[index];
+        // 无刷新时合并路由
+        if (window.$app) {
+            let addRoutesLock = true;
+            const { $router, $router: { options: { routes } } } = window.$app;
 
-                    if (item.path === '*') {
-                        item.redirect = {
-                            path: '',
-                            name: 'notfound',
-                        };
-                    } else if (item.path === '/') {
-                        addRoutesLock = false;
-                    }
-                }
-                // 防止重复添加
-                if (addRoutesLock) {
+            routes.find(route => {
+                // 已经添加过
+                if (route.name === 'entry') {
                     addRoutesLock = false;
-                    $router.$addRoutes([routeBase]);
                 }
+            });
+
+            // 防止重复添加
+            if (addRoutesLock) {
+                updateRoute(routes);
+                $router.$addRoutes([...routes, ...resultArray]);
             }
-            // 刷新后合并路由
-            if (baseRoutes) {
-                baseRoutes.forEach(item => {
-                    if (item.path === '*') {
-                        item.redirect = {
-                            path: '',
-                            name: 'notfound',
-                        };
-                    }
-                });
-                return [routeBase, ...baseRoutes];
-            }
+        } else {
+            updateRoute(baseRoutes);
+            router.$addRoutes([...baseRoutes, ...resultArray]);
         }
     }
 };

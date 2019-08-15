@@ -1,4 +1,4 @@
-@import './normalize.scss';
+@import './_normalize.scss';
 
 /**
  * 定义标准盒模型
@@ -15,6 +15,8 @@ body {
     font-family: $font-family;
     font-size: $font-size-base;
     background-color: $background-color-base;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     color: $color-text-base;
 }
 
@@ -50,7 +52,9 @@ pre, code {
     word-wrap: break-word;
 }
 
-ul {list-style: none;}
+ul {list-style: none;
+    padding-inline-start:0;
+}
 
 a {display: inline-block;
     color: $color-link-base;
@@ -67,6 +71,7 @@ table {
 
 img{
     max-width: 100%;
+    vertical-align: middle;
     height: auto;
 }
 

@@ -12,7 +12,7 @@
                 <router-link to="##">words</router-link>
             </div>
             <router-link
-                to="##"
+                :to="{name: 'list', query: {sort: 'newest'}}"
                 class="more-link"
             >
                 查看更多
@@ -25,39 +25,39 @@
             class="content-slot"
         >
             <div
-                v-for="i in 3"
-                :key="i"
+                v-for="(item, index) in list"
+                :key="index"
                 class="col-row"
             >
                 <div
-                    v-for="index in 2"
-                    :key="index"
+                    v-for="(value, key) in item"
+                    :key="key"
                     class="col-item"
                 >
                     <router-link
                         class="entry-thumb"
-                        to="##"
+                        :to="{ name: 'details', query: { id: value._id }}"
                     >
                         <span
                             class="thumb-icon"
-                            :style="`background: url(${i});`"
+                            :style="value.cover ? `background: url(${value.cover});` : ''"
                         >
-                            <img
-                                :src="i"
+                            <!-- <img
+                                :src="value.cover"
                                 class="hidden"
-                            >
+                            > -->
                         </span>
                     </router-link>
                     <div class="entry-detail">
                         <h3 class="entry-title">
                             <router-link
                                 class="entry-link"
-                                to="##"
+                                :to="{ name: 'details', query: { id: value._id }}"
                             >
-                                标题 描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                {{ value.title }}
                             </router-link>
                         </h3>
-                        <div class="entry-desc">描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</div>
+                        <div class="entry-desc">{{ value.text }}</div>
                     </div>
                 </div>
             </div>
@@ -66,14 +66,43 @@
 </template>
 
 <script>
-	import blocker from './blocker';
+    import blocker from './blocker';
+    import { newestArticles } from '@js/common/services';
 
-	export default {
-		components: {
-			blocker,
-		},
-		data() {
-			return {};
-		},
-	};
+    export default {
+        components: {
+            blocker,
+        },
+        data() {
+            return {
+                list: [],
+            };
+        },
+        created() {
+            this.newestArticles();
+        },
+        methods: {
+            async newestArticles() {
+                const { code, data } = await this.$http(newestArticles, {
+                    params: {
+                        pageSize: 6,
+                    },
+                });
+
+                if (code === 0) {
+                    if (data.list && data.list.length) {
+                        const list = [[], [], []];
+
+                        for (const index in data.list) {
+                            const item = data.list[index];
+
+                            list[index % 3].push(item);
+                        }
+
+                        this.list = list;
+                    }
+                }
+            },
+        },
+    };
 </script>

@@ -1,27 +1,29 @@
 const AliOss = require('ali-oss');
-const envFile = require('../../../.backend.env.js');
+const envFile = require('../../.backend.env.js');
 
 const aliOssConfig = Object.assign({
-    region: '',
-    accessKeyId: '',
+    region:          '',
+    accessKeyId:     '',
     accessKeySecret: '',
-    bucket: '',
+    bucket:          '',
+    timeout:         120000, // 120s
 }, envFile.aliOssConfig);
 
 const client = new AliOss(aliOssConfig);
 
-const aliUpload = (buffer, fileName) => async (resolve, reject) => {
+const aliUpload = async (buffer, fileName) => {
     try {
         const response = await client.put(`static/${fileName}`, buffer);
 
         if (response.res.statusCode === 200) {
-            resolve({
+            return {
+                code:     200,
                 filename: response.name,
-                url: response.url,
-            });
+                url:      response.url,
+            };
         }
     } catch (respErr) {
-        reject(respErr);
+        return respErr;
     }
 };
 

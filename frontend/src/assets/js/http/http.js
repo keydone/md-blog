@@ -37,7 +37,14 @@ import baseService from '@js/http/httpCreate.js';
 import { deepMerge } from '@js/utils/types';
 
 const http = (config = {}, options = {}) => {
-    const result = deepMerge(config, options);
+    if (!config.url) {
+        window.$app.$message.error('接口不存在!');
+        return new Promise(() => {
+            Promise.reject('接口入参有误');
+        });
+    }
+
+    const result = deepMerge({ method: 'post' }, config, options);
 
     result.btnState = options.btnState; // deepMerge 无法合并正确的 dom, 也无法合并正确的 promise
     return baseService(result);

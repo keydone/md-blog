@@ -63,15 +63,25 @@ $font-line-height                  : 1;
 /*
 * mixin
 */
-@mixin textoverflow($lines){
+@mixin text-overflow($lines: 1){
     overflow: hidden;
-    text-overflow: ellipsis;
     display: -webkit-box;
+    text-overflow: ellipsis;
     -webkit-line-clamp: $lines;
     -webkit-box-orient: vertical;
 }
 
 @mixin inline-block(){
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
+}
+
+@mixin flex-item($height: auto) {
+    flex: 1;
+    height: $height;
+    overflow: hidden;
+    border-radius: 5px;
+    border: 1px solid $border-color-lighter;
+    background: #fff;
+    margin-left: 20px;
 }

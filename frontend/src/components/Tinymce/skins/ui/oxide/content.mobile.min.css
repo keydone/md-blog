@@ -1,0 +1,26 @@
+
+h1, h2, h3, h4, h5, h6,
+ul, li, ol, dl, dt, dd,
+figure, p {padding: 0;margin: 0;font-weight: normal;word-wrap: break-word;}
+
+sub, sup {position: static;font-size: 100%;top: auto;}
+
+input,
+select,
+textarea,
+button {-webkit-appearance: none;-moz-appearance: none;outline: none;border:0;}
+
+pre, code {overflow: auto;word-break: break-all;word-wrap: break-word;}
+
+ul {list-style: none;padding-inline-start:0;}
+
+a {color:#61A5FF;display: inline-block;text-decoration: none;font-size: inherit;outline: none;cursor: pointer;}
+a:hover{color: #1488ff;}
+
+table {width: 100%;}
+
+img{max-width: 100%;vertical-align: middle;height: auto;}
+
+table, tr, th, td {border-collapse: collapse;border-spacing: 0;margin: 0;padding: 0;border: 0;outline: 0;font-weight: normal;font-style: normal;}
+
+.tinymce-mobile-unfocused-selections .tinymce-mobile-unfocused-selection{background-color:green;display:inline-block;opacity:.5;position:absolute}body{-webkit-text-size-adjust:none}body img{max-width:96vw}body table img{max-width:95%}body{font-family:sans-serif}table{border-collapse:collapse}

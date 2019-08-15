@@ -11,57 +11,66 @@
  * @param {meta: icon} String 当前菜单的图标
  * @param {meta: title} String 当前菜单的标题
  */
-import others from './others';
+
+const { pathname } = window.location;
 
 // 主框架路由
 const baseRoutes = [
     {
-        path: '/',
-        meta: {
-            // hidden: true, // 默认菜单不显示
-        },
-        component: () => import('@comp/LayoutBase.vue'),
-        children: [
-            {
-                path: '/',
-                name: 'index',
-                component: () => import('@views/index/index.vue'),
-            },
-            // 其他系统路由挂在到主系统下
-            ...others,
-        ],
-    }, {
         path: '/login',
         name: 'login',
         meta: {
+            title:          '登录xxx',
+            requiresAuth:   false,
             requiresLogout: true,
-            showSideBlock: false,
-            hideBaseHeader: true,
-            hideBaseFooter: true,
+            roles:          '*',
         },
-        component: () => import('@views/login/login.vue'),
+        component: () => import('@bviews/sign/login.vue'),
     }, {
         path: '/register',
         name: 'register',
         meta: {
+            title:          '注册xxx',
+            requiresAuth:   false,
             requiresLogout: true,
-            showSideBlock: false,
-            hideBaseHeader: true,
-            hideBaseFooter: true,
+            roles:          '*',
         },
-        component: () => import('@views/register/register.vue'),
+        component: () => import('@bviews/sign/register.vue'),
     }, {
         path: '/resetpassword',
         name: 'resetpassword',
-        component: () => import('@views/index/index.vue'),
-    }, {
-        path: '*',
-        name: 'notfound',
         meta: {
-            showSidebar: false,
-            roles: '*',
+            requiresAuth:   false,
+            requiresLogout: true,
+            roles:          '*',
         },
-        component: () => import('@views/404.vue'),
+        component: () => import('@bviews/sign/resetAuth.vue'),
+    }, {
+        path: '/notfound',
+        name: '404',
+        meta: {
+            title:        '找不到了',
+            requiresAuth: false,
+            roles:        '*',
+        },
+        component: () => import('@bviews/404.vue'),
+    }, {
+        path: '/forbidden',
+        name: 'forbidden',
+        meta: {
+            title:        '没有访问权限',
+            requiresAuth: false,
+            roles:        '*',
+        },
+        component: () => import('@bviews/403.vue'),
+    }, {
+        path:     '*',
+        redirect: {
+            path:  '/login',
+            query: {
+                redirect: pathname,
+            },
+        },
     },
 ];
 

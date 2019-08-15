@@ -42,10 +42,11 @@
 </template>
 
 <script>
-	import blocker from './blocker';
-	export default {
-		components: {
-			blocker,
-		},
-	};
+    import blocker from './blocker';
+
+    export default {
+        components: {
+            blocker,
+        },
+    };
 </script>

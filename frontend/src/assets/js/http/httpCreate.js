@@ -8,13 +8,15 @@
 import axios from 'axios';
 // 要使用 0.18 版本  高版本会过滤掉自定义入参导致很多逻辑没法处理
 import store from '@js/store/store';
-import env from '@/frontend/.frontend.env.js';
 import { Message, Loading } from 'element-ui';
-import { baseLoginOut } from '@js/router/auth';
 import { deepMerge } from '@js/utils/types';
+import { baseLogout } from '@js/router/auth';
+import env from '@/frontend/.frontend.env.js';
 
 const $env = process.env.NODE_ENV === 'production';
 
+const cancelTokenQueue = {}; // 取消请求 token 队列
+// 创建 axios 实例
 const httpInstance = axios.create({
     baseURL: $env ? env.public.API_PROD : env.public.API_DEV,
     timeout: 5000, // 请求超时 5s
@@ -39,7 +41,7 @@ httpInstance.interceptors.request.use(config => {
             cancelTokenQueue[key].cancel();
         }
         // 跳转到登录页
-        baseLoginOut();
+        baseLogout();
     }
     return config;
 }, error => {
@@ -53,13 +55,21 @@ httpInstance.interceptors.request.use(config => {
 httpInstance.interceptors.response.use(
     response => {
         // console.log('response:', response);
+        const { config, data } = response;
+
         // 登录信息失效或需要重新登录
-        if (response.data.redirect) {
+        /* if (data.redirect) {
             // 跳转到登录页
-            baseLoginOut();
+            baseLogout();
+        } */
+        // 全局错误处理
+        if (config.systemError !== false) {
+            if (data.code !== 0) {
+                Message.error(data.msg);
+            }
         }
         // 请求成功 将结果返回给前台
-        return response.data;
+        return data;
     },
     result => {
         const { code, response, isCancel, systemError } = result;
@@ -89,10 +99,14 @@ httpInstance.interceptors.response.use(
                 const msg = `${status}: ${response.statusText}`;
 
                 switch (status) {
-                    /* case 404:
-                        Message.error(msg);
+                    case 401:
+                        // 登录信息失效 自动跳转登录
+                        Message.error('登录已过期, 请重新登录');
+                        setTimeout(() => {
+                            baseLogout();
+                        }, 100);
                         break;
-                    case 504:
+                    /* case 504:
                         Message.error(msg);
                         break; */
                     default:
@@ -100,7 +114,7 @@ httpInstance.interceptors.response.use(
                 }
                 return {
                     code: status,
-                    msg: response.statusText,
+                    msg,
                 };
             }
         }
@@ -115,7 +129,6 @@ httpInstance.interceptors.response.use(
  */
 let loadingCount = 0; // loading 层计数
 const btnQueue = {};  // 请求按钮队列
-const cancelTokenQueue = {};
 const adapter = {
     isCancel(options, state, msg) {
         if (state === true) {
@@ -218,6 +231,14 @@ const baseService = (config = {}) => {
     // 阻止重复请求
     if (srcElement === false) {
         return false;
+    }
+
+    // 默认设置 headers
+    if (options.headers != null) {
+        options.headers = {
+            token:   store.getters.token,
+            sysCode: store.getters.sysCode,
+        };
     }
 
     // 添加全局 loading

@@ -1,43 +1,51 @@
+/**
+ * @author claude
+ * 系统设置表
+ */
 const mongoose = require('mongoose');
-// const { requires } = require('../validator');
+const { requires } = require('./validator');
 
 const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Types;
+
 mongoose.Promise = global.Promise;
 
 const Settings = new Schema({
     _id: {
-        type: String,
+        type:    String,
         default: ObjectId,
     },
+    siteName: {
+        type:     String,
+        validate: requires('网站名称'),
+    },
     cdn: {
-        type: String,
+        type:    String,
         default: '/',
     },
     static: {
-        type: String,
+        type:    String,
         default: '/',
     },
     domain: {
-        type: String,
+        type:    String,
         default: '/',
     },
-    intro: Object,
+    intro:         Object,
     // 新标签页打开
     external_link: {
-        type: Boolean,
+        type:    Boolean,
         default: true,
     },
     // 显示草稿
     render_drafts: {
-        type: Boolean,
+        type:    Boolean,
         default: false,
     },
-    QRcode: String,
+    QRcode:      String,
     friend_link: Array,
-    tools: Array,
-    secials: Array,
-    aside: {
+    secials:     Array,
+    aside:       {
         type: Object,
     },
     announce: String,

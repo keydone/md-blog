@@ -6,14 +6,19 @@ $color-primary-light               : #1ea0ffcc;
 $color-primary-darken              : #978755;
 
 $color-success                     : #5BBA69;
-$color-warning                     : #FFB403;
+$color-warning                     : #E6A23C;
 $color-danger                      : #FF5757;
 $color-error                       : #FF001F;
 
 /* layout navigate
 -------------------------- */
-$nav-background                    : #3C3C3C;
+$nav-background                    : #242f42;
 $nav-background-hover              : #585858;
+
+/* layout aside
+-------------------------- */
+$aside-background                  : #324157;
+$aside-background-hover            : #585858;
 
 /* link
 -------------------------- */
@@ -28,8 +33,8 @@ $checkbox-color                    : #61A5FF;
 -------------------------- */
 $color-text-base                   : #333;
 $color-text-second                 : #666;
-$color-text-light                  : #999;
-$color-text-third                  : #ccc;
+$color-text-third                  : #999;
+$color-text-light                  : #ccc;
 $color-text-disabled               : #D8D8D8;
 $color-text-selected               : #FF8A00;
 
@@ -73,5 +78,5 @@ $font-line-height                  : 1;
 
 @mixin inline-block(){
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
 }

@@ -51,16 +51,39 @@ class Utils {
         return /mobile/i.test(ua) && true;
     }
 
-    unexpected(err) {
+    // 接口报错
+    unexpected(error, ctx, next) {
         const msgArr = [];
+        const _ctx = ctx;
 
-        for (const errName in err.errors) {
-            msgArr.push(err.errors[errName].message);
+        for (const errNameIgnored in error.errors) {
+            msgArr.push(error.errors[errNameIgnored].message);
         }
-        return { success: false, msg: msgArr[0] || err.message || '我也不知道发生了什么 (-_-)' };
+        const result = {
+            code: 1,
+            msg:  msgArr[0] || error.message || '我也不知道发生了什么 (-_-)',
+        };
+
+        if (next) {
+            _ctx.$body = result;
+        } else {
+            _ctx.body = result;
+        }
     }
 
+    // 数组递归展平
+    flatten(array) {
+        while (array.some(item => Array.isArray(item))) {
+            //如果当前数组中还有数组，则展开
+            array = [].concat(...array);
+        }
+        return array;
+    }
+
+    // 检查session是否失效
     async checkSession(ctx, next) {
+        const _ctx = ctx;
+
         if (ctx.session.user) {
             // 已登录
             if (ctx.request.path === '/login') {
@@ -74,16 +97,66 @@ class Utils {
             const { url } = ctx.request;
 
             if (ctx.request.method === 'POST') {
-                ctx.body = {
-                    status: 1,
-                    msg: '请重新登录!',
+                _ctx.body = {
+                    code:     1,
+                    msg:      '请重新登录!',
                     redirect: '/login',
                 };
                 return;
             }
-            ctx.redirect(`/login?ref=${url}`);
+            _ctx.redirect(`/login?ref=${url}`);
         }
         await next();
+    }
+
+    // 检查登录是否有效
+    async checkRedis(ctx, next) {
+        const _ctx = ctx;
+
+        if (_ctx.headers.token) {
+            // 有权限
+            const authToken = true;
+
+            if (authToken) {
+                /* _ctx.body = {
+                    code: 0, msg:  'ok',
+                }; */
+
+                if (next) {
+                    return await next(_ctx);
+                }
+            }
+
+            _ctx.status = 403;
+            _ctx.body = { code: _ctx.status, msg: 'access denied.' };
+            return;
+        }
+
+        _ctx.status = 401;
+        _ctx.body = {
+            code: _ctx.status,
+            msg:  '请先登录',
+        };
+        return;
+    }
+    // 检查用户权限
+    async checkAuthent(ctx, next) {
+        const _ctx = ctx;
+
+        // 有访问权限
+        if (_ctx.request.headers.token) {
+
+            if (next) {
+                return await next(_ctx);
+            }
+        }
+
+        // 没有访问权限
+        _ctx.status = 403;
+        _ctx.body = {
+            code: _ctx.status, msg:  'access denied.',
+        };
+        return;
     }
 }
 

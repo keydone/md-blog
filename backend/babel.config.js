@@ -3,7 +3,7 @@ module.exports = {
     plugins: ['@babel/plugin-transform-runtime', [
         'component',
         {
-            libraryName: 'element-ui',
+            libraryName:      'element-ui',
             styleLibraryName: 'theme-chalk',
         },
     ]],

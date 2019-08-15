@@ -33,12 +33,22 @@
  * 所以你可以根据 code 进行不同错误的后续处理
  * 前台 code 提供了 'cancelled', 'timeout'
  */
-import baseService from '@js/http/httpCreate.js';
-import { deepMerge } from '@js/utils/types';
+import baseService from '@bjs/http/httpCreate.js';
+import { deepMerge } from '@bjs/utils/types';
 
 const http = (config = {}, options = {}) => {
+    if (!config.url) {
+        window.$app.$message.error('接口不存在!');
+        return new Promise(() => {
+            Promise.reject('接口入参有误');
+        });
+    }
+
     const result = deepMerge(config, options);
 
+    if (!result.method) {
+        result.method = 'POST';
+    }
     result.btnState = options.btnState; // deepMerge 无法合并正确的 dom, 也无法合并正确的 promise
     return baseService(result);
 };

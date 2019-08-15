@@ -1,7 +1,16 @@
 /* 所有 scss 文件都不用手动引入变量, webpack 中已自动处理
 @import "./variable.scss"; */
-@import "./reset.scss";
+@import "./_reset.scss";
+@import "./_wave.scss";
 
+.pad20{padding:20px;}
+.pl10{padding-left: 10px;}
+.pr10{padding-right: 10px;}
+.mt20{margin-top: 20px;}
+.mb20{margin-bottom: 20px;}
+.ml10{margin-left: 10px;}
+.mr10{margin-right: 10px;}
+.margin20{margin:20px;}
 .fl{float: left;}
 .fr{float: right;}
 
@@ -14,13 +23,26 @@
     }
 }
 
+.f-mini{font-size: 12px;}
+.f-small{font-size: 13px;}
+.f-nomal{font-size: 14px;}
+.f-big{font-size: 16px;}
+
 .hidden{display: none;}
 .shown{display: block;}
+.nowrap{white-space: nowrap;
+    .el-input{width: auto;}
+}
 
-.align-center{text-align: center;}
+.text-center{text-align: center;}
+.text-right{text-align: right;}
 .block-center{
     display: block;
     margin: 0 auto;
+}
+.flex{display:flex;
+    &.space-between{justify-content: space-between;}
+    .flex_1{flex:1;}
 }
 
 .btn-normal{
@@ -57,39 +79,38 @@
 
 #app{
     min-height: 100vh;
+    &.scroll-x{min-width: 1160px;}
 }
 
-.full-screen{
+.full-height{
     height: 100vh;
 }
-
-.main-container{
-    display: flex;
+/* 全局 loading */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease-in;
 }
 
-/*
-* login
-*/
-.user-auth {
-    background: url("../../assets/images/logo.jpg") repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.fade-enter,
+.fade-leave-to {
+    opacity: 0.2;
 }
-.user-auth__wrap{
-    width: 400px;
-    padding: 50px 0;
-    transform: translate(0, -40px);
-}
-.auth-logo {
-    padding: 50px;
-    width: 150px;
-    height: 150px;
+
+.posr{position: relative;}
+.posa{position: absolute;}
+
+.wrapper{
+    max-width: 1440px;
     margin: 0 auto;
-}
-.auth-title {
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0;
-    color: #fff;
+    &.fade-enter-active,
+    &.fade-leave-active{
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+    .wrapper-title {
+        padding: 15px;
+        font-size: 20px;
+        text-align: center;
+    }
 }

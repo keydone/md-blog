@@ -95,8 +95,6 @@ export const deepMerge = (/* obj1, obj2, obj3, ... */...args) => {
     function assignValue(val, key) {
         if (typeof result[key] === 'object' && typeof val === 'object') {
             result[key] = deepMerge(result[key], val);
-        } else if (typeof val === 'object') {
-            result[key] = deepMerge({}, val);
         } else {
             result[key] = val;
         }

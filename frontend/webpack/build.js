@@ -1,3 +1,11 @@
+/*!
+ * @author claude
+ * date 07/05/2019
+ * 打包命令入口
+ */
+
+process.env.NODE_ENV = 'production';
+
 const ora = require('ora');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -8,12 +16,18 @@ spinner.start();
 
 // 编译开始
 webpack(webpackProdConfig, (err, stats) => {
+
     spinner.stop();
+
     if (err) throw err;
 
     console.log(stats.toString({
-        chunks: false,  // 使构建过程静默无输出
-        colors: true,    // 在控制台展示颜色
+        chunks:       false,  // 使构建过程静默无输出
+        colors:       true,    // 在控制台展示颜色
+        chunkModules: false,
+        children:     false,
+        warnings:     false,
+        modules:      false,
     }));
 
     if (stats.hasErrors()) {

@@ -1,13 +1,16 @@
-/*
-*  公共 store 配置文件
-*/
-import user from './modules/user'; // 主系统
-import others from '@js/store/others';
+/*!
+ * @author claude
+ * date 07/05/2019
+ *  公共 store 配置文件
+ */
+
+import base from './modules/base'; // 主系统
+// import others from '@js/store/others';
 
 const modules = {
-    user,
+    base,
     // 其他系统
-    ...others,
+    // ...others,
 };
 
 export default modules;

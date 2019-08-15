@@ -3,16 +3,53 @@
  * date 07/05/2019
  * 用户认证相关
  */
-
-import store from '@js/store/store';
-import { UPDATE_USER } from '@js/store/mutationTypes';
 import {
-    lsKeyLogin,
-    lsKeyMenuList,
-    lsKeyUserinf,
-} from '@js/const/localstorage';
-import ls from '@js/storage/localstorage';
-import mergeRoute from './mergeRoute';
+    UPDATE_USER,
+    UPDATE_MENUS,
+} from '@bjs/store/mutationTypes';
+import store from '@bjs/store/store';
+import ls from '@bjs/storage/localstorage';
+import { lsLoginKeys } from '@bjs/const/consts';
+import { resetRouter } from '@bjs/router/index';
+import mergeDynamicRoutes from './mergeRoute';
+
+/**
+ * 同步 store 中的用户状态
+ */
+export const syncStoreUserInfo = (type = 'sync', data = {}) => {
+    // 同步更新 store
+    const policy = {
+        sync() {
+            const userInfo = {};
+
+            for (const key in lsLoginKeys) {
+                const value = lsLoginKeys[key];
+
+                userInfo[value] = ls.get(value);
+            }
+            store.commit(UPDATE_USER, userInfo);
+        },
+        set() {
+            for (const key in lsLoginKeys) {
+                const value = lsLoginKeys[key];
+
+                ls.set(value, data[value]);
+            }
+            store.commit(UPDATE_USER, data);
+        },
+        reset() {
+            ls.remove(lsLoginKeys);
+            store.commit(UPDATE_USER, {});
+            setTimeout(() => {
+                store.commit(UPDATE_MENUS, {});
+            }, 200);
+            // 重置路由
+            resetRouter();
+        },
+    };
+
+    policy[type]();
+};
 
 /**
  * 检测登录状态
@@ -21,11 +58,16 @@ import mergeRoute from './mergeRoute';
  * 并更新 store
  */
 export const baseIsLogin = () => {
-    let isLogin = store.getters.isLogin;
+    let { isLogin } = store.getters;
 
     if (!isLogin) {
-        isLogin = ls.get(lsKeyLogin);
-        syncStoreUserinfo({ isLogin });
+        isLogin = Boolean(ls.get(lsLoginKeys.token));
+        if (isLogin) {
+            // 同步存储信息
+            syncStoreUserInfo('sync');
+        } else {
+            syncStoreUserInfo('reset');
+        }
     }
 
     return isLogin;
@@ -33,17 +75,16 @@ export const baseIsLogin = () => {
 
 /**
  * 登录
+ * baseLogin({token: '1', menuList: [{path: '/*'}]}) 可直接登录
  */
-export const baseLogin = async (isLogin, menuList) => {
+export const baseLogin = async (userInfo = {}) => {
 
-    syncStoreUserinfo({ isLogin, menuList });
-
-    if (isLogin) {
+    if (userInfo.token) {
         // 登录成功, 存储用户信息
-        ls.set(lsKeyLogin, isLogin);
-        ls.set(lsKeyMenuList, menuList);
-        // 合并路由权限等
-        mergeRoute();
+        syncStoreUserInfo('set', userInfo);
+
+        // 添加动态路由
+        mergeDynamicRoutes();
 
         const { $route, $router } = window.$app;
 
@@ -60,11 +101,28 @@ export const baseLogin = async (isLogin, menuList) => {
 };
 
 /**
- * 同步 store 中的用户状态
+ * 强制用户下线, 清除登录信息并跳转到登录页面
  */
-export const syncStoreUserinfo = ({ isLogin }) => {
-    // 同步更新 store
-    store.commit(UPDATE_USER, { isLogin });
+export const baseLogout = () => {
+
+    const { $router } = window.$app;
+    const { location: { href, pathname } } = window;
+
+    // 重置 store 和 localstorage
+    syncStoreUserInfo('reset');
+
+    let query = {};
+
+    if ($router.currentRoute.path !== '/' && $router.currentRoute.path !== pathname && !href.includes('?redirect=')) {
+        query = {
+            redirect: $router.currentRoute.fullPath,
+        };
+    }
+
+    $router.replace({
+        name: 'login',
+        query,
+    });
 };
 
 /**
@@ -74,45 +132,15 @@ export const syncTabsUserState = async () => {
     // 未登录
     window.addEventListener('storage', (e) => {
 
-        if (e.key === ls.get(lsKeyLogin)) {
+        if (e.key === ls.get(lsLoginKeys.token)) {
 
-            if (ls.get(e.newValue)) {
+            if (e.newValue) {
                 // 已登录
                 baseLogin();
-
             } else {
                 // 未登录或已过期
-                baseLoginOut();
+                baseLogout();
             }
         }
     });
-};
-
-/**
- * 强制用户下线, 清除登录信息并跳转到登录页面
- */
-export const baseLoginOut = () => {
-
-    const { $router } = window.$app;
-
-    // 重置 store 和 localstorage
-    syncStoreUserinfo({ isLogin: null });
-    ls.remove(lsKeyLogin, lsKeyUserinf);
-
-    $router.replace({
-        name: 'login',
-        query: {
-            redirect: $router.currentRoute.fullPath,
-        },
-    });
-};
-
-/**
- * 读取用户信息
- */
-export const getUserInfo = () => {
-    // 读取本地存储
-    const menuList = ls.get(lsKeyMenuList);
-
-    return menuList;
 };

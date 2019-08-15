@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { requires } = require('../validator');
+const { requires } = require('./validator');
 
 const Schema = mongoose.Schema;
 const { ObjectId } = mongoose.Types;
@@ -8,12 +8,12 @@ mongoose.Promise = global.Promise;
 
 const Notes = new Schema({
     _id: {
-        type: String,
+        type:    String,
         default: ObjectId,
     },
     // 笔记标题
     title: {
-        type: String,
+        type:     String,
         validate: requires('文章标题'),
     },
     //  笔记内容
@@ -22,7 +22,7 @@ const Notes = new Schema({
     },
     // 是否为草稿
     isDraft: {
-        type: Number,
+        type:    Number,
         default: 0,
     },
 }, { timestamps: true });

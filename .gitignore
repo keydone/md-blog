@@ -1,10 +1,10 @@
 .gulp-scss-cache/
 .sass-cache/
 *.env.js
+.DS_Store
 node_modules/
 _temp/*
-logs/*
-.DS_Store
+*/logs/*
 /dist
 
 # local env files
@@ -24,3 +24,4 @@ yarn-error.log*
 *.sln
 *.sw?
 *.sh
+*.log

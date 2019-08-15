@@ -1,26 +1,23 @@
 <template>
     <div class="banner-wrap">
-        <slider animation="fade">
-            <slider-item
+        <el-carousel animation="fade">
+            <el-carousel-item
                 v-for="index in 3"
                 :key="index"
-                :speed="300"
             >
-                <router-link :to="{ name: 'softs-detail' }">
+                <router-link :to="{ name: 'post' }">
                     轮播 Mac轮播轮播轮播轮播轮播轮播轮播轮播轮播
                     <div class="img">
                         <img src="">
                     </div>
                 </router-link>
-            </slider-item>
-        </slider>
+            </el-carousel-item>
+        </el-carousel>
     </div>
 </template>
 
 <script>
-	import { Slider, SliderItem } from 'vue-easy-slider';
-
-	export default {
-		components: { Slider, SliderItem },
-	};
+    export default {
+        components: {},
+    };
 </script>

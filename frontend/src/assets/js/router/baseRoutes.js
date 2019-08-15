@@ -11,7 +11,7 @@
  * @param {meta: icon} String 当前菜单的图标
  * @param {meta: title} String 当前菜单的标题
  */
-import dynamicRoutes from './dynamicRoutes';
+import asyncComponent from '@js/common/asyncComponent/index';
 
 // 主框架路由
 const baseRoutes = [
@@ -21,44 +21,62 @@ const baseRoutes = [
             // hidden: true, // 默认菜单不显示
         },
         component: () => import('@comp/LayoutBase.vue'),
-        children: [
+        children:  [
             {
                 path: '/',
                 name: 'index',
-                component: () => import('@views/index/index.vue'),
+                meta: {
+                    title:     '首页',
+                    keepAlive: true,
+                },
+                component: () => asyncComponent(import('@views/index/index.vue')),
             },
-            // 其他系统路由挂在到主系统下
-            ...dynamicRoutes,
+            {
+                path: '/list',
+                name: 'list',
+                meta: {
+                    title:         '列表',
+                    showSideBlock: false,
+                },
+                component: () => asyncComponent(import('@views/list/list.vue')),
+            },
+            {
+                path: '/details',
+                name: 'details',
+                meta: {
+                    title: '详情',
+                },
+                component: () => asyncComponent(import('@views/details/details.vue')),
+            },
+            {
+                path:      '/post',
+                name:      'post',
+                meta:      { title: '发布新资源' },
+                component: () => asyncComponent(import('@views/post.vue')),
+            },
         ],
     }, {
         path: '/login',
         name: 'login',
         meta: {
             requiresLogout: true,
-            showSideBlock: false,
-            hideBaseHeader: true,
-            hideBaseFooter: true,
         },
-        component: () => import('@views/login/login.vue'),
+        component: () => asyncComponent(import('@views/sign/login.vue')),
     }, {
         path: '/register',
         name: 'register',
         meta: {
             requiresLogout: true,
-            showSideBlock: false,
-            hideBaseHeader: true,
-            hideBaseFooter: true,
         },
-        component: () => import('@views/register/register.vue'),
+        component: () => asyncComponent(import('@views/sign/register.vue')),
     }, {
-        path: '/resetpassword',
-        name: 'resetpassword',
-        component: () => import('@views/index/index.vue'),
+        path:      '/resetpassword',
+        name:      'resetpassword',
+        component: () => asyncComponent(import('@views/index/index.vue')),
     }, {
         path: '*',
         name: 'notfound',
         meta: {
-            showSidebar: false,
             roles: '*',
         },
         component: () => import('@views/404.vue'),

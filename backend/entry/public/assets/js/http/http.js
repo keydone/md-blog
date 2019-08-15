@@ -33,8 +33,8 @@
  * 所以你可以根据 code 进行不同错误的后续处理
  * 前台 code 提供了 'cancelled', 'timeout'
  */
-import baseService from '@bjs/http/httpCreate.js';
-import { deepMerge } from '@bjs/utils/types';
+import baseService from '@js/http/httpCreate.js';
+import { deepMerge } from '@js/utils/types';
 
 const http = (config = {}, options = {}) => {
     const result = deepMerge(config, options);

@@ -7,11 +7,11 @@
 
 import axios from 'axios';
 // 要使用 0.18 版本  高版本会过滤掉自定义入参导致很多逻辑没法处理
-import store from '@bjs/store/store';
+import store from '@js/store/store';
 import env from '@/frontend/.frontend.env.js';
 import { Message, Loading } from 'element-ui';
-import { baseLoginOut } from '@bjs/router/auth';
-import { deepMerge } from '@bjs/utils/types';
+import { baseLoginOut } from '@js/router/auth';
+import { deepMerge } from '@js/utils/types';
 
 const $env = process.env.NODE_ENV === 'production';
 

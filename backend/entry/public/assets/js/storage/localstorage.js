@@ -4,7 +4,7 @@
  * 简单封装 ls
  */
 import base64url from 'base64-url';
-import { deepMerge } from '@bjs/utils/types';
+import { deepMerge } from '@js/utils/types';
 
 const { localStorage } = window;
 

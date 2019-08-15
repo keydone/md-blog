@@ -6,29 +6,14 @@
 
 import Vue from 'vue';
 import Router from 'vue-router';
-import { baseIsLogin } from './auth';
-import { mergeRoute } from './resolve';
+import mergeRoute from './mergeRoute';
 import baseRoutes from './baseRoutes';
 import guards from './guards';
 
 Vue.use(Router);
 
 // 合并路由
-let routes = baseRoutes;
-const isLogin = baseIsLogin();
-const mergedRoutes = mergeRoute();
-
-if (isLogin && mergedRoutes) {
-    baseRoutes.forEach(item => {
-        if (item.path === '*') {
-            item.redirect = {
-                path: '',
-                name: 'notfound',
-            };
-        }
-    });
-    routes = [...mergedRoutes, ...baseRoutes];
-}
+const routes = mergeRoute(baseRoutes) || baseRoutes;
 
 // 实例化路由
 const router = new Router({

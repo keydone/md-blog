@@ -7,7 +7,7 @@
  */
 
 import Cookies from 'js-cookie';
-import { cookiePrefix } from '@bjs/const/cookie';
+import { cookiePrefix } from '@js/const/cookie';
 
 Cookies.defaults = {
     path: '/',

@@ -4,25 +4,27 @@
  * 用户认证相关
  */
 
-import { UPDATE_USER } from '@bjs/const/mutationTypes';
+import store from '@js/store/store';
+import { UPDATE_USER } from '@js/store/mutationTypes';
 import {
     lsKeyLogin,
     lsKeyMenuList,
     lsKeyUserinf,
-} from '@bjs/const/localstorage';
-import ls from '@bjs/storage/localstorage';
-import { mergeRoute } from './resolve';
-import store from '@bjs/store/store';
+} from '@js/const/localstorage';
+import ls from '@js/storage/localstorage';
+import mergeRoute from './mergeRoute';
 
 /**
  * 检测登录状态
+ * 先获取 store
+ * 获取不到再去读取 ls
+ * 并更新 store
  */
 export const baseIsLogin = () => {
-    // 以 ls 为准
-    const isLogin = ls.get(lsKeyLogin);
+    let isLogin = store.getters.isLogin;
 
-    if (isLogin && !store.getters.isLogin) {
-        // 同步更新 store
+    if (!isLogin) {
+        isLogin = ls.get(lsKeyLogin);
         syncStoreUserinfo({ isLogin });
     }
 

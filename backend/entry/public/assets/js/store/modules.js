@@ -2,7 +2,7 @@
 *  公共 store 配置文件
 */
 import user from './modules/user'; // 主系统
-import others from '@bjs/store/others';
+import others from '@js/store/others';
 
 const modules = {
     user,

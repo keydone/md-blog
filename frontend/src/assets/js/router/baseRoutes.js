@@ -11,7 +11,7 @@
  * @param {meta: icon} String 当前菜单的图标
  * @param {meta: title} String 当前菜单的标题
  */
-import others from './others';
+import dynamicRoutes from './dynamicRoutes';
 
 // 主框架路由
 const baseRoutes = [
@@ -28,7 +28,7 @@ const baseRoutes = [
                 component: () => import('@views/index/index.vue'),
             },
             // 其他系统路由挂在到主系统下
-            ...others,
+            ...dynamicRoutes,
         ],
     }, {
         path: '/login',

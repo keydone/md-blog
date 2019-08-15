@@ -1,4 +1,4 @@
-import * as types from '@bjs/const/mutationTypes';
+import * as types from './mutationTypes';
 
 /**
  * 默认数据

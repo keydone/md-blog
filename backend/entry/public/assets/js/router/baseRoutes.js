@@ -11,25 +11,26 @@
  * @param {meta: icon} String 当前菜单的图标
  * @param {meta: title} String 当前菜单的标题
  */
+import others from './others';
 
 // 主框架路由
 const baseRoutes = [
-    /* {
+    {
         path: '/',
         meta: {
             // hidden: true, // 默认菜单不显示
         },
-        component: () => import('@bcomp/LayoutBase.vue'),
+        component: () => import('@comp/LayoutBase.vue'),
         children: [
             {
                 path: '/',
                 name: 'index',
-                component: () => import('@bviews/index/index.vue'),
+                component: () => import('@views/index/index.vue'),
             },
             // 其他系统路由挂在到主系统下
             ...others,
         ],
-    },  */{
+    }, {
         path: '/login',
         name: 'login',
         meta: {
@@ -38,7 +39,7 @@ const baseRoutes = [
             hideBaseHeader: true,
             hideBaseFooter: true,
         },
-        component: () => import('@bviews/login/login.vue'),
+        component: () => import('@views/login/login.vue'),
     }, {
         path: '/register',
         name: 'register',
@@ -48,11 +49,11 @@ const baseRoutes = [
             hideBaseHeader: true,
             hideBaseFooter: true,
         },
-        component: () => import('@bviews/register/register.vue'),
+        component: () => import('@views/register/register.vue'),
     }, {
         path: '/resetpassword',
         name: 'resetpassword',
-        component: () => import('@bviews/index.vue'),
+        component: () => import('@views/index/index.vue'),
     }, {
         path: '*',
         name: 'notfound',
@@ -60,7 +61,7 @@ const baseRoutes = [
             showSidebar: false,
             roles: '*',
         },
-        component: () => import('@bviews/404.vue'),
+        component: () => import('@views/404.vue'),
     },
 ];
 

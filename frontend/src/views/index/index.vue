@@ -21,7 +21,7 @@
         <div class="index-block broadcast-msg">
             <ul class="broadcast-msg_wrap">
                 <li>欢迎 Claude 加入</li>
-                <li>欢迎 Claude 加入</li>
+                <li>Claude 更新了资料</li>
             </ul>
         </div>
     </div>

@@ -2,23 +2,23 @@
     <div class="article-detail">
         <section class="section-block detail-container">
             <div class="crumb-nav">
-                <router-link to="/">首页</router-link>
-                <router-link to="/">分类列表</router-link>
+                <router-link to="/">首页</router-link> /
+                <router-link to="/">分类列表</router-link> /
                 正文部分
             </div>
 
             <div class="article-header">
-                <h1 class="big-title">标题标题标题</h1>
+                <h1 class="big-title">{{ details.title }}</h1>
                 <div class="article-meta">
                     <div class="meta-block">
                         <div class="post-avatar">
                             <img src="">
                         </div>
-                        <span class="post-name">发表用户 admin</span>
+                        <span class="post-name">{{ details.author }}</span>
                     </div>
                     <div class="meta-block">
                         <i class="el-icon" />
-                        发布于: 发布相对时间
+                        发布于: {{ dateFormat(details.createdAt, 'yyyy-MM-dd hh:mm', true) }}
                     </div>
                 </div>
             </div>
@@ -26,8 +26,25 @@
             <!-- 文章主体 -->
             <div
                 class="article-main"
-                :content="'article-main 文章主体'"
+                v-html="details.content"
             />
+
+            <!-- 下载 -->
+            <div
+                v-if="details.downloadUrls"
+                class="download-history"
+            >
+                <h2>资源下载:</h2>
+                <ul>
+                    <li
+                        v-for="(item, index) in details.downloadUrls"
+                        :key="index"
+                    >
+                        <p class="post-time">{{ item.date }}</p>
+                        <el-button>下载地址: {{ item.downloadUrl }}</el-button>
+                    </li>
+                </ul>
+            </div>
 
             <!-- 文章版权 -->
             <div class="article-footer">
@@ -36,22 +53,29 @@
                 </div>
 
                 <div class="article-action">
-                    <div class="cates-block">
-                        <router-link to="/"># 分类</router-link>
-                        <router-link to="/"># 分类</router-link>
-                        <router-link to="/"># 分类</router-link>
+                    <div
+                        v-if="details.tags && details.tags.length"
+                        class="cates-block"
+                    >
+                        <router-link
+                            v-for="(tag, index) in details.tags"
+                            :key="index"
+                            to="/"
+                        >
+                            {{ tag }}
+                        </router-link>
                     </div>
                     <div class="action-metas">
                         <div class="meta-block">
                             <i class="el-icon" />
-                            评论数
+                            评论数 ({{ details.comments }})
                         </div>
                         <div class="meta-block">
-                            点赞(数量+1)
+                            点赞 (数量+1)({{ details.liked }})
                         </div>
                         <div class="meta-block">
                             <i class="el-icon" />
-                            收藏
+                            收藏 ({{ details.favor }})
                         </div>
                     </div>
                 </div>
@@ -59,15 +83,21 @@
 
             <!-- 上下篇 -->
             <div class="paging-footer">
-                <div class="page-nav paging-prev">
-                    <router-link to="">
+                <div
+                    v-if="prevItem"
+                    class="page-nav paging-prev"
+                >
+                    <router-link :to="`/details?id=${prevItem._id}`">
                         <i class="el-icon el-icon-d-arrow-left" />
-                        <span class="page-subtitle">上 1 篇标题篇标题篇标题篇标题篇标题篇标题篇标题篇标题</span>
+                        <span class="page-subtitle">{{ prevItem.title }}</span>
                     </router-link>
                 </div>
-                <div class="page-nav paging-next">
-                    <router-link to="">
-                        <span class="page-subtitle">下 1 篇标题篇标题篇标题篇标题篇标题篇标题篇标题篇标题</span>
+                <div
+                    v-if="nextItem"
+                    class="page-nav paging-next"
+                >
+                    <router-link :to="`/details?id=${nextItem._id}`">
+                        <span class="page-subtitle">{{ nextItem.title }}</span>
                         <i class="el-icon el-icon-d-arrow-right" />
                     </router-link>
                 </div>

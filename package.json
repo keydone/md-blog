@@ -4,12 +4,11 @@
     "description": "my blog",
     "main": "app.js",
     "scripts": {
-        "build": "node frontend/webpack/build.js",
-        "dll": "webpack -p --progress --config frontend/webpack/webpack.dll.js",
-        "dev": "webpack-dev-server --config frontend/webpack/webpack.dev.js",
+        "build": "node build.js",
+        "dev": "node build.js",
         "i": "sudo yarn install --ignore-engines",
         "pull": "sudo git pull --rebase",
-        "serve": "node frontend/webpack/utils/koa-serve.js",
+        "serve": "node build.js",
         "start": "nodemon backend/app.js"
     },
     "keywords": [
@@ -56,6 +55,7 @@
         "friendly-errors-webpack-plugin": "^1.7.0",
         "html-webpack-plugin": "^3.2.0",
         "html-webpack-tags-plugin": "^2.0.13",
+        "images": "^3.0.2",
         "koa": "^2.7.0",
         "koa-bodyparser": "^4.2.1",
         "koa-cache-control": "^2.0.0",

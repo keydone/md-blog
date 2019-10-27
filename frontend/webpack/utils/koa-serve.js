@@ -84,7 +84,7 @@ app
     .use(router.allowedMethods())
     .use(staticPath(path.resolve(__dirname, '../../../dist/frontend')))
     .listen('3101', () => {
-        console.log('服务器正在运行在 3101 端口上...\nhttp://localhost:3101');
+        console.log('服务器正在运行在 3101 端口上...\nhttp://127.0.0.1:3101');
     })
     .on('error', (err) => {
         console.log(err.toString());

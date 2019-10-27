@@ -15,10 +15,10 @@
                 <!-- 主体开始 -->
                 <transition name="fade">
                     <keep-alive v-if="$route.meta.keepAlive">
-                        <router-view />
+                        <router-view v-if="isRouterAlive" />
                     </keep-alive>
 
-                    <router-view v-else />
+                    <router-view v-else-if="isRouterAlive" />
                 </transition>
                 <!-- 主体结束 -->
             </section>
@@ -48,15 +48,29 @@
             LayoutHeader,
             LayoutFooter,
         },
+        provide() {
+            return {
+                refresh: this.refresh,
+            };
+        },
         data() {
             return {
-                transition: false,
+                isRouterAlive: true,
+                transition:    false,
             };
         },
         mounted() {
             this.$nextTick(() => {
                 this.transition = true;
             });
+        },
+        methods: {
+            refresh() {
+                this.isRouterAlive = false;
+                this.$nextTick(() => {
+                    this.isRouterAlive = true;
+                });
+            },
         },
     };
 </script>

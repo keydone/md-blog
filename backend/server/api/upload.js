@@ -1,5 +1,6 @@
 const { join } = require('path');
 const Busboy = require('busboy');
+const nodeImages = require('images');
 const { randomBytes } = require('crypto');
 const { createWriteStream } = require('fs');
 const aliUpload = require('./aliUpload');
@@ -30,39 +31,51 @@ const upload = ctx => new Promise((resolve, reject) => {
 
             writeStream.on('finish', async () => {
                 console.log('文件写入完毕！');
-                // 存储文件流
+                const watermark = `${saveToLocal}/${hash}-output.${suffix}`;
+
                 try {
-                    const response = await aliUpload(fileLocalPath, `${filePath}/${hash}.${suffix}`);
+                    // 自动添加水印
+                    nodeImages(fileLocalPath).save(watermark);
 
-                    if (response.code === 200) {
-                        const { filename } = response;
-                        const filepath = `${env.aliStatic}/${filename}`;
+                    // 存储文件流
+                    try {
+                        const response = await aliUpload(watermark, `${filePath}/${hash}.${suffix}`);
 
-                        delete response.url;
+                        if (response.code === 200) {
+                            const { filename } = response;
+                            const filepath = `${env.aliStatic}/${filename}`;
 
-                        // 同步资源表
-                        const stuffId = randomBytes(10).toString('hex');
-                        const { success, msg } = await stuff.save(uploadDate, filename, filepath, stuffId);
+                            delete response.url;
 
-                        if (success) {
-                            Object.assign(response, {
-                                uploadDate,
-                                filepath,
-                                stuffId,
-                            });
+                            // 同步资源表
+                            const stuffId = randomBytes(10).toString('hex');
+                            const { success, msg } = await stuff.save(uploadDate, filename, filepath, stuffId);
+
+                            if (success) {
+                                Object.assign(response, {
+                                    uploadDate,
+                                    filepath,
+                                    stuffId,
+                                });
+                            } else {
+                                response.error = msg;
+                            }
+
+                            resolve(response);
                         } else {
-                            response.error = msg;
+                            resolve({
+                                error: response.code,
+                            });
                         }
-
-                        resolve(response);
-                    } else {
-                        resolve({
-                            error: response.code,
-                        });
+                    } catch (error) {
+                        reject(error);
                     }
-                } catch (error) {
-                    reject(error);
+                } catch (err) {
+                    resolve({
+                        error: err.message,
+                    });
                 }
+
                 writeEnd();
             });
         });

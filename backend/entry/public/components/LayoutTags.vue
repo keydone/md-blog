@@ -12,6 +12,7 @@
                     :closable="true"
                     :class="{'is-active': isActive(item.name)}"
                     @close="closeTags(index)"
+                    @click="routerTo(item.path)"
                 >
                     <router-link
                         :to="item.path"
@@ -50,6 +51,7 @@
     import { UPDATE_TAGSLIST } from '@bjs/store/mutationTypes';
 
     export default {
+        inject:   ['refresh'],
         computed: {
             tagsList() {
                 return this.$store.state.base.tagsList;
@@ -75,6 +77,11 @@
         methods: {
             isActive(name) {
                 return name === this.$route.name;
+            },
+            routerTo(path) {
+                if (path === this.$route.path) {
+                    this.refresh();
+                }
             },
             // 关闭单个标签
             closeTags(index) {

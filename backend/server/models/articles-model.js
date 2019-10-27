@@ -33,24 +33,28 @@ const Articles = new Schema({
         validate: requires('文章 id'),
     },
     // 作者
-    author:     String,
-    authorId:   String,
+    author:       String,
+    authorId:     String,
     // 分类id
-    categoryId: String,
+    categoryId:   String,
     // 标签id
-    tags:       Array,
+    tags:         Array,
     // 发布时间
-    postDate:   Date,
+    postDate:     Date,
     // 最后更新时间
-    modDate:    Date,
+    modDate:      Date,
     // 内容 id
-    contentId:  String,
-    // 内容
-    content:    String,
-    // 内容
-    text:       String,
+    contentId:    String,
+    // 富文本内容
+    content:      String,
+    // 文本内容
+    text:         String,
+    // 资源下载
+    downloadUrls: String,
+    // 阅读权限
+    limits:       String,
     // 是否为草稿
-    isDraft:    {
+    isDraft:      {
         type:    Boolean,
         default: false,
     },

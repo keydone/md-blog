@@ -26,10 +26,10 @@
             >
                 <el-tooltip
                     effect="light"
-                    :content="fullscreen ? `取消全屏` : `全屏`"
+                    content="切换全屏"
                     placement="bottom"
                 >
-                    <i class="el-icon-rank" />
+                    <i class="el-icon-full-screen" />
                 </el-tooltip>
             </div>
 
@@ -103,7 +103,6 @@
         data() {
             return {
                 asideCollapsed: false,
-                fullscreen:     false,
                 username:       'claude',
                 role:           '管理员',
                 message:        100,
@@ -114,32 +113,51 @@
                 this.asideCollapsed = !this.asideCollapsed;
                 this.$bus.$emit('collapseChanged', this.asideCollapsed);
             },
-            fullScreenSwitch() {
-                const element = document.documentElement;
+            // 检测全屏
+            checkFullScreen() {
+                const doc = document;
 
-                if (this.fullscreen) {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitCancelFullScreen) {
-                        document.webkitCancelFullScreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
+                return Boolean(
+                    doc.fullscreenElement ||
+                        doc.webkitFullscreenElement ||
+                        doc.mozFullScreenElement ||
+                        doc.msFullscreenElement
+                );
+            },
+            // 切换全屏
+            fullScreenSwitch() {
+                const doc = document;
+
+                if (this.checkFullScreen()) {
+                    const cancelFullScreen = [
+                        'cancelFullScreen',
+                        'webkitCancelFullScreen',
+                        'mozCancelFullScreen',
+                        'msExitFullScreen',
+                    ];
+
+                    for (const item of cancelFullScreen) {
+                        if (doc[item]) {
+                            doc[item]();
+                            break;
+                        }
                     }
                 } else {
-                    if (element.requestFullscreen) {
-                        element.requestFullscreen();
-                    } else if (element.webkitRequestFullScreen) {
-                        element.webkitRequestFullScreen();
-                    } else if (element.mozRequestFullScreen) {
-                        element.mozRequestFullScreen();
-                    } else if (element.msRequestFullscreen) {
-                        // IE11
-                        element.msRequestFullscreen();
+                    const element = doc.documentElement;
+                    const requestFullscreen = [
+                        'requestFullscreen',
+                        'webkitRequestFullscreen',
+                        'mozRequestFullscreen',
+                        'msRequestFullscreen',
+                    ];
+
+                    for (const item of requestFullscreen) {
+                        if (element[item]) {
+                            element[item]();
+                            break;
+                        }
                     }
                 }
-                this.fullscreen = !this.fullscreen;
             },
             handleCommand(command) {
                 if (command === 'logout') {

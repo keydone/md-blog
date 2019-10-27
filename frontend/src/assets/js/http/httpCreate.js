@@ -72,7 +72,7 @@ httpInstance.interceptors.response.use(
         return data;
     },
     result => {
-        const { code, response, isCancel, systemError } = result;
+        const { code, response, isCancel, systemError, message } = result;
 
         if (systemError !== false) {
             if (isCancel) {
@@ -116,10 +116,15 @@ httpInstance.interceptors.response.use(
                     code: status,
                     msg,
                 };
+            } else if (message) {
+                Message.error(message);
             }
         }
         // 防止前台报错
-        return {};
+        return {
+            code: 1,
+            msg:  message,
+        };
     },
 );
 

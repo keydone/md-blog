@@ -1,20 +1,28 @@
+/*!
+ * @author claude <email>
+ * date 10/27/2019
+ * description backend
+ * TODO:
+ * 允许跨域配置
+ * 上传文件时自动添加水印
+ */
 const fs = require('fs');
 const Koa = require('koa');
 const path = require('path');
 const cors = require('@koa/cors');
+const mime = require('mime/lite');
 const Router = require('koa-router');
+const helmet = require('koa-helmet');
+const mongoose = require('mongoose');
+const { promisify } = require('util');
 const favicon = require('koa-favicon');
+const compression = require('koa-compress');
+const bodyParser = require('koa-bodyparser');
 const cacheControl = require('koa-cache-control');
 const routes = require('./server/routes/routes');
 const log4js = require('./server/utils/logs');
-const bodyParser = require('koa-bodyparser');
-const compression = require('koa-compress');
-const { promisify } = require('util');
-const mongoose = require('mongoose');
-const helmet = require('koa-helmet');
-const mime = require('mime/lite');
-const stat = promisify(fs.stat);
 
+const stat = promisify(fs.stat);
 const resolve = dir => path.resolve(__dirname, dir);
 
 const indexPath = async (ctx) => {
@@ -67,7 +75,7 @@ async function connectDB(callback) {
         useCreateIndex:     true,
         useNewUrlParser:    true,
         useUnifiedTopology: true,
-    }).catch(err => console.log(err));
+    }).catch(error => console.log(error));
 
     if (connectState) {
         callback();
@@ -84,7 +92,16 @@ connectDB(() => {
 
     app.keys = ['some-secret'];
 
-    app.use(cors())
+    app.use(cors({
+        origin(ctx) {
+            // console.log(ctx.url);
+
+            if (ctx.url === '/forbin') {
+                return false;
+            }
+            return '*';
+        },
+    }))
         .use(helmet()) // 安全防护
         .use(cacheControl({
             maxAge: 3600 * 24 * 14, // (秒) 14 天
@@ -115,7 +132,7 @@ connectDB(() => {
         .use(router.routes())
         .use(router.allowedMethods())
         .listen(3102, () => {
-            console.log('服务器正在运行在 3102 端口上...\nhttp://localhost:3102');
+            console.log('服务器正在运行在 3102 端口上...\nhttp://127.0.0.1:3102');
         })
         .on('error', (err) => {
             console.error('[server error]:', err.toString());

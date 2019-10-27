@@ -98,6 +98,14 @@
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+                <router-link
+                    :to="{name: 'post'}"
+                    class="nav-menu"
+                >
+                    <el-button class="post-btn" type="primary">
+                        发布新资源
+                    </el-button>
+                </router-link>
             </div>
 
             <!-- 导航右侧内容 -->
@@ -229,6 +237,14 @@
                             </li>
                         </ul>
                     </div>
+                    <router-link
+                        :to="{name: 'post'}"
+                        class="nav-menu"
+                    >
+                        <el-button class="post-btn" type="primary">
+                            发布新资源
+                        </el-button>
+                    </router-link>
                 </div>
             </div>
         </div>

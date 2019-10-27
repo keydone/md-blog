@@ -15,14 +15,13 @@ router
             const _ctx = ctx;
             const { error, ...rest } = await imgUpload(ctx, next);
 
-            console.log('上传完毕:', rest.filepath);
+            console.log('上传完毕:', rest.filepath, error);
 
             if (error) {
-                console.log(error);
                 _ctx.status = 400;
                 _ctx.body = {
                     code: 1,
-                    msg:  error === 'ResponseTimeoutError' ? '请求超时, 上传失败' : '上传失败',
+                    msg:  error === 'ResponseTimeoutError' ? '请求超时, 上传失败' : `上传失败: ${error}`,
                 };
             } else {
                 _ctx.body = {
@@ -31,6 +30,7 @@ router
                     url:  rest.filepath,
                 };
             }
-        });
+        }
+    );
 
 module.exports = router.routes();

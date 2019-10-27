@@ -25,7 +25,7 @@
                     <v-bread-crumb />
                     <transition name="slide">
                         <keep-alive :include="tagsList">
-                            <router-view />
+                            <router-view v-if="isRouterAlive" />
                         </keep-alive>
                     </transition>
                 </el-main>
@@ -58,10 +58,16 @@
             vBreadCrumb,
             vHeader,
         },
+        provide() {
+            return {
+                refresh: this.refresh,
+            };
+        },
         data() {
             return {
                 tagsList:         [],
                 loading:          false,
+                isRouterAlive:    true,
                 sideBarCollapsed: false,
             };
         },
@@ -79,6 +85,14 @@
                     this.loading = false;
                 }, 500);
             });
+        },
+        methods: {
+            refresh() {
+                this.isRouterAlive = false;
+                this.$nextTick(() => {
+                    this.isRouterAlive = true;
+                });
+            },
         },
     };
 </script>

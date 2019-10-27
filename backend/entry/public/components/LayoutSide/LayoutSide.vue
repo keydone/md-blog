@@ -7,12 +7,13 @@
             <el-scrollbar class="main-aside">
                 <el-aside width="190px">
                     <el-menu
+                        router
+                        class="aside-menu"
                         :unique-opened="true"
                         :default-active="activeIndex"
                         :default-openeds="defaultOpens"
                         :collapse="isCollapsed"
-                        class="aside-menu"
-                        router
+                        @select="menuSelected"
                     >
                         <menu-temp :menus="menuList" />
                     </el-menu>
@@ -104,14 +105,6 @@
         .el-menu-item-group__title {
             display: none;
         }
-        // .current-pos {
-        //     position: absolute;
-        //     top: 0;
-        //     left: 0;
-        //     width: 5px;
-        //     height: 56px;
-        //     background: #333;
-        // }
     }
     .el-menu {
         .el-menu-item,
@@ -151,17 +144,49 @@
             }
         }
     }
-    // .el-submenu {
-    // &.is-opened {
-    // & > .el-submenu__title {
-    // color: #409eff;
-    // background: #1c2d3c;
-    // }
-    // }
-    // }
-    .el-menu--vertical > .el-menu--popup {
-        max-height: 100vh;
-        min-width: 100px;
-        overflow-y: auto;
+
+    /* 折叠样式 */
+    .el-menu--collapse {
+        .el-submenu__title {
+            width: auto;
+        }
+        .is-opened {
+            .el-submenu__title {
+                background: $nav-background-active;
+                i {
+                    color: #fff;
+                }
+            }
+        }
+    }
+
+    /* 悬浮菜单 */
+    .el-menu--vertical {
+        & > .el-menu--popup {
+            min-width: 100px;
+            max-height: calc(100vh - 20px);
+            background: #4a4d58;
+            overflow-y: auto;
+        }
+        .el-menu-item-group__title {
+            border-bottom: 1px solid #3a4150;
+        }
+        .title-text {
+            font-size: 13px;
+            color: #fff;
+        }
+        .el-menu-item {
+            color: #fff;
+            border-radius: 0;
+            &.is-active,
+            &:hover,
+            &:focus {
+                color: $nav-active-color;
+                background: $nav-background-active;
+                [class*="el-icon-"] {
+                    color: #fff;
+                }
+            }
+        }
     }
 </style>

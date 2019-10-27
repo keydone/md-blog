@@ -52,7 +52,7 @@ export const newestArticles = {
 * 发布文章
 */
 export const articlePost = {
-    url: `${api}article/post`,
+    url: `${api}article/save`,
     isLogin,
 };
 /*
@@ -107,5 +107,13 @@ export const getFooterBlock = {
 export const getFriendLinks = {
     method: 'get',
     url:    `${api}friendlinks/list`,
+    isLogin,
+};
+/*
+* 查询文章详情
+*/
+export const getArticleDetails = {
+    method: 'get',
+    url:    `${api}article/find`,
     isLogin,
 };

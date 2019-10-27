@@ -3,7 +3,7 @@
  * date 07/05/2019
  * 日期格式化
  */
-export const dateFormat = (timestamp, format = 'yyyy-MM-dd hh:mm') => {
+export const dateFormat = (timestamp, format = 'yyyy-MM-dd hh:mm', relative = false) => {
     const $date = new Date(timestamp);
 
     const map = {

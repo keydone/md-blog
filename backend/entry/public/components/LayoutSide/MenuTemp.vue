@@ -15,7 +15,6 @@
                     </template>
                     <el-menu-item-group>
                         <template slot="title">
-                            <i class="el-icon-collection" />
                             <span class="title-text">{{ item.meta.title }}</span>
                         </template>
                         <!-- 递归调用组件 -->

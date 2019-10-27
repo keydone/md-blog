@@ -1,6 +1,6 @@
 module.exports = (router) => {
     // 公共接口
-    router.use('/api/', require('./common'));
+    router.use('/api', require('./common'));
     // 用户模块
     router.use('/api/user', require('./user'));
     // 首页模块

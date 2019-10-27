@@ -1,5 +1,5 @@
 const ArticlesModel = require('../models/articles-model');
-const stuffs = require('../models/stuff-model');
+// const stuffs = require('../models/stuff-model');
 const exclude = require('../utils/exclude');
 const Utils = require('../utils/utils');
 
@@ -8,11 +8,11 @@ const Utils = require('../utils/utils');
  * @param {*pageSize} pageSize
  * @param {*drafts} drafts 1: 全部 0:非草稿 2:草稿
  */
-async function findAll(ctx, next) {
+async function findAll({ ctx, next }) {
     let { page, pageSize } = ctx.request.query;
     const _ctx = ctx;
     const { draft } = ctx.request.query;
-    const drafts = draft === undefined ? 0 : +draft;
+    const drafts = draft == null ? 0 : +draft;
     const filter = {};
 
     page = (page - 1) || 0;
@@ -41,14 +41,14 @@ async function findAll(ctx, next) {
             page,
         };
     } catch (error) {
-        _ctx.body = Utils.unexpected(error);
+        Utils.unexpected(error, _ctx, next);
     }
 
     next && await next(_ctx);
 }
 
 // 最新几篇
-async function findLastPost(ctx) {
+async function findLastPost({ ctx }) {
     ctx.body.last_post = await ArticlesModel.find({
         isDraft: 0,
     }, exclude)
@@ -56,65 +56,92 @@ async function findLastPost(ctx) {
         .sort({ createdAt: -1 });
 }
 
-async function findOne($id, ctx, next) {
+async function findOne({
+    ctx,
+    filter = {},
+    next,
+}) {
+    const _ctx = ctx;
+    const { _id } = _ctx.request.query;
 
-    if ($id != null) {
-        return await ArticlesModel.findOne({ _id: $id }, exclude, { lean: true });
+    if (_id == null) {
+        return await ArticlesModel.findOne({ _id }, exclude, { lean: true });
     }
 
-    const _ctx = ctx;
-
     try {
-        const { id } = ctx.params;
-        const article = await ArticlesModel.findOne({ _id: id }, exclude);
+        const article = await ArticlesModel.findOne({ _id }, exclude);
 
         if (article) {
-            const attachment = await stuffs.findOne({ articleId: id }, exclude);
+            /* const attachment = await stuffs.findOne({ articleId: id }, exclude);
 
-            article.stuffs = attachment || {};
-            const { _id } = article;
+            article.stuffs = attachment || {}; */
 
+            // 查找上1篇
             let prevItem = await ArticlesModel.find({ _id: { $lt: _id } }, exclude).sort({ _id: -1 }).limit(1);
 
             prevItem = prevItem.length ? prevItem[0] : null;
 
+            // 查找下1篇
             let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }, exclude).sort({ _id: 1 }).limit(1);
 
             nextItem = nextItem.length ? nextItem[0] : null;
 
-            _ctx.body = {
-                prevItem,
-                article,
-                nextItem,
+            const result = {
+                code: 0,
+                data: {
+                    prevItem,
+                    article,
+                    nextItem,
+                },
             };
+
+            if (next) {
+                _ctx.$body = result;
+            } else {
+
+                _ctx.body = result;
+            }
         }
-    } catch (err) {
-        _ctx.body = Utils.unexpected(err);
+    } catch (error) {
+        Utils.unexpected(error, _ctx, next);
     }
 
     next && await next(_ctx);
 }
 
-async function saveData(ctx, body) {
+// 抽象保存方法
+async function saveData({ ctx, body, next }) {
     const _ctx = ctx;
 
     try {
         delete body._id;
         await new ArticlesModel(body).save();
 
-        _ctx.body = { code: 0, msg: body.isDraft ? '保存成功' : '发布成功!' };
-    } catch (err) {
-        _ctx.body = Utils.unexpected(err);
+        const result = { code: 0, msg: body.isDraft ? '保存成功' : '发布成功!' };
+
+        if (next) {
+            _ctx.$body = result;
+        } else {
+            _ctx.body = result;
+        }
+    } catch (error) {
+        Utils.unexpected(error, _ctx);
     }
 }
 
-async function save(ctx, next) {
+async function save({ ctx, next }) {
     const _ctx = ctx;
     const { body } = ctx.request;
     const { _id, title, authorId } = body;
 
     if (!title) {
-        _ctx.body = { code: 1, msg: '文章标题 不能为空' };
+        const result = { code: 1, msg: '文章标题 不能为空' };
+
+        if (next) {
+            _ctx.$body = result;
+        } else {
+            _ctx.body = result;
+        }
     } else {
 
         // 文章是否存在
@@ -128,21 +155,27 @@ async function save(ctx, next) {
 
             if (findOne) {
                 if (findOne.authorId === authorId) {
-                    await saveData(_ctx, body);
+                    await saveData(_ctx, body, next);
                 } else {
-                    _ctx.body = { code: 1, msg: '权限不足, 请重新登录' };
+                    const result = { code: 1, msg: '权限不足, 请重新登录' };
+
+                    if (next) {
+                        _ctx.$body = result;
+                    } else {
+                        _ctx.body = result;
+                    }
                 }
             } else {
-                await saveData(_ctx, body);
+                await saveData(_ctx, body, next);
             }
         } else {
-            await saveData(_ctx, body);
+            await saveData(_ctx, body, next);
         }
     }
     next && await next(_ctx);
 }
 
-async function update(ctx, next) {
+async function update({ ctx, next }) {
     const _ctx = ctx;
     const { _id, article } = _ctx.request.body;
 
@@ -156,32 +189,48 @@ async function update(ctx, next) {
             }
         );
 
+        let result = {};
+
         if (res === null) {
-            _ctx.body = { code: 1, msg: '更新失败 (-_-)' };
+            result = { code: 1, msg: '更新失败 (-_-)' };
         } else {
-            _ctx.body = { code: 0, msg: '更新成功!' };
+            result = { code: 0, msg: '更新成功!' };
         }
-    } catch (err) {
-        _ctx.body = Utils.unexpected(err);
+
+        if (next) {
+            _ctx.$body = result;
+        } else {
+            _ctx.body = result;
+        }
+    } catch (error) {
+        Utils.unexpected(error, _ctx, next);
     }
 
     next && await next(_ctx);
 }
 
-async function remove(ctx, next) {
+async function remove({ ctx, next }) {
     const _ctx = ctx;
     const { _id } = _ctx.request.body;
 
     try {
         const { deletedCount } = await ArticlesModel.deleteOne({ _id });
 
+        let result = {};
+
         if (deletedCount) {
-            _ctx.body = { code: 0, msg: '删除成功!' };
+            result = { code: 0, msg: '删除成功!' };
         } else {
-            _ctx.body = { code: 1, msg: '删除失败' };
+            result = { code: 1, msg: '删除失败' };
         }
-    } catch (err) {
-        _ctx.body = Utils.unexpected(err);
+
+        if (next) {
+            _ctx.$body = result;
+        } else {
+            _ctx.body = result;
+        }
+    } catch (error) {
+        Utils.unexpected(error, _ctx, next);
     }
     next && await next(_ctx);
 }

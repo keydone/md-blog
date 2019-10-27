@@ -34,16 +34,16 @@
                 />
             </el-form-item>
             <!-- <el-form-item
-                        class="post-date"
-                        label="发布时间"
-                    >
-                        <el-date-picker
-                            v-model="postDate"
-                            type="datetime"
-                            class="post-date"
-                            placeholder="选择日期时间"
-                        />
-                    </el-form-item> -->
+                class="post-date"
+                label="发布时间"
+            >
+                <el-date-picker
+                    v-model="postDate"
+                    type="datetime"
+                    class="post-date"
+                    placeholder="选择日期时间"
+                />
+            </el-form-item> -->
             <el-form-item
                 class="post-stars"
                 label="推荐星级"
@@ -53,6 +53,49 @@
         </el-form>
 
         <tinymce ref="tinymce" />
+
+        <!-- 资源下载 -->
+        <div class="post-download">
+            <el-form>
+                <div
+                    v-for="(item, index) in downloadUrls"
+                    :key="index"
+                    class="el-form-download"
+                >
+                    <el-form-item
+                        label="版本/日期"
+                        label-width="80px"
+                    >
+                        <el-input v-model="item.date" />
+                    </el-form-item>
+                    <el-form-item
+                        label="资源下载"
+                        label-width="80px"
+                    >
+                        <textarea
+                            v-model="item.downloadUrl"
+                            class="download-content"
+                            placeholder="下载地址, 如网盘地址"
+                        />
+                    </el-form-item>
+                    <i class="action-add">+</i>
+                    <i class="action-minus">-</i>
+                </div>
+                <el-form-item
+                    label="阅读权限"
+                    label-width="80px"
+                >
+                    <el-select v-model="limits">
+                        <el-option
+                            v-for="item in limitSelect"
+                            :key="item.value"
+                            :value="item.value"
+                            :label="item.label"
+                        />
+                    </el-select>
+                </el-form-item>
+            </el-form>
+        </div>
 
         <div class="post-options posr">
             <el-collapse
@@ -138,13 +181,20 @@
         },
         data() {
             return {
-                id:          '',
-                title:       '😝',
-                subtitle:    '',
-                author:      '凯子',
-                authorId:    '',
-                postDate:    +new Date(),
-                postStars:   null,
+                id:           '',
+                title:        '😝',
+                subtitle:     '',
+                author:       '凯子',
+                authorId:     '',
+                postDate:     +new Date(),
+                postStars:    null,
+                limits:       '100',
+                downloadUrls: [
+                    {
+                        date:        '',
+                        downloadUrl: '',
+                    },
+                ],
                 postOptions: [],
                 categories:  [],
                 categoryId:  '',
@@ -152,6 +202,20 @@
                 indexBlock:  '',
                 tagList:     [],
                 tags:        [],
+                limitSelect: [
+                    {
+                        label: '访客',
+                        value: '100',
+                    },
+                    {
+                        label: '会员可见',
+                        value: '200',
+                    },
+                    {
+                        label: '回复可见',
+                        value: '300',
+                    },
+                ],
             };
         },
         created() {
@@ -174,16 +238,18 @@
                         target: $event,
                     },
                     data: {
-                        _id:        this.id,
-                        title:      this.title,
-                        subtitle:   this.subtitle,
-                        author:     this.author || '匿名用户',
-                        categoryId: this.categoryId,
-                        indexBlock: this.indexBlock,
-                        authorId:   this.authorId,
-                        postDate:   this.postDate,
-                        stars:      this.stars,
-                        tags:       this.tags,
+                        _id:          this.id,
+                        title:        this.title,
+                        limits:       this.limits,
+                        subtitle:     this.subtitle,
+                        author:       this.author || '匿名用户',
+                        downloadUrls: this.downloadUrls,
+                        categoryId:   this.categoryId,
+                        indexBlock:   this.indexBlock,
+                        authorId:     this.authorId,
+                        postDate:     this.postDate,
+                        stars:        this.stars,
+                        tags:         this.tags,
                         isDraft,
                         content,
                         text,
@@ -267,6 +333,46 @@
         .tinymce-container {
             min-height: 500px;
         }
+        .post-download {
+            padding-top: 20px;
+            .el-form-item__label {
+                text-align: left;
+            }
+        }
+        .el-form-download {
+            position: relative;
+            padding-right: 100px;
+            .el-form-item {
+                margin-bottom: 10px;
+            }
+        }
+        .action-add,
+        .action-minus {
+            position: absolute;
+            top: 50%;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+            border: 1px solid #dcdfe6;
+        }
+        .action-add {
+            right: 50px;
+        }
+        .action-minus {
+            right: 5px;
+        }
+        .download-content {
+            border: 1px solid #dcdfe6;
+            border-radius: 5px;
+            min-height: 50px;
+            padding: 10px;
+            width: 100%;
+            resize: vertical;
+        }
         .flex {
             .el-form-item {
                 flex: 1;
@@ -278,7 +384,6 @@
             }
         }
         .post-options {
-            padding-top: 20px;
             text-align: right;
             .el-collapse {
                 margin: 20px 0 30px;
@@ -286,9 +391,10 @@
             .el-collapse-item__header {
                 position: absolute;
                 right: 0;
-                top: 17px;
+                top: -22px;
                 height: 46px;
                 line-height: 46px;
+                padding-left: 10px;
                 border-bottom: 0;
                 &:hover {
                     color: #409eff;

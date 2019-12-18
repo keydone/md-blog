@@ -98,18 +98,21 @@
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-                <router-link
-                    :to="{name: 'post'}"
+                <!-- <router-link
+                    :to="{ name: 'post' }"
                     class="nav-menu"
                 >
-                    <el-button class="post-btn" type="primary">
+                    <el-button
+                        class="post-btn"
+                        type="primary"
+                    >
                         发布新资源
                     </el-button>
-                </router-link>
+                </router-link> -->
             </div>
 
             <!-- 导航右侧内容 -->
-            <ul class="heading-side fr">
+            <ul class="heading-side fr hidden">
                 <li v-if="!isLogin">
                     <router-link :to="{ name: 'login' }">
                         <button class="btn-normal">登录</button>
@@ -120,35 +123,16 @@
                         <button class="btn-normal btn-primary">注册</button>
                     </router-link>
                 </li>
-                <li class="search-for">
-                    <div
-                        class="search-global"
-                        @mouseenter="autoFocus"
-                    >
-                        <el-input
-                            ref="searchInput"
-                            v-model="keywords"
-                            placeholder="回车发起搜索"
-                            @keyup.native.enter="search"
-                        />
-                        <i
-                            class="el-icon-search"
-                            @click="search"
-                        />
-                    </div>
-                    <el-dropdown class="posr">
-                        <i class="el-icon-time" />
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>黄金糕</el-dropdown-item>
-                            <el-dropdown-item>狮子头</el-dropdown-item>
-                            <el-dropdown-item>螺蛳粉</el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
+                <li v-else>
+                    <button class="btn-normal">退出登录</button>
                 </li>
             </ul>
 
             <!-- 公告 -->
-            <div class="base-notice">
+            <div
+                v-if="notices.length"
+                class="base-notice"
+            >
                 公告轮播
                 新开站点
                 会员 5 折
@@ -241,7 +225,10 @@
                         :to="{name: 'post'}"
                         class="nav-menu"
                     >
-                        <el-button class="post-btn" type="primary">
+                        <el-button
+                            class="post-btn"
+                            type="primary"
+                        >
                             发布新资源
                         </el-button>
                     </router-link>
@@ -259,6 +246,7 @@
             return {
                 skin:     'fly-',
                 keywords: '',
+                notices:  [],
             };
         },
         computed: {

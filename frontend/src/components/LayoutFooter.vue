@@ -20,7 +20,7 @@
                             <li
                                 v-for="item in block.list"
                                 :key="item._id"
-                                class="list-item"
+                                class="li-item"
                             >
                                 <a
                                     target="_blank"
@@ -61,21 +61,20 @@
         <section class="footer-bottom">
             <div class="footer-container clearfix">
                 <p class="footer-copyright fl">
-                    版权 © 2017 All Right Reserved, 由<a
-                        class="main-color"
+                    版权 © 2017 All Right Reserved, 由 <a
                         href="https://koa.bootcss.com/"
                         target="_blank"
-                    >Koa</a>强力驱动.
+                    >Koa</a> 强力驱动 | 备案/许可证号：<a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action">粤ICP备18059825号-1</a>
                 </p>
                 <ul class="footer__social-network fr">
-                    <li class="social-network__item">
+                    <li class="social__item">
                         <a
                             target="_blank"
                             href="https://github.com/keydone"
                             title="github"
                         ><i class="icon el-icon-setting" /></a>
                     </li>
-                    <li class="social-network__item">
+                    <li class="social__item">
                         <a
                             target="_blank"
                             href="k754708625@gmail.com"
@@ -168,7 +167,7 @@
             width: 100px;
             margin-left: -15px;
         }
-        .list-item {
+        .li-item {
             margin-bottom: 10px;
         }
     }
@@ -194,13 +193,12 @@
         margin: 0 50px;
     }
     .footer-bottom {
-        height: 50px;
-        line-height: 30px;
         font-size: 13px;
-        padding: 10px 0;
+        line-height: 24px;
+        padding: 10px 50px;
     }
     .footer__social-network {
-        .social-network__item {
+        .social__item {
             @include inline-block;
         }
     }

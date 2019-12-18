@@ -1,6 +1,6 @@
 <template>
-    <div class="wrapper post-section">
-        <h3 class="wrapper-title">发布文章</h3>
+    <div class="wrapper note-section">
+        <h3 class="wrapper-title">发布笔记</h3>
         <el-form
             label-width="80px"
             inline
@@ -33,17 +33,6 @@
                     placeholder="(匿名用户)"
                 />
             </el-form-item>
-            <!-- <el-form-item
-                class="post-date"
-                label="发布时间"
-            >
-                <el-date-picker
-                    v-model="postDate"
-                    type="datetime"
-                    class="post-date"
-                    placeholder="选择日期时间"
-                />
-            </el-form-item> -->
             <el-form-item
                 class="post-stars"
                 label="推荐星级"
@@ -52,54 +41,23 @@
             </el-form-item>
         </el-form>
 
-        <tui-editor
-            ref="tuiEditor"
-            preview-style="vertical"
-            height="700px"
-        />
-        <!-- <tinymce ref="tinymce" /> -->
-
-        <!-- 资源下载 -->
-        <div class="post-download">
-            <el-form>
-                <div
-                    v-for="(item, index) in downloadUrls"
-                    :key="index"
-                    class="el-form-download"
-                >
-                    <el-form-item
-                        label="版本/日期"
-                        label-width="80px"
-                    >
-                        <el-input v-model="item.date" />
-                    </el-form-item>
-                    <el-form-item
-                        label="资源下载"
-                        label-width="80px"
-                    >
-                        <textarea
-                            v-model="item.downloadUrl"
-                            class="download-content"
-                            placeholder="下载地址, 如网盘地址"
-                        />
-                    </el-form-item>
-                    <i class="action-add el-icon-circle-plus-outline" />
-                    <i class="action-minus el-icon-remove-outline" />
-                </div>
-                <el-form-item
-                    label="阅读权限"
-                    label-width="80px"
-                >
-                    <el-select v-model="readlimit">
-                        <el-option
-                            v-for="item in limitSelect"
-                            :key="item.value"
-                            :value="item.value"
-                            :label="item.label"
-                        />
-                    </el-select>
-                </el-form-item>
-            </el-form>
+        <div class="editor-wrapper">
+            <el-switch
+                v-model="markdown"
+                active-text="Markdown"
+                inactive-text="富文本编辑器"
+                @change="changeEditor"
+            />
+            <!-- Markdown -->
+            <mavon-editor
+                v-show="markdown"
+                v-model="content"
+            />
+            <!-- 富文本编辑器 -->
+            <tinymce
+                v-show="!markdown"
+                ref="tinymce"
+            />
         </div>
 
         <div class="post-options posr">
@@ -113,7 +71,7 @@
                 >
                     <div class="flex">
                         <div class="flex-options">
-                            <label class="el-label">文章分类</label>
+                            <label class="el-label">笔记分类</label>
                             <el-select v-model="categoryId">
                                 <el-option
                                     v-for="item in categories"
@@ -138,7 +96,7 @@
                             </el-select>
                         </div>
                         <div class="flex-options">
-                            <label class="el-label">文章标签</label>
+                            <label class="el-label">笔记标签</label>
                             <el-select
                                 v-model="tags"
                                 class="select-tags"
@@ -171,41 +129,32 @@
 </template>
 
 <script>
-    // import tinymce from '@comp/Tinymce/Tinymce.vue';
-    import 'tui-editor/dist/tui-editor.css';
-    import 'tui-editor/dist/tui-editor-contents.css';
-    import 'codemirror/lib/codemirror.css';
-    import 'highlight.js/styles/github.css';
-    import { Editor } from '@toast-ui/vue-editor';
     import {
-        articlePost,
+        saveNotes,
         getCategories,
         saveCategory,
         getTags,
         saveTags,
     } from '@js/common/services';
 
+    const tinymce = () => import('@comp/Tinymce/Tinymce.vue');
+
     export default {
         components: {
-            // tinymce,
-            tuiEditor: Editor,
+            tinymce,
         },
-        data() {
+        data () {
             return {
-                id:           '',
-                title:        '😝',
-                subtitle:     '',
-                author:       '凯子',
-                authorId:     '',
-                postDate:     +new Date(),
-                postStars:    null,
-                readlimit:    '100',
-                downloadUrls: [
-                    {
-                        date:        '',
-                        downloadUrl: '',
-                    },
-                ],
+                id:          '',
+                title:       '😝',
+                subtitle:    '',
+                author:      'kkk',
+                authorId:    '',
+                markdown:    true,
+                postDate:    +new Date(),
+                postStars:   null,
+                readlimit:   '100',
+                content:     '',
                 postOptions: [],
                 categories:  [],
                 categoryId:  '',
@@ -229,14 +178,29 @@
                 ],
             };
         },
-        created() {
+        created () {
             this.getTags();
             this.getCategories();
         },
         methods: {
-            async post($event, isDraft) {
-                const content = this.$refs.tuiEditor.invoke('getHtml');
-                const text = this.$refs.tuiEditor.invoke('getHtml');
+            // 切换编辑器
+            changeEditor() {
+                if(this.markdown) {
+                    this.content = this.$refs.tinymce.getContent();
+                } else {
+                    this.$refs.tinymce.setContent({ content: this.content });
+                }
+            },
+            // 发布
+            async post ($event, isDraft) {
+                let content = '', text = '';
+
+                if(this.markdown) {
+                    content = this.content;
+                } else {
+                    content = this.$refs.tinymce.getContent();
+                    text = this.$refs.tinymce.getContent({ format: 'text' });
+                }
 
                 if (this.title === '') {
                     return this.$message.error('标题不能为空!');
@@ -244,43 +208,38 @@
                     return this.$message.error('内容不能为空!');
                 }
 
-                const { code, msg } = await this.$http(articlePost, {
+                const { code, msg } = await this.$http(saveNotes, {
                     btnState: {
                         target: $event,
                     },
                     data: {
-                        _id:          this.id,
-                        title:        this.title,
-                        readlimit:    this.readlimit,
-                        subtitle:     this.subtitle,
-                        author:       this.author || '匿名用户',
-                        downloadUrls: this.downloadUrls,
-                        categoryId:   this.categoryId,
-                        indexBlock:   this.indexBlock,
-                        authorId:     this.authorId,
-                        postDate:     this.postDate,
-                        stars:        this.stars,
-                        tags:         this.tags,
-                        isDraft:      Boolean(isDraft),
+                        _id:        this.id,
+                        title:      this.title,
+                        readlimit:  this.readlimit,
+                        subtitle:   this.subtitle,
+                        author:     this.author || '匿名用户',
+                        categoryId: this.categoryId,
+                        indexBlock: this.indexBlock,
+                        authorId:   this.authorId,
+                        postDate:   this.postDate,
+                        stars:      this.stars,
+                        tags:       this.tags,
+                        isDraft,
                         content,
                         text,
                     },
                 });
 
                 if (code === 0) {
-                    window.scrollTo(0, 0);
-                    if(isDraft) {
-                        this.$message.success('已存为草稿');
-                    } else {
-                        this.$message.success(msg);
-                    }
+                    this.$message.success(msg);
 
                     this.title = '';
+                    this.content = '';
                 }
             },
-            handleChange() {},
+            handleChange () { },
             // 获取分类
-            async getCategories() {
+            async getCategories () {
                 const { code, data } = await this.$http(getCategories, {
                     data: {},
                 });
@@ -290,7 +249,7 @@
                 }
             },
             // 保存分类
-            async saveCategory() {
+            async saveCategory () {
                 const { code, data } = await this.$http(saveCategory, {
                     data: {},
                 });
@@ -300,7 +259,7 @@
                 }
             },
             // 获取标签
-            async getTags() {
+            async getTags () {
                 const { code, data } = await this.$http(getTags);
 
                 if (code === 0) {
@@ -308,7 +267,7 @@
                 }
             },
             // 保存标签
-            async saveTags() {
+            async saveTags () {
                 const { code, data } = await this.$http(saveTags, {
                     data: {},
                 });
@@ -322,9 +281,12 @@
 </script>
 
 <style lang="scss">
-    .post-section {
-        background: #fff;
+    .note-section {
         padding: 20px;
+        max-width: 1200px;
+        display: block;
+        margin: 0 auto;
+        background: #fff;
         .wrapper-title {
             padding: 15px;
             font-size: 20px;
@@ -345,44 +307,6 @@
                 }
             }
         }
-        .tinymce-container {
-            min-height: 500px;
-        }
-        .post-download {
-            padding-top: 20px;
-            .el-form-item__label {
-                text-align: left;
-            }
-        }
-        .el-form-download {
-            position: relative;
-            padding-right: 100px;
-            .el-form-item {
-                margin-bottom: 10px;
-            }
-        }
-        .action-add,
-        .action-minus {
-            position: absolute;
-            top: 50%;
-            text-align: center;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .action-add {
-            right: 50px;
-        }
-        .action-minus {
-            right: 10px;
-        }
-        .download-content {
-            border: 1px solid #dcdfe6;
-            border-radius: 5px;
-            min-height: 50px;
-            padding: 10px;
-            width: 100%;
-            resize: vertical;
-        }
         .flex {
             .el-form-item {
                 flex: 1;
@@ -393,10 +317,24 @@
                 padding-top: 10px;
             }
         }
+        .editor-wrapper{
+            border-top: 1px dashed #e0e0e0;
+            padding-top: 20px;
+            .el-switch{
+                display: block;
+                margin: 0 0 20px auto;
+                width: 220px;
+            }
+        }
+        .v-note-wrapper{
+            height: 600px;
+            position: relative;
+            z-index: 1;
+        }
         .post-options {
             text-align: right;
             .el-collapse {
-                margin: 20px 0 30px;
+                margin: 30px 0;
             }
             .el-collapse-item__header {
                 position: absolute;

@@ -49,18 +49,16 @@
 
                 vm.$nextTick(() => {
                     tinymce.init({
-                        selector:            '#tinymceId',
-                        language:            'zh_CN',
-                        default_link_target: '_blank',
-                        content_css:
-                            '/tinymce/skins/content/default/content.min.css',
-                        skin:         'oxide',
-                        skin_url:     '/tinymce/skins/ui/oxide',
-                        theme:        'silver',
-                        theme_url:    '/tinymce/themes/silver/index.js',
-                        language_url: '/tinymce/zh_CN.js',
-                        plugins:
-                            'autoresize image paste imagetools link table media advlist',
+                        selector:                 '#tinymceId',
+                        language:                 'zh_CN',
+                        default_link_target:      '_blank',
+                        content_css:              '/tinymce/skins/content/default/content.min.css',
+                        skin:                     'oxide',
+                        skin_url:                 '/tinymce/skins/ui/oxide',
+                        theme:                    'silver',
+                        theme_url:                '/tinymce/themes/silver/index.js',
+                        language_url:             '/tinymce/zh_CN.js',
+                        plugins:                  'autoresize image paste imagetools link table media advlist',
                         autoresize_bottom_margin: 100,
                         max_height:               900,
                         min_height:               550,
@@ -69,7 +67,7 @@
                                 .on('init', () => {
                                     if (editor.getContent() === '') {
                                         editor.setContent(
-                                            '<p style="color: #999;">请输入内容（限20000个字符）！</p>'
+                                            '<p style="color: #999;">请输入内容（限20000个字符）！</p>',
                                         );
                                     }
                                 })
@@ -87,7 +85,7 @@
                                         ''
                                     ) {
                                         vm.setContent(
-                                            '<p style="color: #999;">请输入内容（限20000个字符）！</p>'
+                                            '<p style="color: #999;">请输入内容（限20000个字符）！</p>',
                                         );
                                     }
                                 });
@@ -113,14 +111,14 @@
                         window.tinymce
                             .get('tinymceId')
                             .insertContent(
-                                `<img class="assetsFile" src="${v.response.url}" >`
+                                `<img class="assetsFile" src="${v.response.url}" >`,
                             );
                     });
                 } else {
                     window.tinymce
                         .get('tinymceId')
                         .insertContent(
-                            `<img class="assetsFile" src="${files.response.url}" >`
+                            `<img class="assetsFile" src="${files.response.url}" >`,
                         );
                 }
             },

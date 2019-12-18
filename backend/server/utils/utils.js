@@ -3,7 +3,7 @@ const { existsSync, mkdirSync } = require('fs');
 
 class Utils {
     // 获取今天的日期 年月日
-    today() {
+    today () {
         const now = new Date();
         const year = now.getFullYear();
 
@@ -23,7 +23,7 @@ class Utils {
     }
 
     // 同步创建文件夹
-    mkdirSync(dirpath) {
+    mkdirSync (dirpath) {
         if (!existsSync(dirpath)) {
             let pathtmp;
 
@@ -45,14 +45,14 @@ class Utils {
     }
 
     // 判断是否是手机
-    isMobile(ctx) {
+    isMobile (ctx) {
         const ua = ctx.request.headers['user-agent'];
 
         return /mobile/i.test(ua) && true;
     }
 
     // 接口报错
-    unexpected(error, ctx, next) {
+    unexpected (error, ctx, next) {
         const msgArr = [];
         const _ctx = ctx;
 
@@ -61,18 +61,14 @@ class Utils {
         }
         const result = {
             code: 1,
-            msg:  msgArr[0] || error.message || '我也不知道发生了什么 (-_-)',
+            msg: msgArr[0] || error.message || '我也不知道发生了什么 (-_-)',
         };
 
-        if (next) {
-            _ctx.$body = result;
-        } else {
-            _ctx.body = result;
-        }
+        _ctx[`${next ? '$' : ''}body`] = result;
     }
 
     // 数组递归展平
-    flatten(array) {
+    flatten (array) {
         while (array.some(item => Array.isArray(item))) {
             //如果当前数组中还有数组，则展开
             array = [].concat(...array);
@@ -81,7 +77,7 @@ class Utils {
     }
 
     // 检查session是否失效
-    async checkSession(ctx, next) {
+    async checkSession (ctx, next) {
         const _ctx = ctx;
 
         if (ctx.session.user) {
@@ -98,8 +94,8 @@ class Utils {
 
             if (ctx.request.method === 'POST') {
                 _ctx.body = {
-                    code:     1,
-                    msg:      '请重新登录!',
+                    code: 1,
+                    msg: '请重新登录!',
                     redirect: '/login',
                 };
                 return;
@@ -110,7 +106,7 @@ class Utils {
     }
 
     // 检查登录是否有效
-    async checkRedis(ctx, next) {
+    async checkRedis (ctx, next) {
         const _ctx = ctx;
 
         if (_ctx.headers.token) {
@@ -135,12 +131,12 @@ class Utils {
         _ctx.status = 401;
         _ctx.body = {
             code: _ctx.status,
-            msg:  '请先登录',
+            msg: '请先登录',
         };
         return;
     }
     // 检查用户权限
-    async checkAuthent(ctx, next) {
+    async checkAuthent (ctx, next) {
         const _ctx = ctx;
 
         // 有访问权限
@@ -154,7 +150,7 @@ class Utils {
         // 没有访问权限
         _ctx.status = 403;
         _ctx.body = {
-            code: _ctx.status, msg:  'access denied.',
+            code: _ctx.status, msg: 'access denied.',
         };
         return;
     }

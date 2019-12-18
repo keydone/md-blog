@@ -60,13 +60,6 @@ const dynamicRoutes = [
                 title: '活跃度管理',
             },
             component: () => asyncComponent(import('@bviews/index/activity.vue')),
-        }, {
-            path: 'h5',
-            name: 'h5',
-            meta: {
-                title: 'h5',
-            },
-            component: () => asyncComponent(import('@bviews/index/h5.vue')),
         }],
     }, {
         path: '/application',

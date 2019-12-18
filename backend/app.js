@@ -90,8 +90,6 @@ connectDB(() => {
     // 加载路由配置模块
     routes(router);
 
-    app.keys = ['some-secret'];
-
     app.use(cors({
         origin(ctx) {
             // console.log(ctx.url);

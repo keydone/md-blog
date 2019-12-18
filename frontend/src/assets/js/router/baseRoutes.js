@@ -49,10 +49,31 @@ const baseRoutes = [
                 component: () => asyncComponent(import('@views/details/details.vue')),
             },
             {
-                path:      '/post',
-                name:      'post',
-                meta:      { title: '发布新资源' },
+                path: '/post',
+                name: 'post',
+                meta: {
+                    title:         '发布新资源',
+                    showSideBlock: false,
+                },
                 component: () => asyncComponent(import('@views/post.vue')),
+            },
+            {
+                path: '/notes',
+                name: 'notes',
+                meta: {
+                    title:         '笔记列表',
+                    showSideBlock: false,
+                },
+                component: () => asyncComponent(import('@views/notes/notelist.vue')),
+            },
+            {
+                path: '/note-post',
+                name: 'note-post',
+                meta: {
+                    title:         '发布新笔记',
+                    showSideBlock: false,
+                },
+                component: () => asyncComponent(import('@views/notes/note.vue')),
             },
         ],
     }, {

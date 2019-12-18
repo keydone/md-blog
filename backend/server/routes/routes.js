@@ -13,6 +13,8 @@ module.exports = (router) => {
     router.use('/api/category', require('./category'));
     // 标签模块
     router.use('/api/tags', require('./tags'));
+    // 笔记模块
+    router.use('/api/notes', require('./notes'));
 
     // 前台模块
     router.use('/api/footerblock', require('./footerblock'));

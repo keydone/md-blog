@@ -80,6 +80,7 @@
     .main-container {
         max-width: 1600px;
         min-height: 700px;
+        min-height:calc(100vh - 94px);
         margin: 0 auto;
         &.full-width {
             .main-aside {

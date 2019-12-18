@@ -50,11 +50,14 @@ const Articles = new Schema({
     // 文本内容
     text:         String,
     // 资源下载
-    downloadUrls: String,
+    downloadUrls: Array,
     // 阅读权限
-    limits:       String,
+    readlimit:    {
+        type:    String,
+        default: 100,
+    },
     // 是否为草稿
-    isDraft:      {
+    isDraft: {
         type:    Boolean,
         default: false,
     },

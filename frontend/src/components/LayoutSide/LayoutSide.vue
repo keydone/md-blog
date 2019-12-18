@@ -30,13 +30,36 @@
             <div class="side-block">
                 <h3 class="sideblock-title">站内搜索</h3>
                 <div class="sideblock-box">
-                    <div class="search">
+                    <div class="search-for">
                         <el-input
-                            type="text"
-                            placeholder="包罗万象, 想你所想 (回车即搜)"
-                        />
+                            v-model.trim="keywords"
+                            prefix-icon="el-icon-search"
+                            placeholder="包罗万象 (回车即搜)"
+                            @keydown.native.13="search"
+                        >
+                            <el-dropdown
+                                v-if="history.length"
+                                slot="append"
+                            >
+                                <span class="el-dropdown-link">
+                                    <i class="el-icon-time" />
+                                </span>
+                                <el-dropdown-menu
+                                    slot="dropdown"
+                                    class="search-dropdown"
+                                >
+                                    <el-dropdown-item
+                                        v-for="(item, index) in history"
+                                        :key="index"
+                                        command="item"
+                                    >
+                                        {{ item }}
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </el-input>
                     </div>
-                    <div class="statistics">
+                    <!-- <div class="statistics">
                         <div class="statistics-span">
                             <h4>收录资源</h4>100
                         </div>
@@ -50,7 +73,7 @@
                     <div class="text-center">
                         <el-button>投稿</el-button>
                         <el-button type="primary">打赏</el-button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -157,9 +180,11 @@
         props:      {},
         data() {
             return {
-                adlist: [],
-                newest: [],
-                tags:   [],
+                keywords: '',
+                adlist:   [],
+                newest:   [],
+                tags:     [],
+                history:  [],
             };
         },
         created() {
@@ -171,6 +196,16 @@
 
                 if (code === 0) {
                     this.tags = data.list || [];
+                }
+            },
+            search() {
+                if(this.keywords.length) {
+                    this.$router.push({
+                        name:  'search',
+                        query: {
+                            keywords: this.keywords,
+                        },
+                    });
                 }
             },
         },

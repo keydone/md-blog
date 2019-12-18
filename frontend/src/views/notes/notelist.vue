@@ -1,18 +1,19 @@
 <template>
     <div class="wrapper">
         <toppic-category />
-        <list-card />
+
+        <list-vertical :col="3" />
     </div>
 </template>
 
 <script>
     import ToppicCategory from '@comp/ToppicCategoary';
-    import ListCard from '@comp/LayoutList/ListCard';
+    import ListVertical from '@comp/LayoutList/ListVertical';
 
     export default {
         components: {
             ToppicCategory,
-            ListCard,
+            ListVertical,
         },
     };
 </script>

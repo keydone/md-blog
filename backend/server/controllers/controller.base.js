@@ -12,7 +12,7 @@ class ControllerBase {
         this.Model = require(`../models/${model}`);
     }
 
-    async findAll({
+    async findAll ({
         ctx,
         next,
         filter = null,
@@ -31,11 +31,7 @@ class ControllerBase {
                 },
             };
 
-            if (next) {
-                _ctx.$body = result;
-            } else {
-                _ctx.body = result;
-            }
+            _ctx[`${next ? '$' : ''}body`] = result;
         } catch (error) {
             Utils.unexpected(error, _ctx, next);
         }
@@ -43,7 +39,7 @@ class ControllerBase {
         next && await next(_ctx);
     }
 
-    async findOne({
+    async findOne ({
         ctx,
         filter = {},
         next,
@@ -51,17 +47,13 @@ class ControllerBase {
         const _ctx = ctx;
 
         try {
-            const data = await this.Model.findOne(filter);
+            const data = await this.Model.findOne({ ctx, filter });
             const result = {
                 code: 0,
                 data,
             };
 
-            if (next) {
-                _ctx.$body = result;
-            } else {
-                _ctx.body = result;
-            }
+            _ctx[`${next ? '$' : ''}body`] = result;
         } catch (error) {
             Utils.unexpected(error, _ctx, next);
         }
@@ -69,7 +61,7 @@ class ControllerBase {
         next && await next(_ctx);
     }
 
-    async save({
+    async save ({
         ctx,
         params = null,
         next,
@@ -94,11 +86,7 @@ class ControllerBase {
                 const data = await model.save();
                 const result = { code: 0, msg: '保存成功', data };
 
-                if (next) {
-                    _ctx.$body = result;
-                } else {
-                    _ctx.body = result;
-                }
+                _ctx[`${next ? '$' : ''}body`] = result;
             } catch (error) {
                 Utils.unexpected(error, _ctx, next);
             }
@@ -107,7 +95,7 @@ class ControllerBase {
         next && await next(_ctx);
     }
 
-    async update({
+    async update ({
         ctx,
         next,
     }) {
@@ -146,7 +134,7 @@ class ControllerBase {
         next && await next(_ctx);
     }
 
-    async remove({
+    async remove ({
         ctx,
         next,
     }) {

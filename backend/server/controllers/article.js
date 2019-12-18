@@ -1,14 +1,17 @@
-const ArticlesModel = require('../models/articles-model');
 // const stuffs = require('../models/stuff-model');
 const exclude = require('../utils/exclude');
 const Utils = require('../utils/utils');
+
+function models(modelName) {
+    return require(`../models/${modelName}-model.js`);
+}
 
 /**
  * @param {*page} page
  * @param {*pageSize} pageSize
  * @param {*drafts} drafts 1: 全部 0:非草稿 2:草稿
  */
-async function findAll({ ctx, next }) {
+async function findAll ({ ctx, next, model = 'articles' }) {
     let { page, pageSize } = ctx.request.query;
     const _ctx = ctx;
     const { draft } = ctx.request.query;
@@ -25,8 +28,8 @@ async function findAll({ ctx, next }) {
     }
 
     try {
-        const total = await ArticlesModel.countDocuments();
-        const list = await ArticlesModel.find(filter, exclude)
+        const total = await models(model).countDocuments();
+        const list = await models(model).find(filter, exclude)
             .limit(pageSize)
             .skip(page * pageSize)
             .sort({ createdAt: -1 });
@@ -48,28 +51,30 @@ async function findAll({ ctx, next }) {
 }
 
 // 最新几篇
-async function findLastPost({ ctx }) {
-    ctx.body.last_post = await ArticlesModel.find({
+async function findLastPost ({ ctx, model = 'articles' }) {
+    ctx.body.last_post = await models(model).find({
         isDraft: 0,
     }, exclude)
         .limit(5)
         .sort({ createdAt: -1 });
 }
 
-async function findOne({
+// 查找特定文章
+async function findOne ({
     ctx,
     filter = {},
     next,
+    model = 'articles',
 }) {
     const _ctx = ctx;
     const { _id } = _ctx.request.query;
 
     if (_id == null) {
-        return await ArticlesModel.findOne({ _id }, exclude, { lean: true });
+        return await models(model).findOne({ _id }, exclude, { lean: true });
     }
 
     try {
-        const article = await ArticlesModel.findOne({ _id }, exclude);
+        const article = await models(model).findOne({ _id }, exclude);
 
         if (article) {
             /* const attachment = await stuffs.findOne({ articleId: id }, exclude);
@@ -77,12 +82,12 @@ async function findOne({
             article.stuffs = attachment || {}; */
 
             // 查找上1篇
-            let prevItem = await ArticlesModel.find({ _id: { $lt: _id } }, exclude).sort({ _id: -1 }).limit(1);
+            let prevItem = await models(model).find({ _id: { $lt: _id } }, exclude).sort({ _id: -1 }).limit(1);
 
             prevItem = prevItem.length ? prevItem[0] : null;
 
             // 查找下1篇
-            let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }, exclude).sort({ _id: 1 }).limit(1);
+            let nextItem = await models(model).find({ _id: { $gt: _id } }, exclude).sort({ _id: 1 }).limit(1);
 
             nextItem = nextItem.length ? nextItem[0] : null;
 
@@ -95,12 +100,7 @@ async function findOne({
                 },
             };
 
-            if (next) {
-                _ctx.$body = result;
-            } else {
-
-                _ctx.body = result;
-            }
+            _ctx[`${next ? '$' : ''}body`] = result;
         }
     } catch (error) {
         Utils.unexpected(error, _ctx, next);
@@ -110,26 +110,22 @@ async function findOne({
 }
 
 // 抽象保存方法
-async function saveData({ ctx, body, next }) {
+async function saveData ({ ctx, body, next, model = 'articles' }) {
     const _ctx = ctx;
 
     try {
         delete body._id;
-        await new ArticlesModel(body).save();
+        await new (models(model))(body).save();
 
         const result = { code: 0, msg: body.isDraft ? '保存成功' : '发布成功!' };
 
-        if (next) {
-            _ctx.$body = result;
-        } else {
-            _ctx.body = result;
-        }
+        _ctx[`${next ? '$' : ''}body`] = result;
     } catch (error) {
         Utils.unexpected(error, _ctx);
     }
 }
 
-async function save({ ctx, next }) {
+async function save ({ ctx, next, model = 'articles' }) {
     const _ctx = ctx;
     const { body } = ctx.request;
     const { _id, title, authorId } = body;
@@ -137,11 +133,7 @@ async function save({ ctx, next }) {
     if (!title) {
         const result = { code: 1, msg: '文章标题 不能为空' };
 
-        if (next) {
-            _ctx.$body = result;
-        } else {
-            _ctx.body = result;
-        }
+        _ctx[`${next ? '$' : ''}body`] = result;
     } else {
 
         // 文章是否存在
@@ -151,36 +143,32 @@ async function save({ ctx, next }) {
         //      是 => 保存/更新
         //      否 => 拒绝更新
         if (_id) {
-            const findOne = await ArticlesModel.findOne({ _id }, exclude);
+            const findOne = await models(model).findOne({ _id }, exclude);
 
             if (findOne) {
                 if (findOne.authorId === authorId) {
-                    await saveData(_ctx, body, next);
+                    await saveData({ ctx: _ctx, body, next, model });
                 } else {
                     const result = { code: 1, msg: '权限不足, 请重新登录' };
 
-                    if (next) {
-                        _ctx.$body = result;
-                    } else {
-                        _ctx.body = result;
-                    }
+                    _ctx[`${next ? '$' : ''}body`] = result;
                 }
             } else {
-                await saveData(_ctx, body, next);
+                await saveData({ ctx: _ctx, body, next, model });
             }
         } else {
-            await saveData(_ctx, body, next);
+            await saveData({ ctx: _ctx, body, next, model });
         }
     }
     next && await next(_ctx);
 }
 
-async function update({ ctx, next }) {
+async function update ({ ctx, next, model = 'articles' }) {
     const _ctx = ctx;
     const { _id, article } = _ctx.request.body;
 
     try {
-        const res = await ArticlesModel.findOneAndUpdate(
+        const res = await models(model).findOneAndUpdate(
             { _id },
             article,
             {
@@ -197,11 +185,7 @@ async function update({ ctx, next }) {
             result = { code: 0, msg: '更新成功!' };
         }
 
-        if (next) {
-            _ctx.$body = result;
-        } else {
-            _ctx.body = result;
-        }
+        _ctx[`${next ? '$' : ''}body`] = result;
     } catch (error) {
         Utils.unexpected(error, _ctx, next);
     }
@@ -209,12 +193,12 @@ async function update({ ctx, next }) {
     next && await next(_ctx);
 }
 
-async function remove({ ctx, next }) {
+async function remove ({ ctx, next, model = 'articles' }) {
     const _ctx = ctx;
     const { _id } = _ctx.request.body;
 
     try {
-        const { deletedCount } = await ArticlesModel.deleteOne({ _id });
+        const { deletedCount } = await models(model).deleteOne({ _id });
 
         let result = {};
 
@@ -224,11 +208,7 @@ async function remove({ ctx, next }) {
             result = { code: 1, msg: '删除失败' };
         }
 
-        if (next) {
-            _ctx.$body = result;
-        } else {
-            _ctx.body = result;
-        }
+        _ctx[`${next ? '$' : ''}body`] = result;
     } catch (error) {
         Utils.unexpected(error, _ctx, next);
     }

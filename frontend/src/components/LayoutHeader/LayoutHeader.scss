@@ -111,55 +111,6 @@
     }
 }
 
-.search-for{
-    border-radius: 4px;
-    background: #515151;
-    white-space: nowrap;
-    color: #fff;
-    font-size: 0;
-    .search-global{
-        @include inline-block;
-        &:hover{
-            .el-input{width: 160px;}
-        }
-    }
-    [class^="el-icon-"]{
-        font-size: 16px;
-        padding:10px 15px;
-        vertical-align: top;
-        cursor: pointer;
-        color: #fff;
-        &:hover{
-            transform: scale(1.1);
-        }
-    }
-    .el-input{
-        width: 0;
-        overflow: hidden;
-        transition: width .2s ease-in;
-        vertical-align: top;
-    }
-    .el-input__inner{
-        border: 0;
-        height: 36px;
-        line-height: 36px;
-        background: #515151;
-        color: #fff;
-    }
-    .el-dropdown{
-        vertical-align: top;
-        &:before{
-            content: '';
-            position: absolute;
-            top: 10px;
-            bottom: 10px;
-            left: 0;
-            width: 1px;
-            background: #999;
-        }
-    }
-}
-
 .base-notice{
     position: absolute;
     top: 100%;

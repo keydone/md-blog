@@ -1,7 +1,7 @@
 const Utils = require('../utils/utils');
 const controllers = require('../controllers/controller.export');
 
-async function mergeBlocks(ctx) {
+async function mergeBlocks (ctx) {
     const _ctx = ctx;
     const { code, data } = _ctx.$body;
 
@@ -18,7 +18,7 @@ async function mergeBlocks(ctx) {
             if (item.idlist.length) {
                 item.idlist.forEach(itemId => {
                     promises[index].push(new Promise(resolve => {
-                        controllers.article.findOne(itemId).then(response => {
+                        controllers.article.findOne({ ctx, filter: { id: itemId } }).then(response => {
                             resolve(response);
                         });
                     }));

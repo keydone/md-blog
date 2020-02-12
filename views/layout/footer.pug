@@ -1,4 +1,4 @@
-- var about = setting.about
+- const about = setting.about
 
 footer.page__footer
     section.footer__top
@@ -16,7 +16,7 @@ footer.page__footer
                                 i.icon.icon-mail
                                 span #{about.email}
 
-            if setting.QRcode
+            if setting.QRcode && !isMobile
                 .footer-top__item.footer__image
                     img(src=setting.QRcode alt="logo" title=setting.title)
 
@@ -39,10 +39,11 @@ footer.page__footer
             p.footer__copyright 主题 ©
                 a(href="https://github.com/Mrminfive/hexo-theme-skapp" target="_blank") Skapp
                 | 2017, 由
-                a(class="main-color" href="https://koa.bootcss.com/" target="_blank") Koa
+                a(href="https://koa.bootcss.com/" target="_blank") Koa
                 | 强力驱动 | Hosted by
                 a(href="https://pages.coding.me" target="_blank" style="font-weight: bold") Coding Pages
-                | .
+                | . 备案/许可证号：
+                a(href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank") 粤ICP备18059825号-1
 
             ul.footer__social-network.clearfix
                 if setting.secials

@@ -8,11 +8,9 @@ const aliOssConfig = Object.assign({
     bucket: '',
 }, envFile.aliOssConfig);
 
-const client = new AliOss(aliOssConfig);
-
 const aliUpload = (buffer, fileName) => new Promise(async (resolve, reject) => {
     try {
-        const response = await client.put(`static/${fileName}`, buffer);
+        const response = await new AliOss(aliOssConfig).put(`static/${fileName}`, buffer);
 
         if (response.res.statusCode === 200) {
             resolve({

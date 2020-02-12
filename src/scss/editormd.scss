@@ -9,6 +9,10 @@
     margin: 0 auto;
     text-align: left;
     overflow: hidden;
+    position: relative;
+    margin-bottom: 15px;
+    border: 1px solid $borderColor;
+    font-family: $font-family;
 
     img {
         border: none;
@@ -83,6 +87,7 @@
 @import "./particles/editormd.form";
 @import "./particles/editormd.codemirror";
 @import "./particles/editormd.preview";
+@import "./particles/editormd.preview.themes";
 
 #{$prefix}onlyread {
     #{$prefix}toolbar {
@@ -105,3 +110,5 @@
     border: none;
     margin: 0 auto;
 }
+
+@import "./particles/editormd.themes";

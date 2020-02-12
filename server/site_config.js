@@ -13,10 +13,8 @@ module.exports = {
     cdn: env.cdn,
     static: env.static,
     tstamp: env.tstamp,
-    domain: '/',
     title: 'keydone',
     subtitle: 'For everything beautiful!',
-    description: '凯子的博客 / keydone\'s blog',
     // banner显示的简短介绍
     subtitle_desc: '我不希望年老的时候，含着泪对年轻的自己说：<br>对不起，我没有成为当初你想要成为的那个人！',
     keywords: '前端博客, 前端笔记, 前端, 程序员, 前端开发, 全栈开发, node.js, javascript, react, vue',
@@ -24,8 +22,8 @@ module.exports = {
     logo: `${env.cdn}static/img/logo.png`,
     favicon_ico: `${env.cdn}static/img/favicon.ico`,
     avatar: `${env.cdn}static/img/avatar.png`,
-    header_cover: 'https://static.kaiziye.cn/static/images/dy.png',
-    default_cover: '/static/img/img_loading.png',
+    header_cover: 'https://static.kaiziye.cn/static/img/dy.png',
+    default_cover: 'https://static.kaiziye.cn/static/img/dy.png',
     author: {
         name: 'keydone',
         link: 'https://github.com/keydone'
@@ -36,6 +34,36 @@ module.exports = {
         email: 'k754708625@gmail.com',
     },
     url: 'https://kaiziye.cn',
+    permalink: 'p-:title-:year:month:day',
+    new_post_name: ':title-:year:month:day.md',
+    external_link: true, // 新标签页打开
+    render_drafts: false,
+    date_format: 'YYYY-MM-DD',
+    time_format: 'HH:mm:ss',
+    per_page: 10,
+    theme: 'hexo-theme-skapp',
+    menu: {
+        home: {
+            link: '/',
+            title: '首页'
+        },
+        reading: {
+            link: '/reading',
+            title: '悦读'
+        },
+        archives: {
+            link: '/archives',
+            title: '流年'
+        },
+        precious: {
+            link: '/precious',
+            title: '珍藏'
+        },
+        about: {
+            link: '/about',
+            title: '关于'
+        },
+    },
     QRcode: `${env.cdn}static/img/avatar.png`,
     footers: [{
         name: '友情链接',
@@ -45,9 +73,6 @@ module.exports = {
         }, {
             link: 'https://www.pandashen.com',
             desc: 'PandaShen',
-        }, {
-            link: 'http://www.wushaobin.top',
-            desc: 'twenty-four K',
         }]
     }, {
         name: '构建工具',

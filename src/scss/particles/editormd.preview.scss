@@ -13,10 +13,6 @@
     width: 100%;
     background-color: #fff;
 
-    table {
-        border: none;
-    }
-
     blockquote {
         color: $color;
         border-left: 4px solid $borderColor;
@@ -54,12 +50,10 @@
     .emoji {
         width: 24px;
         height: 24px;
-        color: #B4BF42;
     }
 
     .katex {
         font-size: 1.4em;
-        color: #FEC93F;
     }
 
     .sequence-diagram, .flowchart {
@@ -72,11 +66,14 @@
 
         text {
             font-size  : 15px !important;
+            font-family: $font-family;
         }
     }
 
     #{$prefix}toc-menu {
-        .markdown-toc {
+        display: inline-block;
+
+        > .markdown-toc {
             position: relative;
             @include border-radius(4px);
             border: 1px solid #ddd;
@@ -98,7 +95,7 @@
                 display: none;
                 background: #fff;
                 border: 1px solid #ddd;
-                border-radius: 4px;
+                @include border-radius(4px);
                 @include box-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
 
                 > li ul {
@@ -107,8 +104,7 @@
                     border: 1px solid #ddd;
                     display: none;
                     background: #fff;
-                    border-radius: 4px;
-                    padding: 0;
+                    @include border-radius(4px);
                 }
 
                 > li a {
@@ -125,6 +121,7 @@
 
             li {
                 position: relative;
+
                 > ul {
                     position: absolute;
                     top: 32px;
@@ -168,7 +165,9 @@
             line-height: 1;
             border-bottom: 1px solid #eee;
 
-            .fa {padding-left: 10px;}
+            .fa {
+                padding-left: 10px;
+            }
         }
 
         .toc-menu-btn {
@@ -179,7 +178,9 @@
             display: inline-block;
             @include transition(background-color 500ms ease-out);
 
-            &:hover {background-color: #f6f6f6;}
+            &:hover {
+                background-color: #f6f6f6;
+            }
 
             .fa {
                 float: right;
@@ -205,7 +206,9 @@ hr.editormd-page-break {
 }
 
 #{$prefix}html-preview {
-    textarea {display : none;}
+    textarea {
+        display : none;
+    }
 
     hr.editormd-page-break {
         background: none;
@@ -220,15 +223,15 @@ hr.editormd-page-break {
     font-size: 18px;
     @include border-radius(500px);
     display: none;
-    background: #ccc;
+    background-color: #ccc;
     position: absolute;
     top: 25px;
     right: 35px;
     z-index: 20;
-    @include transition(background 300ms ease-out);
+    @include transition(background-color 300ms ease-out);
 
     &:hover {
-        background: #999;
+        background-color: #999;
     }
 }
 

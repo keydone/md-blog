@@ -13,6 +13,7 @@
 
 .CodeMirror {
   /* Set height, width, borders, and global font properties here */
+  font-family: monospace;
   height: 300px;
   color: black;
 }
@@ -39,11 +40,11 @@
 }
 .CodeMirror-linenumber {
   padding: 0 3px 0 5px;
-  min-width: 30px;
+  min-width: 20px;
   text-align: right;
   color: #999;
+  -moz-box-sizing: content-box;
   box-sizing: content-box;
-  white-space: nowrap;
 }
 
 .CodeMirror-guttermarker { color: black; }
@@ -107,9 +108,9 @@
 .cm-s-default .cm-def {color: #00f;}
 .cm-s-default .cm-variable-2 {color: #05a;}
 .cm-s-default .cm-variable-3 {color: #085;}
-.cm-s-default .cm-comment {color: #75715e;}
+.cm-s-default .cm-comment {color: #a50;}
 .cm-s-default .cm-string {color: #a11;}
-.cm-s-default .cm-string-2 {color: #fd9621;}
+.cm-s-default .cm-string-2 {color: #f50;}
 .cm-s-default .cm-meta {color: #555;}
 .cm-s-default .cm-qualifier {color: #555;}
 .cm-s-default .cm-builtin {color: #30a;}

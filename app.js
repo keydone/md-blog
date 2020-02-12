@@ -1,14 +1,11 @@
 const Koa = require('koa');
 const path = require('path');
 const Pug = require('koa-pug');
-const cors = require('@koa/cors');
 const Router = require('koa-router');
-const cacheControl = require('koa-cache-control');
 const BodyParser = require('koa-bodyparser');
 const compression = require('koa-compress');
 const staticPath = require('koa-static');
 const favicon = require('koa-favicon');
-const session = require('koa-session');
 const helmet = require('koa-helmet'); // 安全防护
 const mongoose = require('mongoose');
 const moment = require('moment');
@@ -17,7 +14,6 @@ const moment = require('moment');
 const routes = require('./server/routes');
 const Utils = require('./server/utils/utils');
 const log4js = require('./server/utils/logs');
-const SessionStore = require('./server/utils/sessionStore');
 const $config = require('./server/site_config');
 const env = require('./.env.js');
 
@@ -28,10 +24,7 @@ const app = new Koa();
 routes(router);
 
 // 连接数据库
-mongoose.connect('mongodb://localhost:27017/ranger', {
-    useCreateIndex: true,
-    useNewUrlParser: true,
-});
+mongoose.connect('mongodb://localhost:27017/ranger', { useNewUrlParser: true });
 mongoose.connection.on('error', (error) => {
     console.log('[error]: ', error.name, error.errorLabels);
 });
@@ -49,18 +42,7 @@ const pug = new Pug({
     app,
 });
 
-app.keys = ['some-secret'];
-
-app.use(cors())
-    .use(helmet())
-    .use((ctx, next) => {
-        if (!ctx.request.url.includes('/login')) {
-            ctx.cacheControl = {
-                maxAge: 3600 * 24 * 7, // 秒
-            };
-        }
-        return next();
-    })
+app.use(helmet())
     .use(compression())
     .use(staticPath(path.join(__dirname, 'public')))
     .use(favicon(`${__dirname}/src/img/logo.png`))
@@ -84,15 +66,6 @@ app.use(cors())
         jsonLimit: '200mb',
         textLimit: '200mb',
     }))
-    .use(session({
-        key: 'koa:sess',
-        maxAge: 86400000,
-        overwrite: true,
-        httpOnly: true,
-        signed: true,
-        rolling: false,
-        store: new SessionStore(),
-    }, app))
     .use(router.routes())
     .use(router.allowedMethods())
     .use(async (ctx) => {

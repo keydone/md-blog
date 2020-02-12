@@ -1664,11 +1664,16 @@
                     var percent   = (scrollTop / $(this)[0].scrollHeight);
                     var codeView  = codeMirror.find(".CodeMirror-scroll");
 
-                    if(scrollTop === 0) {
+                    if(scrollTop === 0)
+                    {
                         codeView.scrollTop(0);
-                    } else if (scrollTop + height >= $(this)[0].scrollHeight) {
+                    }
+                    else if (scrollTop + height >= $(this)[0].scrollHeight)
+                    {
                         codeView.scrollTop(codeView[0].scrollHeight);
-                    } else {
+                    }
+                    else
+                    {
                         codeView.scrollTop(codeView[0].scrollHeight * percent);
                     }
 
@@ -3298,7 +3303,7 @@
 
     // Emoji graphics files url path
     editormd.emoji     = {
-        path  : "https://www.webfx.com/tools/emoji-cheat-sheet/graphics/emojis/",
+        path  : "http://www.emoji-cheat-sheet.com/graphics/emojis/",
         ext   : ".png"
     };
 

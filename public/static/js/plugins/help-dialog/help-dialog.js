@@ -17,6 +17,7 @@
 		var pluginName   = "help-dialog";
 
 		exports.fn.helpDialog = function() {
+			var _this       = this;
 			var lang        = this.lang;
 			var editor      = this.editor;
 			var settings    = this.settings;
@@ -25,7 +26,8 @@
 			var dialogName  = classPrefix + pluginName, dialog;
 			var dialogLang  = lang.dialog.help;
 
-			if (editor.find("." + dialogName).length < 1) {
+			if (editor.find("." + dialogName).length < 1)
+			{			
 				var dialogContent = "<div class=\"markdown-body\" style=\"font-family:微软雅黑, Helvetica, Tahoma, STXihei,Arial;height:390px;overflow:auto;font-size:14px;border-bottom:1px solid #ddd;padding:0 20px 20px 0;\"></div>";
 
 				dialog = this.createDialog({
@@ -42,9 +44,9 @@
 						backgroundColor : settings.dialogMaskBgColor
 					},
 					buttons    : {
-						close : [lang.buttons.close, function() {
+						close : [lang.buttons.close, function() {      
 							this.hide().lockScreen(false).hideMask();
-
+							
 							return false;
 						}]
 					}
@@ -59,22 +61,25 @@
 
 			var helpContent = dialog.find(".markdown-body");
 
-			if (helpContent.html() === "") {
+			if (helpContent.html() === "") 
+			{
 				$.get(path + "help.md", function(text) {
 					var md = exports.$marked(text);
 					helpContent.html(md);
-
+                    
                     helpContent.find("a").attr("target", "_blank");
 				});
 			}
 		};
 
 	};
-
+    
 	// CommonJS/Node.js
-	if (typeof require === "function" && typeof exports === "object" && typeof module === "object") {
+	if (typeof require === "function" && typeof exports === "object" && typeof module === "object")
+    { 
         module.exports = factory;
-    } else if (typeof define === "function")  // AMD/CMD/Sea.js
+    }
+	else if (typeof define === "function")  // AMD/CMD/Sea.js
     {
 		if (define.amd) { // for Require.js
 
@@ -88,7 +93,10 @@
                 factory(editormd);
             });
 		}
-	} else {
+	} 
+	else
+	{
         factory(window.editormd);
 	}
+
 })();

@@ -1,6 +1,20 @@
-const ArticlesModel = require('../models/articles-model');
-const stuffs = require('../models/stuffs-model');
+/* const emoji = require('markdown-it-emoji');
+const mdCheckbox = require('markdown-it-checkbox');
+const mdSmartArrows = require('markdown-it-smartarrows');
+const mdDivs = require('markdown-it-div');
+const md = require('markdown-it')({ html: true }); */
+const ArticlesModel = require('../models/articles');
+const stuffs = require('../models/stuffs');
 const Utils = require('../utils/utils');
+
+/* md.use(emoji)
+    .use(mdCheckbox, {
+        divWrap: true,
+        divClass: 'checkbox',
+        idPrefix: 'checkbox_'
+    })
+    .use(mdSmartArrows)
+    .use(mdDivs); */
 
 /**
  * @param {*page} page
@@ -23,23 +37,23 @@ const findAll = async (ctx, next) => {
 
     try {
         const total = await ArticlesModel.countDocuments();
-        const list = await ArticlesModel.find(filter)
+        await ArticlesModel.find(filter)
             .limit(pagesize)
             .skip(page * pagesize)
-            .sort({ createdAt: -1 });
-        Object.assign(ctx.body, {
-            total,
-            pagesize,
-            page,
-            list,
-        });
+            .sort({ createdAt: -1 })
+            .then(async (list) => {
+                Object.assign(ctx.body, {
+                    total,
+                    pagesize,
+                    page,
+                    list,
+                });
+                if (next) next(ctx, next);
+            });
+    } catch (err) {
+        ctx.body.error = err;
         if (next) next(ctx, next);
-    } catch (error) {
-        Object.assign(ctx.body, {
-            error,
-        });
-        if (next) next(ctx, next);
-        console.log('err ---', error);
+        console.log('err ---', err);
     }
 };
 
@@ -53,8 +67,7 @@ const findLastPost = async (ctx) => {
 };
 
 const findOne = async (ctx, next) => {
-    const { id } = ctx.params;
-
+    const { id } = ctx.query;
     try {
         const article = await ArticlesModel.findOne({ path: id });
         if (article) {
@@ -67,22 +80,23 @@ const findOne = async (ctx, next) => {
             let nextItem = await ArticlesModel.find({ _id: { $gt: _id } }).sort({ _id: 1 }).limit(1);
             nextItem = nextItem.length ? nextItem[0] : null;
 
-            Object.assign(ctx.body, {
+            ctx.body = {
                 prevItem,
                 article,
                 nextItem,
-            });
-
-            if (next) next(ctx, next);
+            };
+            if (next) {
+                return next(ctx, next);
+            }
         }
-    } catch (error) {
-        Object.assign(ctx.body, {
-            error,
-        });
-
-        if (next) next(ctx, next);
-        console.log('err ---', error);
+    } catch (err) {
+        ctx.body = err;
+        if (next) {
+            return next(ctx, next);
+        }
+        console.log('err ---', err);
     }
+    return ctx;
 };
 
 const save = async (ctx, next) => {
@@ -102,16 +116,17 @@ const save = async (ctx, next) => {
         const isExists = await ArticlesModel.findOne({ path: articleData.path });
         if (isExists) {
             ctx.body = { status: 1, msg: '文章id 已存在' };
-        } else {
-            try {
-                const article = await new ArticlesModel(articleData).save();
-                ctx.body = { status: 0, msg: '发布成功!', article };
-            } catch (err) {
-                ctx.body = { status: 1, msg: Utils.unexpected(err) };
-            }
+        }
+
+        try {
+            const article = new ArticlesModel(articleData);
+            await article.save();
+            ctx.body = { status: 0, msg: '发布成功!' };
+        } catch (err) {
+            ctx.body = { status: 1, msg: Utils.unexpected(err) };
         }
     }
-    if (next) next(ctx);
+    next(ctx);
 };
 
 const update = async (ctx, next) => {
@@ -132,7 +147,7 @@ const update = async (ctx, next) => {
         ctx.body = { status: 1, msg: Utils.unexpected(err) };
     }
 
-    if (next) next(ctx);
+    next(ctx);
 };
 
 const remove = async (ctx, next) => {
@@ -147,7 +162,7 @@ const remove = async (ctx, next) => {
     } catch (err) {
         ctx.body = { status: 1, msg: Utils.unexpected(err) };
     }
-    if (next) next(ctx);
+    next(ctx);
 };
 
 module.exports = {

@@ -92,6 +92,26 @@ function getCookie(name) {
     return null;
 }
 
+function apiPublish(data, callback) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/article-publish',
+        dataType: 'json',
+        data: data,
+        success: callback,
+    });
+}
+
+function apiDelete(data, callback) {
+    $.ajax({
+        type: 'POST',
+        url: '/admin/article-delete',
+        dataType: 'json',
+        data: data,
+        success: callback,
+    });
+}
+
 window.addEventListener('DOMContentLoaded', function () {
     var doc = document;
     var search = doc.getElementById('page-search-from');

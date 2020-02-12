@@ -5,6 +5,43 @@ html, body{
     background: #f2f2f2;
 }
 
+.btn{display: inline-block;
+    transition: background .2s;
+    height: 40px;
+    line-height:40px;
+    padding: 0 20px;
+    background: #3b4444;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    &:hover{
+        background: #222;
+    }
+}
+
+.btn-disabled{background: #ccc !important;}
+
+.btn-small{
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    padding: 0 5px;
+    margin: 0 5px;
+    .icon{font-size: inherit;
+        margin-right:5px;
+    }
+}
+
+.btn-action{background: #14a3ce;
+    &:hover{background: #0f93bb;}
+}
+.btn-danger{background: #ff4e2a;
+    &:hover{background: #f12500;}
+}
+
 .pad10{
     padding: 10px;
 }
@@ -13,17 +50,11 @@ html, body{
     padding: 20px;
 }
 
-#page{padding: 0;}
+.whitebg{background: #fff;}
 
 .col-wrap{
     padding: 10px 15px;
     line-height: 24px;
-    overflow-y: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 .col-layout{
@@ -33,22 +64,11 @@ html, body{
     bottom:0;
     overflow: hidden;
     background: #fff;
-    &.closed{
-        .col-4{width: 80px;}
-        .col-20{left: 80px;}
-    }
-    .btn-expand{
-        position: absolute;
-        left: 0;
-        bottom:0;
-        z-index: 3;
-    }
     .col-4{
         position: absolute;
         top:0; left:0;
         bottom:0;
         width: 200px;
-        overflow: hidden;
     }
     .col-20{
         position: absolute;
@@ -60,9 +80,9 @@ html, body{
         display: block;
         margin:0 auto 10px;
         width: 120px;
-        color:#fff;
         height: 32px;
-        line-height: 33px;
+        color:#fff;
+        line-height: 30px;
         text-align: center;
         border-radius: 50px;
         background: $main-color;
@@ -151,36 +171,15 @@ html, body{
 .card-header{
     padding:20px 10px;
     border-bottom: 1px solid #f2f2f2;
-    .pickBtn{
-        width: 100px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        cursor: pointer;
-        position: absolute;
-        left: 330px;
-        top: 20px;
-        transition: transform .2s;
-        .icon-down{font-size: 30px;}
-        &.rotated{
-            transform: rotate(180deg);
-        }
-    }
 }
 
-.card-body{padding: 10px;
-    background: #fff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
+.card-body{padding: 10px;}
 
 .card-table{
     margin: 10px 0;
     th, tr{transition: background .2s;}
-    th, tr:nth-child(2n){
-        background: #f9f9f9;
-    }
-    tr:hover{
-        background: #f5f5f5;
+    th, tr:hover{
+        background: #f2f2f2;
     }
     th, td{padding: 5px 10px;
         border-top: none;
@@ -190,84 +189,14 @@ html, body{
         border-color: #e6e6e6;
         text-align: left;
     }
-    .btn{
-        margin: 5px;
-        font-size: 13px;
-        .icon{
-            vertical-align: middle;
-            top: -1px;
-        }
-        .icon-open{
-            font-size: 12px;
-        }
-    }
 }
 
-.form-figure{background: #fff;}
-
-.label-inline{
-    display: inline-block;
-    vertical-align: top;
-    .form-label, .form-label-input{
-        display: inline-block;
-        vertical-align: top;
-    }
-    .form-label{
-        margin-right: 10px;
-    }
-}
-
-.form-input{
+.newCate{
     padding: 5px 10px;
-    line-height: 32px;
+    height: 40px;
+    line-height: 40px;
     border-radius: 3px;
     border:1px solid #e0e0e0;
     margin-right: 15px;
     font-size: 14px;
-    &.json-key{width: 70px;}
-    &.json-value{
-        width: 150px;
-        margin-left: 15px;
-    }
-}
-
-.label-block{
-    margin-bottom: 15px;
-    .form-label{
-        width: 130px;
-        text-align: right;
-        display: inline-block;
-        margin:7px 10px 0 0;
-        line-height: 18px;
-    }
-    .form-label-input{
-        margin-bottom:15px;
-        &.label-inline{margin:0;}
-    }
-    .label-inline{
-        .form-label-input{
-            display: block;
-        }
-    }
-    .btn{font-size: 24px;
-        vertical-align: middle;
-        margin-right: 15px;
-    }
-}
-
-input.form-input{height: 32px;}
-
-.pickup{
-    max-height: 0;
-    transition: max-height .2s;
-    overflow: hidden;
-    margin: 0;
-    &.expend{
-        max-height: 300px;
-    }
-}
-
-// 弹窗
-.menu-edit{
-    .growl-message{text-align: left !important;}
 }

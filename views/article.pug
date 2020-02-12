@@ -34,52 +34,23 @@ append content
                                     li.mark__item
                                         a(href=`/tags/${tag}`) #{tag}
 
-                    .mark__block
-                        i.mark__icon.icon.icon-open
-                        .leancloud-visitors(id=`/articles/${article.path}`, data-flag-title=article.title)
-                            .leancloud-visitors-count
-
             .editormd-html-preview.post__content !{article.content}
                 #separator
                 .post-announce !{setting.announce} (
-                    a(href=`https://kaiziye.cn/articles/${article.path}`) https://kaiziye.cn/articles/#{article.path}
+                    a(href=`https://kaiziye.cn/articles?id=${article.path}`) https://kaiziye.cn/articles?id=#{article.path}
                     | )
 
                 if prevItem || nextItem
                     .post__prevs
                         if prevItem
                             .post__prev
-                                a(href=`/articles/${prevItem.path}`, title=prevItem.title)
-                                    i.icon.icon-prev
+                                a(href=`/articles?id=${prevItem.path}`, title=prevItem.title): i.icon.icon-prev
                                     | #{prevItem.title}
                         if nextItem
                             .post__next
-                                a(href=`/articles/${nextItem.path}`, title=nextItem.title) #{nextItem.title}
+                                a(href=`/articles?id=${nextItem.path}`, title=nextItem.title) #{nextItem.title}
                                     i.icon.icon-next
-
-            #comment-container
-
         include _partial/sidebar
 
 append pagejs
-    script.
-        window.performanceTimer.postStart = +window.performance.now();
     script(src=`${setting.static}static/js/post.js?t=${setting.tstamp}`)
-    script.
-        window.performanceTimer.avStart = +window.performance.now();
-    script(src='https://cdn1.lncld.net/static/js/3.0.4/av-min.js')
-    script.
-        window.performanceTimer.valineStart = +window.performance.now();
-    script(src='https://unpkg.com/valine/dist/Valine.min.js', async)
-    script.
-        window.performanceTimer.valineEnd = +window.performance.now();
-    script.
-        window.onload = function() {
-            new Valine({
-                el: '#comment-container',
-                appId: 'pcYeFpCEFCMlw9kraPeoaAPG-gzGzoHsz',
-                appKey: 'OSM5tWDgT5DA7gSInl99v2Sk',
-                avatar: 'monsterid',
-                visitor: true,
-            });
-        }

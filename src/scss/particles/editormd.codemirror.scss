@@ -28,6 +28,7 @@
         float: left;
         border-right: 1px solid $borderColor;
         font-size: 14px;
+        font-family: $font-family;
         line-height: 1.6;
         margin-top: 35px;
 
@@ -85,6 +86,5 @@
         background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
         background-position: right;
         background-repeat: no-repeat;
-        opacity: .3;
     }
 }

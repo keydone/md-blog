@@ -55,7 +55,7 @@
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.0.2",
     "gulp-uglify": "^3.0.1",
-    "highlight.js": "^9.13.1",
+    "highlight.js": "^10.4.1",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-cache-control": "^2.0.0",
